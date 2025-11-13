@@ -36,31 +36,23 @@
   </nav>
 
   <section id="reg" class="card" style="display:none">
-   <form 
-      id="registerForm"
-      action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec"
-      method="POST"
-      style="width: 100%;"
-    >
-        <input type="text" name="hoten" placeholder="Họ và tên" required>
-        <input type="text" name="ngaysinh" placeholder="Ngày sinh">
-        <select name="gioitinh">
-            <option value="Nam">Nam</option>
-            <option value="Nữ">Nữ</option>
-        </select>
-    
-        <input type="text" name="dantoc" placeholder="Dân tộc">
-        <input type="text" name="truong" placeholder="Trường">
-        <input type="text" name="khoi" placeholder="Khối">
-        <input type="text" name="malop" placeholder="Mã lớp">
-        <input type="text" name="cccd" placeholder="Số CCCD" required>
-        <input type="email" name="email" placeholder="Email" required>
-    
-        <textarea name="ghichu" placeholder="Ghi chú"></textarea>
-    
-        <button type="submit">Gửi đăng ký</button>
-    </form>
-
+    <h3>Đăng ký tài khoản</h3>
+    <div class="grid">
+      <div class="col" style="grid-column:span 6"><label>Họ và tên</label><input id="r_fullname" /></div>
+      <div class="col" style="grid-column:span 3"><label>Ngày sinh</label><input id="r_birth" placeholder="dd/mm/yyyy"/></div>
+      <div class="col" style="grid-column:span 3"><label>Giới tính</label><select id="r_gender"><option>Nam</option><option>Nữ</option></select></div>
+      <div class="col" style="grid-column:span 6"><label>Dân tộc</label><input id="r_ethnicity"/></div>
+      <div class="col" style="grid-column:span 6"><label>Trường</label><input id="r_school"/></div>
+      <div class="col" style="grid-column:span 3"><label>Khối</label><input id="r_grade" placeholder="10/11/12"/></div>
+      <div class="col" style="grid-column:span 3"><label>Mã lớp</label><input id="r_class"/></div>
+      <div class="col" style="grid-column:span 6"><label>Số CCCD</label><input id="r_cccd"/></div>
+      <div class="col" style="grid-column:span 6"><label>Email</label><input id="r_email"/></div>
+      <div class="col" style="grid-column:span 12"><label>Ghi chú</label><input id="r_note"/></div>
+    </div>
+    <div class="flex mt">
+      <button class="btn" onclick="doRegister()">Gửi đăng ký</button>
+      <span id="msgReg" class="muted"></span>
+    </div>
   </section>
 
   <section id="login" class="card" style="display:none">
