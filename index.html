@@ -4,802 +4,771 @@
   <meta charset="UTF-8" />
   <title>SK – Hệ thống Kiểm tra Online</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Chart.js cho Dashboard -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     :root{
       --primary:#2563eb;
-      --primary-dark:#1d4ed8;
-      --accent:#4f46e5;
-      --danger:#dc2626;
-      --bg:#f1f5f9;
+      --primary-soft:#dbeafe;
+      --bg:#f3f4f6;
       --card:#ffffff;
-      --text:#0f172a;
       --muted:#6b7280;
-      --border:#e2e8f0;
-      --radius:18px;
-      --shadow:0 18px 45px rgba(15,23,42,.18);
+      --shadow-lg:0 18px 45px rgba(15,23,42,.14);
+      --radius-lg:18px;
     }
-    *{box-sizing:border-box;}
+    *{box-sizing:border-box;margin:0;padding:0}
     body{
-      margin:0;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:radial-gradient(circle at top,#dbeafe,#fff);
-      color:var(--text);
-    }
-    .wrap{
-      max-width:1080px;
-      margin:18px auto 32px;
-      padding:0 16px 24px;
-    }
-    h1{
-      font-size:1.6rem;
-      margin:0 0 12px;
-      text-align:center;
-      font-weight:700;
-      letter-spacing:.02em;
+      font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#e0edff,#f9fafb);
+      min-height:100vh;
+      padding:16px 10px 24px;
       color:#111827;
     }
-    h1 span{
-      display:inline-block;
-      padding:2px 10px;
-      border-radius:999px;
-      background:linear-gradient(135deg,#2563eb,#4f46e5);
-      color:#fff;
-      font-size:.8rem;
-      margin-left:8px;
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
     }
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    header h1{font-size:1.35rem;margin-bottom:4px;}
+    header p{font-size:.9rem;color:var(--muted);}
+    .badge-top{
+      padding:3px 9px;
+      border-radius:999px;
+      background:#eff6ff;
+      color:#1d4ed8;
+      font-size:.75rem;
+      font-weight:500;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .badge-top span.dot{
+      width:6px;height:6px;border-radius:999px;background:#1d4ed8;
+    }
+
     nav{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
-      justify-content:center;
       margin-bottom:14px;
     }
     nav button{
       border:none;
-      padding:7px 14px;
       border-radius:999px;
-      background:#e5edff;
-      color:#1e3a8a;
-      font-weight:600;
+      padding:7px 14px;
       font-size:.86rem;
+      font-weight:500;
       cursor:pointer;
-      display:flex;
+      background:#ffffffb8;
+      color:#374151;
+      box-shadow:0 8px 22px rgba(15,23,42,.12);
+      display:inline-flex;
       align-items:center;
       gap:6px;
     }
     nav button.active{
       background:linear-gradient(135deg,#2563eb,#4f46e5);
       color:#fff;
-      box-shadow:0 10px 24px rgba(37,99,235,.45);
+      box-shadow:0 12px 30px rgba(37,99,235,.55);
     }
-    nav button span.icon{
-      font-size:1rem;
-    }
+    nav button span.icon{font-size:1rem;}
 
-    .qr-block{
-      margin:10px auto 16px;
-      padding:10px 14px;
-      max-width:420px;
-      background:rgba(255,255,255,.8);
-      border-radius:var(--radius);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      box-shadow:0 12px 30px rgba(15,23,42,.12);
-      border:1px solid var(--border);
+    main{
+      display:block;
     }
-    .qr-block p{
-      margin:0;
-      font-size:.9rem;
-      color:var(--muted);
-      text-align:center;
-    }
-    .qr-block img{
-      border-radius:24px;
-      box-shadow:0 18px 45px rgba(15,23,42,.18);
-      background:#fff;
-      padding:12px;
-    }
-
-    .panel{
+    section.page{
       display:none;
       background:var(--card);
-      border-radius:var(--radius);
-      padding:18px 16px 20px;
-      box-shadow:var(--shadow);
-      border:1px solid var(--border);
-      margin-top:10px;
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-lg);
+      padding:16px 14px 14px;
     }
-    .panel.active{display:block;}
+    section.page.active{display:block;}
 
-    .panel h2{
-      margin:0 0 8px;
-      font-size:1.2rem;
+    h2.section-title{
+      font-size:1.05rem;
+      margin-bottom:6px;
     }
-    .panel p.lead{
-      margin:0 0 14px;
-      font-size:.9rem;
+    p.section-desc{
+      font-size:.86rem;
       color:var(--muted);
+      margin-bottom:12px;
     }
 
-    form .grid{
+    /* --- Form ĐĂNG KÝ --- */
+    .grid-2{
       display:grid;
-      grid-template-columns:1fr;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
       gap:10px 14px;
     }
-    @media(min-width:720px){
-      form .grid-2{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-      }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
     }
     label{
-      font-size:.86rem;
-      font-weight:600;
-      color:#111827;
-      display:block;
-      margin-bottom:3px;
+      font-size:.8rem;
+      font-weight:500;
+      color:#374151;
     }
-    label span.en{
-      font-weight:400;
-      color:var(--muted);
-      font-size:.78rem;
-    }
-    .field small{
-      display:block;
-      margin-top:3px;
-      font-size:.76rem;
-      color:var(--muted);
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="date"],
-    select,
-    textarea{
-      width:100%;
-      padding:7px 9px;
+    input,select,textarea{
       border-radius:10px;
-      border:1px solid var(--border);
+      border:1px solid #d1d5db;
+      padding:8px 9px;
       font-size:.9rem;
-      font-family:inherit;
       outline:none;
-      background:#f9fafb;
-      transition:border-color .15s,box-shadow .15s,background .15s;
+      width:100%;
     }
     input:focus,select:focus,textarea:focus{
       border-color:var(--primary);
-      background:#fff;
       box-shadow:0 0 0 1px rgba(37,99,235,.35);
     }
     textarea{min-height:60px;resize:vertical;}
-
+    .hint{
+      font-size:.75rem;
+      color:var(--muted);
+    }
     .btn-primary{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-      padding:8px 18px;
-      border-radius:999px;
+      margin-top:10px;
       border:none;
-      background:linear-gradient(135deg,#2563eb,#4f46e5);
-      color:#fff;
+      border-radius:999px;
+      padding:9px 18px;
       font-size:.9rem;
       font-weight:600;
+      color:#fff;
+      background:linear-gradient(135deg,#2563eb,#4f46e5);
+      box-shadow:0 12px 26px rgba(37,99,235,.55);
       cursor:pointer;
-      margin-top:6px;
-      box-shadow:0 12px 30px rgba(37,99,235,.45);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
     }
-    .btn-primary[disabled]{
-      opacity:.7;
-      cursor:default;
-      box-shadow:none;
-    }
-
-    .note{
+    .btn-primary span.icon{font-size:1rem;}
+    .note-small{
       margin-top:6px;
       font-size:.78rem;
       color:var(--muted);
     }
 
-    .stats-grid{
+    .qr-box{
+      margin-top:16px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+    }
+    .qr-box img{
+      border-radius:24px;
+      box-shadow:0 18px 45px rgba(15,23,42,.2);
+      background:#fff;
+      padding:12px;
+      max-width:220px;
+      width:100%;
+    }
+
+    /* --- Dashboard trong index --- */
+    .cards{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
       gap:10px;
-      margin-top:10px;
+      margin-bottom:12px;
     }
-    .stat-card{
-      border-radius:14px;
-      padding:10px 12px;
+    .card-mini{
       background:#f9fafb;
-      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px 11px;
+      box-shadow:0 10px 28px rgba(15,23,42,.08) inset;
     }
-    .stat-card h3{
-      margin:0 0 6px;
-      font-size:.88rem;
+    .card-mini h3{
+      font-size:.8rem;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      margin-bottom:4px;
+    }
+    .card-mini .value{
+      font-size:1.4rem;
       font-weight:700;
     }
-    .stat-card ul{
-      list-style:none;
-      padding:0;
-      margin:0;
-      max-height:180px;
-      overflow:auto;
-      font-size:.8rem;
-    }
-    .stat-card li{
-      display:flex;
-      justify-content:space-between;
-      padding:2px 0;
-    }
-    .stat-card li span.label{
+    .card-mini .sub{
+      font-size:.78rem;
       color:var(--muted);
+      margin-top:2px;
     }
-    .chip{
-      display:inline-block;
-      min-width:32px;
-      padding:2px 8px;
-      border-radius:999px;
-      background:#e0ecff;
-      text-align:right;
-      font-size:.75rem;
-      font-variant-numeric:tabular-nums;
-      color:#1d4ed8;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:.82rem;
-    }
-    th,td{
-      border-bottom:1px solid var(--border);
-      padding:5px 6px;
-      text-align:left;
-    }
-    th{
-      background:#eff6ff;
-      position:sticky;
-      top:0;
-      z-index:1;
-    }
-    tbody tr:nth-child(odd){background:#f9fafb;}
-    .table-wrap{
-      max-height:260px;
-      overflow:auto;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:#f9fafb;
-      margin-top:8px;
-    }
-
-    .search-grid{
+    .grid-charts{
       display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:8px;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:12px;
     }
-    @media(max-width:640px){
-      .search-grid{grid-template-columns:1fr;}
+    .chart-card{
+      background:#f9fafb;
+      border-radius:16px;
+      padding:10px 10px 12px;
+      box-shadow:0 16px 40px rgba(15,23,42,.12) inset;
+      display:flex;
+      flex-direction:column;
+      min-height:210px;
     }
-    .tag{
+    .chart-card h3{
+      font-size:.9rem;margin-bottom:3px;
+    }
+    .chart-card p{
+      font-size:.78rem;color:var(--muted);margin-bottom:8px;
+    }
+    .chart-wrapper{flex:1;min-height:160px;}
+    .badge{
       display:inline-flex;
       align-items:center;
-      gap:4px;
+      gap:5px;
+      padding:3px 7px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary);
+      font-size:.75rem;
+      margin-top:3px;
+    }
+    .badge span.dot{
+      width:7px;height:7px;border-radius:999px;background:var(--primary);
+    }
+
+    /* --- Xem kết quả --- */
+    .results{
+      margin-top:8px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:10px;
+    }
+    .result-card{
+      background:#f9fafb;
+      border-radius:16px;
+      padding:10px 11px;
+      box-shadow:0 16px 42px rgba(15,23,42,.14) inset;
+      position:relative;
+      overflow:hidden;
+    }
+    .result-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg,rgba(37,99,235,.06),transparent);
+      pointer-events:none;
+    }
+    .result-name{
+      font-size:1rem;
+      font-weight:700;
+      text-transform:uppercase;
+      margin-bottom:3px;
+    }
+    .pill-score{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
       padding:3px 8px;
       border-radius:999px;
-      background:#eff6ff;
-      font-size:.75rem;
-      color:#1d4ed8;
-      margin-bottom:6px;
-    }
-    .tag span.icon{font-size:.9rem;}
-    .result-card{
-      margin-top:8px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      padding:10px 12px;
-      background:#f9fafb;
-    }
-    .result-card h3{
-      margin:0 0 6px;
-      font-size:.96rem;
-    }
-    .result-card p{margin:2px 0;font-size:.82rem;}
-    .result-card span.label{color:var(--muted);}
-    .badge{
-      display:inline-block;
-      padding:2px 6px;
-      border-radius:999px;
-      font-size:.72rem;
-      background:#dcfce7;
+      background:#ecfdf3;
       color:#166534;
-      font-weight:600;
+      font-size:.78rem;
+      margin-bottom:4px;
     }
-    .text-danger{color:var(--danger);}
+    .pill-score span.score{
+      font-size:1.3rem;
+      font-weight:700;
+    }
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:3px 8px;
+      margin-top:4px;
+      font-size:.76rem;
+      color:var(--muted);
+    }
+    .badge-meta{
+      padding:2px 7px;
+      border-radius:999px;
+      background:#e5e7eb;
+    }
+    .status-msg{
+      margin-top:8px;
+      font-size:.82rem;
+    }
+    .status-empty{color:var(--muted);}
+    .status-error{color:#b91c1c;}
+
+    @media(max-width:640px){
+      header{flex-direction:column;align-items:flex-start;}
+    }
   </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>SK – Hệ thống Kiểm tra Online <span>DTAI Online</span></h1>
+  <header>
+    <div>
+      <h1>SK – Hệ thống Kiểm tra Online</h1>
+      <p>Đăng ký – Làm bài – Xem Dashboard – Tra cứu kết quả trên cùng một trang.</p>
+      <div class="badge-top"><span class="dot"></span><span>Phiên bản PREMIUM</span></div>
+    </div>
+  </header>
 
   <nav>
-    <button onclick="showPanel('reg', this)" class="active"><span class="icon">📝</span>Đăng ký</button>
-    <button onclick="showPanel('login', this)"><span class="icon">🔑</span>Đăng nhập</button>
-    <button onclick="showPanel('exam', this)"><span class="icon">📚</span>Vào thi</button>
-    <button onclick="showPanel('review', this)"><span class="icon">🔍</span>Xem lại kết quả</button>
-    <button onclick="showPanel('dashboardReg', this)"><span class="icon">📊</span>Thống kê đăng ký</button>
-    <button onclick="showPanel('dashboardScore', this)"><span class="icon">📈</span>Thống kê điểm</button>
+    <button class="active" onclick="show('reg', this)"><span class="icon">📝</span>Đăng ký</button>
+    <button onclick="show('login', this)"><span class="icon">🔐</span>Đăng nhập</button>
+    <button onclick="show('exam', this)"><span class="icon">🧪</span>Vào thi</button>
+    <button onclick="show('review', this)"><span class="icon">📄</span>Xem lại</button>
+    <button onclick="show('dash', this)"><span class="icon">📊</span>Dashboard</button>
+    <button onclick="show('lookup', this)"><span class="icon">🔎</span>Xem kết quả</button>
   </nav>
 
-  <div class="qr-block">
-    <p>Quét QR để mở trang đăng ký trên điện thoại</p>
-    <img
-      src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Ftrungk8.github.io%2FDTAI_Online%2F"
-      alt="QR Code đăng ký"
-    />
-  </div>
+  <main>
+    <!-- 1. ĐĂNG KÝ -->
+    <section id="reg" class="page active">
+      <h2 class="section-title">Đăng ký tham gia hệ thống</h2>
+      <p class="section-desc">Nhập đầy đủ thông tin bên dưới. Hệ thống kiểm tra trùng <b>CCCD</b> hoặc <b>Email</b> trước khi lưu.</p>
 
-  <!-- ĐĂNG KÝ -->
-  <section id="reg" class="panel active">
-    <h2>Đăng ký tham gia kiểm tra</h2>
-    <p class="lead">
-      Vui lòng nhập thông tin chính xác. Họ tên và Lớp sẽ tự chuyển sang <b>CHỮ IN HOA</b> để đồng bộ dữ liệu.
-    </p>
-
-    <!-- gửi thẳng tới Apps Script -->
-    <form id="regForm"
-          method="POST"
-          target="hidden_iframe"
-          action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec"
-          onsubmit="handleSubmit()">
-
-      <div class="grid grid-2">
-        <div class="field">
-          <label for="hoten">Họ và tên <span class="en">/ Full name</span></label>
-          <input id="hoten" name="hoten" type="text" autocomplete="name" required
-                 placeholder="VD: Nguyễn Văn A" />
-          <small>Nhập đúng chính tả tiếng Việt, hệ thống sẽ tự chuyển sang IN HOA.</small>
+      <!-- 👉 THAY URL WEB APP TẠI ĐÂY -->
+      <form id="regForm"
+            method="post"
+            action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec">
+        <div class="grid-2">
+          <div class="field">
+            <label for="hoten">Họ và tên (IN HOA)</label>
+            <input id="hoten" name="hoten" placeholder="VD: NGUYỄN VĂN A" required />
+            <div class="hint">Nhập thường cũng được, hệ thống sẽ tự đổi thành IN HOA khi lưu.</div>
+          </div>
+          <div class="field">
+            <label for="ngaysinh">Ngày sinh</label>
+            <input id="ngaysinh" name="ngaysinh" type="date" />
+          </div>
+          <div class="field">
+            <label for="gioitinh">Giới tính</label>
+            <select id="gioitinh" name="gioitinh">
+              <option value="">-- Chọn --</option>
+              <option>Nam</option>
+              <option>Nữ</option>
+              <option>Khác</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="dantoc">Dân tộc</label>
+            <select id="dantoc" name="dantoc">
+              <option value="">Kinh</option>
+              <option>Ê-đê</option>
+              <option>M'Nông</option>
+              <option>Cơ-ho</option>
+              <option>Ba-na</option>
+              <option>Khác</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="truong">Trường</label>
+            <select id="truong" name="truong">
+              <option>THPT Nguyễn Đình Chiểu</option>
+              <option>THPT Phạm Văn Đồng</option>
+              <option>THPT Bảo Lộc</option>
+              <option>THPT Đức Trọng</option>
+              <option>Trường khác (ghi chú)</option>
+            </select>
+            <div class="hint">Nếu trường chưa có trong danh sách, chọn “Trường khác” và ghi rõ ở Ghi chú.</div>
+          </div>
+          <div class="field">
+            <label for="xa">Xã/Phường</label>
+            <input id="xa" name="xa" placeholder="VD: Xã Kiến Đức" />
+          </div>
+          <div class="field">
+            <label for="tinh">Tỉnh/TP</label>
+            <select id="tinh" name="tinh">
+              <option>Lâm Đồng</option>
+              <option>Đắk Lắk</option>
+              <option>Đắk Nông</option>
+              <option>TP. Hồ Chí Minh</option>
+              <option>Hà Nội</option>
+              <option value="Khác">Tỉnh/TP khác</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="khoi">Khối</label>
+            <select id="khoi" name="khoi" required>
+              <option value="">-- Chọn khối --</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="malop">Lớp</label>
+            <input id="malop" name="malop" placeholder="VD: 12A1" />
+            <div class="hint">Nhập đúng định dạng: 10A1, 11A2, 12A5,…</div>
+          </div>
+          <div class="field">
+            <label for="cccd">CCCD</label>
+            <input id="cccd" name="cccd" inputmode="numeric" placeholder="Chỉ nhập số" />
+            <div class="hint">Hệ thống lưu CCCD dạng ký tự số (chuỗi), không tính toán trên trường này.</div>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="VD: ten@gmail.com" />
+            <div class="hint">Dùng để hệ thống gửi xác nhận đăng ký & thông tin phòng thi.</div>
+          </div>
+          <div class="field">
+            <label for="ghichu">Ghi chú thêm</label>
+            <textarea id="ghichu" name="ghichu" placeholder="VD: Trường khác, hoàn cảnh đặc biệt, ..."></textarea>
+          </div>
         </div>
 
-        <div class="field">
-          <label for="ngaysinh">Ngày sinh <span class="en">/ Date of birth</span></label>
-          <input id="ngaysinh" name="ngaysinh" type="date" />
-          <small>Định dạng: ngày/tháng/năm.</small>
-        </div>
-
-        <div class="field">
-          <label for="gioitinh">Giới tính <span class="en">/ Gender</span></label>
-          <select id="gioitinh" name="gioitinh">
-            <option value="">-- Chọn --</option>
-            <option>Nam</option>
-            <option>Nữ</option>
-            <option>Khác</option>
-          </select>
-          <small>Chọn giới tính hiện tại của em.</small>
-        </div>
-
-        <div class="field">
-          <label for="dantoc">Dân tộc <span class="en">/ Ethnicity</span></label>
-          <select id="dantoc" name="dantoc">
-            <option value="">-- Chọn --</option>
-            <option value="Kinh">Kinh</option>
-            <option value="Chu Ru">Chu Ru</option>
-            <option value="Cơ Ho">Cơ Ho</option>
-            <option value="Mạ">Mạ</option>
-            <option value="Nùng">Nùng</option>
-            <option value="Tày">Tày</option>
-            <option value="Khác">Khác</option>
-          </select>
-          <small>Nếu không có trong danh sách, chọn <b>Khác</b>.</small>
-        </div>        
-        
-        <div class="field">
-          <label for="khoi">Khối <span class="en">/ Grade</span></label>
-          <select id="khoi" name="khoi">
-            <option value="">-- Chọn khối --</option>
-            <option value="10">Khối 10</option>
-            <option value="11">Khối 11</option>
-            <option value="12">Khối 12</option>
-          </select>
-          <small>Ví dụ: em đang học lớp 11A3 thì chọn <b>Khối 11</b>.</small>
-        </div>
-
-        <div class="field">
-          <label for="malop">
-            Lớp <span class="en">/ Class</span>
-          </label>
-          <input id="malop" name="malop" type="text"
-                 list="lop_suggestions"
-                 placeholder="VD: 12A1" />
-          <datalist id="lop_suggestions">
-            <option value="10A1"></option>
-            <option value="10A2"></option>
-            <option value="10A3"></option>
-            <option value="11A1"></option>
-            <option value="11A2"></option>
-            <option value="12A1"></option>
-            <option value="12A2"></option>
-          </datalist>
-          <small>Có sẵn gợi ý nhưng vẫn có thể tự nhập. Hệ thống sẽ tự IN HOA.</small>
-        </div>
-
-
-        <div class="field">
-          <label for="truong">Trường <span class="en">/ School</span></label>
-          <select id="truong" name="truong">
-            <option value="">-- Chọn trường --</option>
-            <option>THPT Nguyễn Đình Chiểu</option>
-            <option>THPT Phạm Văn Đồng</option>
-            <option>THPT Đức Trọng</option>
-            <option>THPT Lương Thế Vinh</option>
-            <option value="khac">Khác (ghi thêm)</option>
-          </select>
-          <small>Nếu chọn “Khác”, điền tên trường tại ô phía dưới.</small>
-        </div>
-
-        <div class="field">
-          <label for="truong_khac">Trường (khác) <span class="en">/ Other school</span></label>
-          <input id="truong_khac" name="truong_khac" type="text"
-                 placeholder="VD: THPT …" />
-          <small>Không bắt buộc. Chỉ điền khi trường không có trong danh sách.</small>
-        </div>
-
-        <div class="field">
-          <label for="xa">Xã/Phường <span class="en">/ Ward</span></label>
-          <input id="xa" name="xa" type="text"
-                 placeholder="VD: Xã Ninh Gia" />
-          <small>Ghi rõ Xã/Phường đang sinh sống.</small>
-        </div>
-
-        <div class="field">
-          <label for="tinh">Tỉnh/TP <span class="en">/ Province</span></label>
-          <select id="tinh" name="tinh">
-            <option value="">-- Chọn --</option>
-            <option value="Lâm Đồng">Lâm Đồng</option>
-            <option value="Đắk Lắk">Đắk Lắk</option>
-            <option value="Hồ Chí Minh">TP. Hồ Chí Minh</option>
-            <option value="Hà Nội">Hà Nội</option>
-            <option value="Khác">Khác (ghi thêm)</option>
-          </select>
-          <small>Nếu chọn “Khác”, điền tên tỉnh tại ô phía dưới.</small>
-        </div>
-
-        <div class="field">
-          <label for="tinh_khac">Tỉnh/TP (khác) <span class="en">/ Other province</span></label>
-          <input id="tinh_khac" name="tinh_khac" type="text"
-                 placeholder="VD: Bình Thuận" />
-          <small>Không bắt buộc.</small>
-        </div>
-
-
-        <div class="field">
-          <label for="cccd">CCCD <span class="en">/ Citizen ID</span></label>
-          <input id="cccd" name="cccd" type="text"
-                 inputmode="numeric"
-                 pattern="[0-9]{9,12}"
-                 maxlength="12"
-                 placeholder="Chỉ nhập số, VD: 123456789012" />
-          <small>Chỉ chứa ký tự số. Dùng để chống đăng ký trùng.</small>
-        </div>
-
-        <div class="field">
-          <label for="email">Email <span class="en">/ Email</span></label>
-          <input id="email" name="email" type="email"
-                 placeholder="VD: ten@gmail.com" />
-          <small>Email nhận thông báo đăng ký và kết quả.</small>
-        </div>
-
-        <div class="field">
-          <label for="ghichu">Ghi chú <span class="en">/ Note</span></label>
-          <textarea id="ghichu" name="ghichu"
-                    placeholder="VD: Có nhu cầu thi thử thêm môn..."></textarea>
-          <small>Không bắt buộc.</small>
-        </div>
-      </div>
-
-      <button id="btn-submit" class="btn-primary" type="submit">
-        <span>✅ Gửi thông tin đăng ký</span>
-      </button>
-
-      <div id="submitStatus" class="note"></div>
-    </form>
-
-    <iframe name="hidden_iframe" style="display:none"></iframe>
-  </section>
-
-  <!-- ĐĂNG NHẬP (placeholder) -->
-  <section id="login" class="panel">
-    <h2>Đăng nhập (đang phát triển)</h2>
-    <p class="lead">
-      Phần đăng nhập tài khoản giáo viên / quản trị sẽ bổ sung sau. Hiện tại dùng trực tiếp Dashboard & Google Sheet.
-    </p>
-  </section>
-
-  <!-- VÀO THI -->
-  <section id="exam" class="panel">
-    <h2>Vào thi</h2>
-    <p class="lead">
-      Học sinh bấm nút bên dưới để vào đề thi Google Form/Quiz tương ứng.
-    </p>
-    <div class="field">
-      <label>Đề thi chính <span class="en">/ Main quiz link</span></label>
-      <p class="note">
-        Thầy/cô thay đường link Form thi thật tại đây.
-      </p>
-      <a class="btn-primary" href="#" id="examLink" target="_blank">
-        <span>🚀 Mở đề thi</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- XEM LẠI KẾT QUẢ -->
-  <section id="review" class="panel">
-    <h2>Xem lại kết quả bài thi</h2>
-    <p class="lead">
-      Ưu tiên tra cứu bằng <b>CCCD</b>. Nếu không nhớ CCCD, có thể dùng <b>Họ tên + Lớp</b>.
-    </p>
-
-    <div class="tag"><span class="icon">ℹ️</span> Dữ liệu lấy từ sheet <b>DiemThi</b> trên Google Sheet.</div>
-
-    <div class="search-grid">
-      <form id="searchForm" onsubmit="handleSearch(event)">
-        <div class="field">
-          <label for="s_cccd">CCCD</label>
-          <input id="s_cccd" type="text" inputmode="numeric" maxlength="12"
-                 placeholder="Nhập chính xác số CCCD (nếu có)" />
-        </div>
-        <div class="field">
-          <label for="s_name">Họ tên (IN HOA)</label>
-          <input id="s_name" type="text"
-                 placeholder="VD: NGUYỄN VĂN A" />
-        </div>
-        <div class="field">
-          <label for="s_class">Lớp</label>
-          <input id="s_class" type="text" placeholder="VD: 12A1" />
-        </div>
-        <button class="btn-primary" type="submit">
-          <span>🔍 Tra cứu kết quả</span>
+        <button type="submit" class="btn-primary">
+          <span class="icon">✅</span><span>Gửi đăng ký</span>
         </button>
-        <p class="note">
-          Nếu đã nhập CCCD thì không bắt buộc Họ tên / Lớp.
-        </p>
+        <div class="note-small">Sau khi gửi, hệ thống sẽ hiện thông báo Thành công / Trùng thông tin và gửi email cho học sinh (nếu có).</div>
       </form>
 
-      <div id="searchResultBox">
-        <!-- kết quả tra cứu sẽ gắn ở đây -->
+      <div class="qr-box">
+        <div class="hint">Quét QR để mở trang đăng ký trên điện thoại:</div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Ftrungk8.github.io%2FDTAI_Online%2F"
+             alt="QR Code đăng ký"/>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- DASHBOARD ĐĂNG KÝ -->
-  <section id="dashboardReg" class="panel">
-    <h2>Dashboard thống kê đăng ký</h2>
-    <p class="lead">
-      Thống kê theo Khối, Lớp, Giới tính, Dân tộc và Trường từ sheet <b>DangKy</b>.
-    </p>
-    <button id="btn-load-stats" class="btn-primary" type="button" onclick="loadStats()">
-      <span>📊 Tải thống kê</span>
-    </button>
-    <div class="note" id="statsStatus"></div>
+    <!-- 2. ĐĂNG NHẬP (placeholder) -->
+    <section id="login" class="page">
+      <h2 class="section-title">Đăng nhập</h2>
+      <p class="section-desc">Phần này thầy có thể dùng cho giáo viên / admin nếu cần (hiện để minh họa, chưa gắn backend).</p>
+      <div class="grid-2">
+        <div class="field">
+          <label>Tài khoản</label>
+          <input placeholder="Tài khoản giáo viên / quản trị" />
+        </div>
+        <div class="field">
+          <label>Mật khẩu</label>
+          <input type="password" placeholder="Mật khẩu" />
+        </div>
+      </div>
+      <button class="btn-primary" type="button" onclick="alert('Demo giao diện – chưa kết nối hệ thống đăng nhập.')">
+        <span class="icon">🔐</span><span>Đăng nhập (demo)</span>
+      </button>
+    </section>
 
-    <div class="stats-grid" id="statsGrid" style="display:none;">
-      <div class="stat-card">
-        <h3>Theo khối</h3>
-        <ul id="statByKhoi"></ul>
+    <!-- 3. VÀO THI (placeholder liên kết Google Form/Quiz) -->
+    <section id="exam" class="page">
+      <h2 class="section-title">Vào thi</h2>
+      <p class="section-desc">Thầy dán liên kết Google Form/Quiz vào đây để học sinh bấm vào làm bài.</p>
+      <div class="field">
+        <label>Liên kết bài kiểm tra</label>
+        <input id="examLink" placeholder="https://docs.google.com/forms/..." value="" />
+        <div class="hint">Khi triển khai thật, thầy có thể cố định link này hoặc thay đổi theo từng đợt kiểm tra.</div>
       </div>
-      <div class="stat-card">
-        <h3>Theo lớp</h3>
-        <ul id="statByLop"></ul>
-      </div>
-      <div class="stat-card">
-        <h3>Theo giới tính</h3>
-        <ul id="statByGender"></ul>
-      </div>
-      <div class="stat-card">
-        <h3>Theo dân tộc</h3>
-        <ul id="statByEthnic"></ul>
-      </div>
-      <div class="stat-card">
-        <h3>Theo trường</h3>
-        <ul id="statBySchool"></ul>
-      </div>
-    </div>
-  </section>
+      <button class="btn-primary" type="button" onclick="openExam()">
+        <span class="icon">🧪</span><span>Mở bài kiểm tra</span>
+      </button>
+    </section>
 
-  <!-- DASHBOARD ĐIỂM -->
-  <section id="dashboardScore" class="panel">
-    <h2>Thống kê & danh sách điểm</h2>
-    <p class="lead">
-      Lấy dữ liệu từ sheet <b>DiemThi</b> (tối đa 1500 dòng gần nhất).
-    </p>
-    <button id="btn-load-scores" class="btn-primary" type="button" onclick="loadScores()">
-      <span>📈 Tải danh sách điểm</span>
-    </button>
-    <div class="note" id="scoreStatus"></div>
+    <!-- 4. Xem lại (placeholder danh sách điểm dạng thô / link) -->
+    <section id="review" class="page">
+      <h2 class="section-title">Xem lại</h2>
+      <p class="section-desc">Phần này thầy có thể đặt link xem nhanh Google Sheet điểm hoặc hướng dẫn chi tiết cho giáo viên.</p>
+      <div class="field">
+        <label>Liên kết sheet điểm (DiemThi)</label>
+        <input id="sheetLink" placeholder="https://docs.google.com/spreadsheets/..." value="" />
+      </div>
+      <button class="btn-primary" type="button" onclick="openSheet()">
+        <span class="icon">📄</span><span>Mở sheet điểm</span>
+      </button>
+    </section>
 
-    <div class="table-wrap" id="scoreTableWrap" style="display:none;">
-      <table>
-        <thead>
-          <tr>
-            <th>Thời gian</th>
-            <th>Họ tên</th>
-            <th>Lớp</th>
-            <th>Điểm</th>
-          </tr>
-        </thead>
-        <tbody id="scoreTableBody"></tbody>
-      </table>
-    </div>
-  </section>
+    <!-- 5. DASHBOARD – dùng JSONP mode=stats -->
+    <section id="dash" class="page">
+      <h2 class="section-title">Dashboard thống kê</h2>
+      <p class="section-desc">Thống kê số lượng bài thi theo Khối, Lớp, Giới tính, Dân tộc, Trường – dữ liệu lấy trực tiếp từ sheet điểm.</p>
+
+      <div class="cards">
+        <div class="card-mini">
+          <h3>Tổng số bài thi</h3>
+          <div class="value" id="dashTotal">–</div>
+          <div class="sub" id="dashTotalNote">Đang tải dữ liệu…</div>
+        </div>
+        <div class="card-mini">
+          <h3>Số khối</h3>
+          <div class="value" id="dashGrade">–</div>
+          <div class="sub">Khối có ít nhất 1 học sinh.</div>
+        </div>
+        <div class="card-mini">
+          <h3>Số lớp</h3>
+          <div class="value" id="dashClass">–</div>
+          <div class="sub">Tổng số lớp xuất hiện.</div>
+        </div>
+        <div class="card-mini">
+          <h3>Số trường</h3>
+          <div class="value" id="dashSchool">–</div>
+          <div class="sub">Trường có học sinh tham gia.</div>
+        </div>
+      </div>
+
+      <div class="grid-charts">
+        <div class="chart-card">
+          <h3>Phân bố theo Khối</h3>
+          <p>Số bài thi theo khối 10 / 11 / 12.</p>
+          <div class="chart-wrapper"><canvas id="chartGrade"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Top lớp</h3>
+          <p>Những lớp có nhiều lượt làm bài nhất.</p>
+          <div class="chart-wrapper"><canvas id="chartClass"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Giới tính</h3>
+          <p>Tỷ lệ Nam / Nữ / Khác.</p>
+          <div class="chart-wrapper"><canvas id="chartGender"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Dân tộc / Trường</h3>
+          <p>Top dân tộc và trường có nhiều lượt làm bài.</p>
+          <div class="badge"><span class="dot"></span><span>Chỉ hiển thị Top 6 mục.</span></div>
+          <div class="chart-wrapper" style="margin-top:6px;"><canvas id="chartEthnicSchool"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. XEM KẾT QUẢ – dùng JSONP mode=search -->
+    <section id="lookup" class="page">
+      <h2 class="section-title">Xem lại kết quả bài thi</h2>
+      <p class="section-desc">Nhập <b>CCCD</b> hoặc <b>Họ tên (IN HOA)</b> + <b>Lớp</b> để tra cứu kết quả từ sheet điểm DiemThi.</p>
+
+      <form id="searchForm">
+        <div class="grid-2">
+          <div class="field">
+            <label for="s_cccd">CCCD (ưu tiên)</label>
+            <input id="s_cccd" name="cccd" inputmode="numeric" placeholder="Chỉ nhập số, VD: 0790xxxxxxx" />
+            <div class="hint">Nếu nhập CCCD, hệ thống sẽ tìm chính xác theo CCCD trước.</div>
+          </div>
+          <div class="field">
+            <label for="s_name">Họ tên (IN HOA)</label>
+            <input id="s_name" name="name" placeholder="VD: NGUYỄN VĂN A" />
+            <div class="hint">Nhập thường cũng được, hệ thống tự chuyển sang IN HOA khi gửi.</div>
+          </div>
+          <div class="field">
+            <label for="s_class">Lớp</label>
+            <input id="s_class" name="className" placeholder="VD: 12A1" />
+            <div class="hint">Có thể bỏ trống Lớp (sẽ tìm theo Họ tên trên toàn bộ khối).</div>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">
+          <span class="icon">🔎</span><span>Tra cứu kết quả</span>
+        </button>
+      </form>
+      <div id="status" class="status-msg status-empty"></div>
+      <div id="results" class="results"></div>
+    </section>
+  </main>
 </div>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec";
+  // 👉 NHỚ CẬP NHẬT CÙNG MỘT URL VỚI action CỦA FORM
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec";
 
-  function showPanel(id, btn){
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-    window.scrollTo({top:0,behavior:'smooth'});
+  function show(id, btn){
+    document.querySelectorAll("section.page").forEach(sec=>{
+      sec.classList.toggle("active", sec.id === id);
+    });
+    if(btn){
+      document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+    }
   }
 
-  // Tự IN HOA cho họ tên + lớp
-  document.addEventListener('DOMContentLoaded', () => {
-    const hoten = document.getElementById('hoten');
-    const malop = document.getElementById('malop');
-    if(hoten){
-      hoten.addEventListener('blur', () => {
-        hoten.value = hoten.value.toLocaleUpperCase('vi-VN');
-      });
+  function openExam(){
+    const link = document.getElementById("examLink").value.trim();
+    if(!link){ alert("Thầy/chị nhập link Google Form/Quiz trước đã nhé."); return; }
+    window.open(link,"_blank");
+  }
+  function openSheet(){
+    const link = document.getElementById("sheetLink").value.trim();
+    if(!link){ alert("Nhập link Google Sheet điểm DiemThi trước đã."); return; }
+    window.open(link,"_blank");
+  }
+
+  // --------- JSONP helper ---------
+  function callJsonp(url, callbackName){
+    return new Promise(resolve=>{
+      window[callbackName] = function(data){ resolve(data); };
+      const s = document.createElement("script");
+      s.src = url + (url.indexOf("?")>=0 ? "&" : "?") + "callback=" + callbackName;
+      document.body.appendChild(s);
+    });
+  }
+
+  // ---------- DASHBOARD ----------
+  let chartGrade, chartClass, chartGender, chartEthnicSchool;
+
+  function topEntries(obj, limit){
+    const arr = Object.entries(obj || {});
+    arr.sort((a,b)=> (b[1].count||0)-(a[1].count||0));
+    return arr.slice(0,limit);
+  }
+
+  async function loadDashboard(){
+    try{
+      const data = await callJsonp(WEB_APP_URL + "?mode=stats","statsCallback");
+      if(!data){ throw new Error("Không có dữ liệu."); }
+
+      const total = data.total || data.rows || 0;
+      document.getElementById("dashTotal").textContent = total;
+      document.getElementById("dashTotalNote").textContent = "Tổng số bản ghi trong sheet điểm.";
+
+      const grades  = data.byKhoi    || data.byGrade   || {};
+      const classes = data.byLop     || data.byClass   || {};
+      const genders = data.byGender || {};
+      const ethnics = data.byEthnicity || data.byEthnic || {};
+      const schools = data.bySchool || {};
+
+      document.getElementById("dashGrade").textContent  = Object.keys(grades).length;
+      document.getElementById("dashClass").textContent  = Object.keys(classes).length;
+      document.getElementById("dashSchool").textContent = Object.keys(schools).length;
+
+      // Khối
+      const gLabels = Object.keys(grades);
+      const gValues = gLabels.map(k=>grades[k].count||0);
+      drawBar("chartGrade","Số bài theo khối",gLabels,gValues,c=>chartGrade=c);
+
+      // Lớp (top 10)
+      const topClass = topEntries(classes,10);
+      drawBar("chartClass","Top lớp", topClass.map(x=>x[0]), topClass.map(x=>x[1].count||0), c=>chartClass=c);
+
+      // Giới tính
+      const genLabels = Object.keys(genders);
+      const genValues = genLabels.map(k=>genders[k].count||genders[k]||0);
+      drawPie("chartGender",genLabels,genValues,c=>chartGender=c);
+
+      // Dân tộc + Trường (top 6)
+      const topEth = topEntries(ethnics,6);
+      const topSch = topEntries(schools,6);
+      const labels = topEth.map(x=>x[0]).concat(topSch.map(x=>"Trg: "+x[0]));
+      const vals   = topEth.map(x=>x[1].count||0).concat(topSch.map(x=>x[1].count||0));
+      drawBar("chartEthnicSchool","Dân tộc / Trường",labels,vals,c=>chartEthnicSchool=c);
+
+    }catch(err){
+      console.error(err);
+      document.getElementById("dashTotalNote").textContent = "Lỗi tải dữ liệu Dashboard.";
     }
-    if(malop){
-      malop.addEventListener('blur', () => {
-        malop.value = malop.value.toUpperCase();
-      });
+  }
+
+  function drawBar(canvasId,label,labels,values,setRef){
+    const ctx = document.getElementById(canvasId).getContext("2d");
+    const c = new Chart(ctx,{
+      type:"bar",
+      data:{labels:labels,datasets:[{label:label,data:values,borderRadius:8}]},
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{
+          x:{ticks:{font:{size:10}},grid:{display:false}},
+          y:{beginAtZero:true,grid:{color:"rgba(209,213,219,.7)"}}
+        }
+      }
+    });
+    if(setRef) setRef(c);
+  }
+  function drawPie(canvasId,labels,values,setRef){
+    const ctx = document.getElementById(canvasId).getContext("2d");
+    const c = new Chart(ctx,{
+      type:"doughnut",
+      data:{labels:labels,datasets:[{data:values}]},
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{legend:{position:"bottom",labels:{font:{size:10}}}},
+        cutout:"58%"
+      }
+    });
+    if(setRef) setRef(c);
+  }
+
+  // ---------- XEM KẾT QUẢ ----------
+  function buildSearchUrl(){
+    const cccdRaw = document.getElementById("s_cccd").value.trim();
+    const cccd = cccdRaw.replace(/\D/g,"");
+    let name = document.getElementById("s_name").value.trim();
+    let cls  = document.getElementById("s_class").value.trim();
+
+    if(name) name = name.toLocaleUpperCase("vi-VN");
+    if(cls)  cls  = cls.toUpperCase();
+
+    const p = new URLSearchParams();
+    if(cccd) p.append("cccd",cccd);
+    if(name) p.append("name",name);
+    if(cls)  p.append("className",cls);
+    p.append("mode","search");
+    return WEB_APP_URL + "?" + p.toString();
+  }
+
+  function renderSearchResults(data){
+    const statusEl = document.getElementById("status");
+    const resultsEl= document.getElementById("results");
+    resultsEl.innerHTML="";
+
+    if(!data){
+      statusEl.textContent = "Lỗi: Không nhận được dữ liệu từ server.";
+      statusEl.className = "status-msg status-error";
+      return;
+    }
+    if(!data.found){
+      statusEl.textContent = data.message || "Không tìm thấy kết quả phù hợp.";
+      statusEl.className = "status-msg status-empty";
+      return;
+    }
+    statusEl.textContent = data.message || "Đã tìm thấy kết quả.";
+    statusEl.className = "status-msg status-empty";
+
+    (data.results || []).forEach(item=>{
+      const card = document.createElement("div");
+      card.className = "result-card";
+      card.innerHTML = `
+        <div class="result-name">${(item.name||"").toUpperCase()}</div>
+        <div class="pill-score">
+          <span class="score">${item.score!=="" ? item.score : "–"}</span>
+          <span>Điểm</span>
+        </div>
+        <div class="meta">
+          <span class="badge-meta">Lớp: ${item.className||"–"}</span>
+          <span class="badge-meta">Giới tính: ${item.gender||"–"}</span>
+          <span class="badge-meta">Dân tộc: ${item.ethnic||"–"}</span>
+          <span class="badge-meta">Trường: ${item.school||"–"}</span>
+          <span class="badge-meta">CCCD: ${item.cccd||"–"}</span>
+        </div>
+      `;
+      resultsEl.appendChild(card);
+    });
+  }
+
+  document.getElementById("searchForm").addEventListener("submit",async function(e){
+    e.preventDefault();
+    const statusEl = document.getElementById("status");
+    const resultsEl= document.getElementById("results");
+    resultsEl.innerHTML="";
+    statusEl.textContent = "Đang tra cứu, vui lòng chờ…";
+    statusEl.className = "status-msg status-empty";
+
+    try{
+      const url = buildSearchUrl();
+      const data = await callJsonp(url,"searchCallback");
+      renderSearchResults(data);
+    }catch(err){
+      console.error(err);
+      statusEl.textContent = "Có lỗi khi tra cứu. Thầy/cô kiểm tra lại Code.gs hoặc kết nối mạng.";
+      statusEl.className = "status-msg status-error";
     }
   });
 
-  function handleSubmit(){
-    const btn = document.getElementById('btn-submit');
-    const status = document.getElementById('submitStatus');
-    btn.disabled = true;
-    btn.innerHTML = "⏳ Đang gửi dữ liệu...";
-    status.textContent = "Đang gửi thông tin lên hệ thống, vui lòng chờ trong giây lát...";
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.innerHTML = "<span>✅ Gửi thông tin đăng ký</span>";
-      status.textContent = "Nếu màn hình hiển thị thông báo 'Đăng ký thành công' thì dữ liệu đã được ghi nhận.";
-    }, 2500);
-  }
-
-  // JSONP helper
-  function jsonp(params, cb){
-    const callbackName = "cb_" + Math.random().toString(36).slice(2);
-    window[callbackName] = function(data){
-      cb(data);
-      delete window[callbackName];
-      script.remove();
-    };
-    const qs = new URLSearchParams(Object.assign({}, params, {callback:callbackName})).toString();
-    const script = document.createElement('script');
-    script.src = SCRIPT_URL + "?" + qs;
-    document.body.appendChild(script);
-  }
-
-  // ===== DASHBOARD ĐĂNG KÝ =====
-  function loadStats(){
-    const status = document.getElementById('statsStatus');
-    const btn = document.getElementById('btn-load-stats');
-    btn.disabled = true;
-    status.textContent = "Đang tải thống kê từ Google Sheet...";
-    jsonp({mode:"stats"}, data => {
-      btn.disabled = false;
-      if(!data || !data.total){
-        status.textContent = "Chưa có dữ liệu đăng ký hoặc cấu hình chưa đúng.";
-        document.getElementById('statsGrid').style.display = "none";
-        return;
-      }
-      status.textContent = "Tổng số học sinh đã đăng ký: " + data.total + " em.";
-      renderStatList('statByKhoi', data.byKhoi);
-      renderStatList('statByLop', data.byLop);
-      renderStatList('statByGender', data.byGender);
-      renderStatList('statByEthnic', data.byEthnicity);
-      renderStatList('statBySchool', data.bySchool);
-      document.getElementById('statsGrid').style.display = "grid";
-    });
-  }
-
-  function renderStatList(id, obj){
-    const ul = document.getElementById(id);
-    ul.innerHTML = "";
-    if(!obj) return;
-    Object.keys(obj).sort().forEach(key => {
-      const li = document.createElement('li');
-      const label = document.createElement('span');
-      label.className = "label";
-      label.textContent = key;
-      const chip = document.createElement('span');
-      chip.className = "chip";
-      chip.textContent = obj[key];
-      li.appendChild(label);
-      li.appendChild(chip);
-      ul.appendChild(li);
-    });
-  }
-
-  // ===== DASHBOARD ĐIỂM =====
-  function loadScores(){
-    const status = document.getElementById('scoreStatus');
-    const btn = document.getElementById('btn-load-scores');
-    btn.disabled = true;
-    status.textContent = "Đang tải dữ liệu điểm từ Google Sheet...";
-    jsonp({mode:"results"}, data => {
-      btn.disabled = false;
-      if(!data || !data.rows || !data.rows.length){
-        status.textContent = "Chưa có dữ liệu điểm hoặc cấu hình RESULT_* chưa đúng.";
-        document.getElementById('scoreTableWrap').style.display = "none";
-        return;
-      }
-      status.textContent = "Đã tải " + data.rows.length + " dòng điểm gần nhất.";
-      const tbody = document.getElementById('scoreTableBody');
-      tbody.innerHTML = "";
-      data.rows.forEach(r => {
-        const tr = document.createElement('tr');
-        tr.innerHTML =
-          "<td>" + (r.time || "") + "</td>" +
-          "<td>" + (r.name || "") + "</td>" +
-          "<td>" + (r.class || "") + "</td>" +
-          "<td>" + (r.score || "") + "</td>";
-        tbody.appendChild(tr);
-      });
-      document.getElementById('scoreTableWrap').style.display = "block";
-    });
-  }
-
-  // ===== TRA CỨU KẾT QUẢ =====
-  function handleSearch(e){
-    e.preventDefault();
-    const cccd = document.getElementById('s_cccd').value.trim();
-    let name = document.getElementById('s_name').value.trim();
-    let clazz = document.getElementById('s_class').value.trim();
-    if(!cccd && !name){
-      alert("Vui lòng nhập CCCD hoặc Họ tên.");
-      return;
-    }
-    name = name.toLocaleUpperCase('vi-VN');
-    clazz = clazz.toUpperCase();
-    const box = document.getElementById('searchResultBox');
-    box.innerHTML = "<p class='note'>Đang tra cứu dữ liệu, vui lòng chờ...</p>";
-
-    // Gọi JSONP mode=search (cần đoạn xử lý tương ứng trong doGet của Code.gs)
-    jsonp({mode:"search", cccd:cccd, name:name, className:clazz}, data => {
-      if(!data || !data.found){
-        const msg = data && data.message ? data.message : "Không tìm thấy kết quả phù hợp.";
-        box.innerHTML = "<p class='text-danger' style='font-size:.86rem;'>⚠ " + msg + "</p>";
-        return;
-      }
-      const results = data.results || [];
-      if(!results.length){
-        box.innerHTML = "<p class='text-danger' style='font-size:.86rem;'>⚠ Không tìm thấy kết quả phù hợp.</p>";
-        return;
-      }
-      const first = results[0];
-      const div = document.createElement('div');
-      div.className = "result-card";
-      div.innerHTML =
-        "<h3>Kết quả tìm được</h3>" +
-        "<p><span class='label'>Họ tên: </span><b>" + (first.name || "") + "</b></p>" +
-        "<p><span class='label'>Lớp: </span><b>" + (first.className || "") + "</b></p>" +
-        "<p><span class='label'>Điểm: </span><span class='badge'>" + (first.score || "") + "</span></p>" +
-        "<p><span class='label'>CCCD: </span>" + (first.cccd || "—") + "</p>" +
-        "<p><span class='label'>Giới tính: </span>" + (first.gender || "—") +
-        " • <span class='label'>Dân tộc: </span>" + (first.ethnic || "—") + "</p>" +
-        "<p><span class='label'>Trường: </span>" + (first.school || "—") + "</p>" +
-        "<p class='note'>" + (data.message || "") + "</p>";
-      box.innerHTML = "";
-      box.appendChild(div);
-    });
-  }
+  // Tải Dashboard ngay sau khi trang load (có sẵn dữ liệu cho tab Dashboard)
+  document.addEventListener("DOMContentLoaded", loadDashboard);
 </script>
 </body>
 </html>
