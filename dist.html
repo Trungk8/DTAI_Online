@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>SK – Phân phối điểm</title>
+  <style>
+    :root{--c:#0d6efd}
+    *{box-sizing:border-box}
+    body{font-family:system-ui,Segoe UI,Arial,sans-serif;background:#f6f8fb;margin:0}
+    .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
+    h1{margin:0 0 6px}
+    .muted{color:#6c757d}
+    .card{background:#fff;border:1px solid #e9ecef;border-radius:16px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+    select,input,button{padding:8px 10px;border:1px solid #dee2e6;border-radius:10px;background:#fff}
+    button{background:var(--c);color:#fff;border:none;cursor:pointer}
+    .grid{display:grid;gap:12px}
+    @media (min-width:900px){ .grid-3{grid-template-columns:repeat(3,1fr)} }
+    .kpi{background:#fff;border:1px solid #e9ecef;border-radius:16px;padding:16px}
+    .kpi b{font-size:28px;color:#111}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>SK – Phân phối điểm</h1>
+  <div class="muted">Histogram theo đề</div>
+
+  <div class="card toolbar">
+    <label>ExamId:</label>
+    <select id="examSel"></select>
+    <label>Khoảng điểm:</label>
+    <select id="binSel">
+      <option value="5">Mỗi 5%</option>
+      <option value="10">Mỗi 10%</option>
+      <option value="2">Mỗi 2%</option>
+    </select>
+    <label>Từ ngày:</label><input id="fromISO" type="date">
+    <label>Đến ngày:</label><input id="toISO" type="date">
+    <button onclick="refresh()">Xem</button>
+    <span id="msg" class="muted"></span>
+  </div>
+
+  <div class="grid grid-3">
+    <div class="kpi"><div class="muted">Số bài nộp</div><b id="k_count">-</b></div>
+    <div class="kpi"><div class="muted">Điểm TB (%)</div><b id="k_avg">-</b></div>
+    <div class="kpi"><div class="muted">Min – Max (%)</div><b id="k_minmax">-</b></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <canvas id="hist"></canvas>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <b>Dữ liệu (mẫu 50 điểm đầu):</b>
+    <pre id="listBox" style="white-space:pre-wrap;margin:0"></pre>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const API_URL = 'PASTE_YOUR_WORKER_URL_HERE';
+let chart=null;
+async function api(action, payload={}){
+  const res = await fetch(API_URL+'?action='+encodeURIComponent(action), {
+    method:'POST', headers:{'content-type':'application/json'},
+    body: JSON.stringify(payload)
+  });
+  return await res.json();
+}
+function msg(t, err=false){ const el=document.getElementById('msg'); el.textContent=t||''; el.style.color=err?'#c1121f':'#6c757d'; }
+function setKPI(list){
+  const n = list.length;
+  const avg = n? Math.round(list.reduce((a,b)=>a+b,0)*10/n)/10 : 0;
+  const min = n? Math.min(...list) : 0;
+  const max = n? Math.max(...list) : 0;
+  document.getElementById('k_count').textContent = n;
+  document.getElementById('k_avg').textContent = avg;
+  document.getElementById('k_minmax').textContent = `${min} – ${max}`;
+}
+function makeBins(list, step){
+  const bins = [];
+  for(let start=0; start<100; start+=step){
+    const end = start + step;
+    bins.push({label: `${start}–${end}%`, count: 0, start, end});
+  }
+  list.forEach(v=>{
+    let idx = Math.min(bins.length-1, Math.floor(v/step));
+    bins[idx].count++;
+  });
+  return bins;
+}
+function drawHist(bins){
+  const ctx = document.getElementById('hist');
+  if(chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: bins.map(b=>b.label), datasets: [{ label: 'Số bài trong khoảng %', data: bins.map(b=>b.count) }] },
+    options: { responsive:true, scales:{ y:{ beginAtZero:true } }, plugins:{ legend:{ display:false } } }
+  });
+}
+async function loadExamList(){
+  const data = await api('adminStats', {});
+  if(!data.ok){ msg(data.reason,true); return; }
+  const rows = (data.stats||[]).sort((a,b)=>a.examId.localeCompare(b.examId));
+  const sel = document.getElementById('examSel');
+  sel.innerHTML = rows.map(r=>`<option value="${r.examId}">${r.examId}</option>`).join('');
+  if(rows.length) sel.value = rows[0].examId;
+}
+async function refresh(){
+  const examId = document.getElementById('examSel').value;
+  const step = Number(document.getElementById('binSel').value || 5);
+  const fromISO = document.getElementById('fromISO').value ? document.getElementById('fromISO').value + 'T00:00:00' : null;
+  const toISO   = document.getElementById('toISO').value   ? document.getElementById('toISO').value   + 'T23:59:59' : null;
+
+  msg('Đang tải...');
+  const data = await api('adminPercents', { examId, fromISO, toISO });
+  if(!data.ok){ msg(data.reason, true); return; }
+
+  const list = (data.percents||[]).map(x=>Number(x)).filter(x=>!isNaN(x));
+  setKPI(list);
+  const bins = makeBins(list, step);
+  drawHist(bins);
+  document.getElementById('listBox').textContent = list.slice(0,50).join(', ');
+  msg(`Đã tải ${list.length} điểm cho đề ${examId}`);
+}
+(async function boot(){ await loadExamList(); await refresh(); })();
+</script>
+</body>
+</html>

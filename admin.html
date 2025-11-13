@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="vi">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SK – Admin</title>
+<style>
+  body{font-family:system-ui,Arial,sans-serif;background:#f6f8fb;margin:0}
+  .wrap{max-width:1000px;margin:24px auto;padding:0 16px}
+  .card{background:#fff;border:1px solid #e9ecef;border-radius:16px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  input,select,button{padding:10px;border:1px solid #dee2e6;border-radius:10px}
+  button{background:#0d6efd;color:#fff;border:none;cursor:pointer}
+  .muted{color:#6c757d}
+</style>
+<div class="wrap">
+  <h2>SK – Quản trị & Thống kê</h2>
+  <div class="card">
+    <label>ExamId</label>
+    <input id="examId" placeholder="VD: EXAM_MATH_12_01">
+    <button onclick="exportCSV()">Xuất CSV</button>
+    <span id="msg" class="muted"></span>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <button onclick="loadStats()">Tải thống kê</button>
+    <pre id="statsBox" style="white-space:pre-wrap"></pre>
+  </div>
+</div>
+<script>
+const API_URL = 'PASTE_YOUR_WORKER_URL_HERE';
+async function api(action, payload={}){
+  const res = await fetch(API_URL + '?action=' + action, {
+    method:'POST', headers:{'content-type':'application/json'},
+    body: JSON.stringify(payload)
+  }); return await res.json();
+}
+async function exportCSV(){
+  document.getElementById('msg').textContent='Đang tạo...';
+  const examId = document.getElementById('examId').value.trim();
+  const data = await api('adminExportCSV', { examId });
+  if(!data.ok){ document.getElementById('msg').textContent=data.reason; return; }
+  const blob = new Blob([Uint8Array.from(atob(data.content), c=>c.charCodeAt(0))], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = data.filename || 'SK_data.csv'; a.click();
+  document.getElementById('msg').textContent='Đã tải CSV.';
+}
+async function loadStats(){
+  const data = await api('adminStats', {});
+  document.getElementById('statsBox').textContent = JSON.stringify(data, null, 2);
+}
+</script>

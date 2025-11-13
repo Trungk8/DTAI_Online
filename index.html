@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SK – Hệ thống Kiểm tra Online</title>
+  <style>
+    :root{--c:#0d6efd}
+    *{box-sizing:border-box} body{font-family:system-ui,Arial,sans-serif;background:#f6f8fb;margin:0}
+    .wrap{max-width:1000px;margin:24px auto;padding:0 16px}
+    nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+    nav button{padding:10px 14px;border:none;border-radius:12px;background:var(--c);color:#fff;cursor:pointer;font-weight:700;box-shadow:0 5px 18px rgba(13,110,253,.15)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .card{background:#fff;border:1px solid #e9ecef;border-radius:16px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+    h1{margin:4px 0 16px 0}
+    label{font-weight:600}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #dee2e6;border-radius:10px;background:#fff}
+    .btn{padding:10px 14px;border-radius:12px;border:none;background:#111;color:#fff;cursor:pointer}
+    .ok{color:#0a7a1e;font-weight:700}.err{color:#c1121f;font-weight:700}.muted{color:#6c757d}
+    .mt{margin-top:10px}.mb{margin-bottom:10px}
+    .q{padding:12px;border:1px solid #f1f3f5;border-radius:12px;margin:10px 0}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef5ff;color:#1d4ed8;font-size:12px}
+    .flex{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .timer{font-weight:800;color:#1d3557}
+    footer{margin-top:32px;color:#6c757d}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>SK – Hệ thống Kiểm tra Online</h1>
+  <nav>
+    <button onclick="show('reg')">Đăng ký</button>
+    <button onclick="show('login')">Đăng nhập</button>
+    <button onclick="show('exam')">Vào thi</button>
+    <button onclick="show('review')">Xem lại</button>
+  </nav>
+
+  <section id="reg" class="card" style="display:none">
+    <h3>Đăng ký tài khoản</h3>
+    <div class="grid">
+      <div class="col" style="grid-column:span 6"><label>Họ và tên</label><input id="r_fullname" /></div>
+      <div class="col" style="grid-column:span 3"><label>Ngày sinh</label><input id="r_birth" placeholder="dd/mm/yyyy"/></div>
+      <div class="col" style="grid-column:span 3"><label>Giới tính</label><select id="r_gender"><option>Nam</option><option>Nữ</option></select></div>
+      <div class="col" style="grid-column:span 6"><label>Dân tộc</label><input id="r_ethnicity"/></div>
+      <div class="col" style="grid-column:span 6"><label>Trường</label><input id="r_school"/></div>
+      <div class="col" style="grid-column:span 3"><label>Khối</label><input id="r_grade" placeholder="10/11/12"/></div>
+      <div class="col" style="grid-column:span 3"><label>Mã lớp</label><input id="r_class"/></div>
+      <div class="col" style="grid-column:span 6"><label>Số CCCD</label><input id="r_cccd"/></div>
+      <div class="col" style="grid-column:span 6"><label>Email</label><input id="r_email"/></div>
+      <div class="col" style="grid-column:span 12"><label>Ghi chú</label><input id="r_note"/></div>
+    </div>
+    <div class="flex mt">
+      <button class="btn" onclick="doRegister()">Gửi đăng ký</button>
+      <span id="msgReg" class="muted"></span>
+    </div>
+  </section>
+
+  <section id="login" class="card" style="display:none">
+    <h3>Đăng nhập</h3>
+    <div class="grid">
+      <div style="grid-column:span 6"><label>CCCD</label><input id="l_cccd"/></div>
+      <div style="grid-column:span 6"><label>Mật khẩu</label><input id="l_pw" type="password"/></div>
+    </div>
+    <div class="flex mt">
+      <button class="btn" onclick="doLogin()">Đăng nhập</button>
+      <span id="msgLogin" class="muted"></span>
+    </div>
+  </section>
+
+  <section id="exam" class="card" style="display:none">
+    <h3>Vào thi</h3>
+    <div class="flex">
+      <label>Khối</label><input id="e_grade" style="width:120px">
+      <label>Môn</label><input id="e_subject" style="width:160px">
+      <button class="btn" onclick="loadExams()">Tải đề</button>
+      <span id="msgExam" class="muted"></span>
+    </div>
+    <div id="examList" class="mt"></div>
+
+    <div id="doExam" style="display:none">
+      <hr class="mb">
+      <div class="flex">
+        <div class="pill" id="examTitle"></div>
+        <div class="timer">⏱ <span id="timeLeft">--:--</span></div>
+      </div>
+      <div id="questions" class="mt"></div>
+      <div class="flex mt">
+        <button class="btn" onclick="submitExam()">Nộp bài</button>
+        <span id="msgSubmit" class="muted"></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="review" class="card" style="display:none">
+    <h3>Kết quả gần nhất</h3>
+    <pre id="reviewBox" style="white-space:pre-wrap"></pre>
+  </section>
+
+  <footer>© SK – Hệ thống kiểm tra Online</footer>
+</div>
+
+<script>
+const API_URL = 'PASTE_YOUR_WORKER_URL_HERE';
+let token=null, currentExam=null, timer=null, deadline=0, questions=[];
+function show(id){ for(const s of ['reg','login','exam','review']) document.getElementById(s).style.display=(s===id?'block':'none'); }
+function gid(id){ return document.getElementById(id); }
+function msg(id, text, isErr=false, isOk=false){
+  const el = gid(id); el.textContent=text||''; el.className = isErr? 'err' : (isOk? 'ok' : 'muted');
+}
+async function api(action, payload={}, method='POST'){
+  const res = await fetch(API_URL + '?action=' + encodeURIComponent(action), {
+    method, headers: {'content-type':'application/json'},
+    body: method==='GET'?undefined:JSON.stringify(payload)
+  });
+  return await res.json();
+}
+function normalizeFullname(s=''){
+  s = s.toLowerCase().trim().replace(/\s+/g,' ').replace(/(^|\s)\S/g, m=>m.toUpperCase());
+  gid('r_fullname').value = s; return s;
+}
+async function doRegister(){
+  msg('msgReg','Đang gửi...', false,false);
+  const payload = {
+    fullname: normalizeFullname(gid('r_fullname').value),
+    birth: gid('r_birth').value, gender: gid('r_gender').value, ethnicity: gid('r_ethnicity').value,
+    school: gid('r_school').value, grade: gid('r_grade').value, classCode: gid('r_class').value,
+    cccd: gid('r_cccd').value, email: gid('r_email').value, note: gid('r_note').value
+  };
+  const data = await api('register', payload);
+  if(data.ok) msg('msgReg', data.msg || 'OK', false,true); else msg('msgReg', data.reason || 'Lỗi', true,false);
+}
+async function doLogin(){
+  msg('msgLogin','Đang đăng nhập...',false,false);
+  const data = await api('login', { cccd: gid('l_cccd').value, password: gid('l_pw').value });
+  if(data.ok){ token = data.token; msg('msgLogin','Thành công',false,true); show('exam'); }
+  else msg('msgLogin',data.reason, true,false);
+}
+async function loadExams(){
+  msg('msgExam','Đang tải...',false,false);
+  const data = await api('getExams', { grade: gid('e_grade').value, subject: gid('e_subject').value });
+  if(!data.ok){ msg('msgExam', data.reason, true,false); return; }
+  const box = gid('examList'); box.innerHTML='';
+  data.exams.forEach(ex=>{
+    const div = document.createElement('div'); div.className='q';
+    div.innerHTML = `<b>${ex.title}</b> • <span class=pill>${ex.subject} - khối ${ex.grade}</span> • ${ex.durationMin} phút 
+      <div class=mt><button class=btn onclick="startExam('${ex.ExamId}', ${ex.durationMin})">Bắt đầu</button></div>`;
+    box.appendChild(div);
+  });
+  msg('msgExam',`Tìm thấy ${data.exams.length} đề`, false,true);
+}
+async function startExam(examId, durationMin){
+  const data = await api('getQuestions', { examId });
+  if(!data.ok){ alert(data.reason); return; }
+  currentExam = { examId, durationMin };
+  questions = data.questions||[];
+  gid('examTitle').textContent = `ExamId: ${examId} • Số câu: ${questions.length}`;
+  gid('questions').innerHTML = questions.map((q,i)=>{
+    const opts = (q.choices||[]).map((c,idx)=>{
+      const name = `q_${q.qid}`;
+      if(q.type==='multi') return `<label><input type="checkbox" name="${name}" value="${c.value||c}" /> ${c.label||c}</label>`;
+      const t = (q.type==='tf'?'radio':'radio');
+      return `<label><input type="${t}" name="${name}" value="${c.value||c}" /> ${c.label||c}</label>`;
+    }).join('<br>');
+    return `<div class="q"><b>Câu ${i+1}:</b> ${q.text}<div class=mt>${opts}</div></div>`;
+  }).join('');
+  gid('doExam').style.display = 'block';
+  if(timer) clearInterval(timer);
+  deadline = Date.now() + durationMin*60*1000;
+  tick(); timer = setInterval(tick, 1000);
+}
+function tick(){
+  const left = Math.max(0, deadline-Date.now());
+  const m = Math.floor(left/60000), s = Math.floor((left%60000)/1000);
+  gid('timeLeft').textContent = ('0'+m).slice(-2)+':'+('0'+s).slice(-2);
+  if(left<=0){ clearInterval(timer); submitExam(); }
+}
+async function submitExam(){
+  const used = Math.round((currentExam.durationMin*60*1000 - Math.max(0, deadline-Date.now()))/1000);
+  const answers = questions.map(q=>{
+    const name = `q_${q.qid}`;
+    if(q.type==='multi'){
+      return { qid:q.qid, answer:[...document.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value).join(',') };
+    }else{
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return { qid:q.qid, answer: el?el.value:'' };
+    }
+  });
+  const data = await api('submitExam', { token, examId: currentExam.examId, answers, durationUsedSec: used });
+  if(data.ok){
+    msg('msgSubmit', `Điểm: ${data.score}/${data.total} (${data.percent}%)`, false,true);
+    gid('reviewBox').textContent = JSON.stringify(data, null, 2);
+    show('review');
+  }else msg('msgSubmit', data.reason, true,false);
+}
+</script>
+</body>
+</html>

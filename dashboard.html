@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>SK – Dashboard</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+  <style>
+    :root{--c:#0d6efd}
+    *{box-sizing:border-box}
+    body{font-family:system-ui,Segoe UI,Arial,sans-serif;background:#f6f8fb;margin:0}
+    .wrap{max-width:1200px;margin:24px auto;padding:0 16px}
+    h1{margin:0 0 6px}
+    .muted{color:#6c757d}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 16px}
+    .card{background:#fff;border:1px solid #e9ecef;border-radius:16px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    .grid{display:grid;gap:12px}
+    @media (min-width:900px){ .grid-3{grid-template-columns:repeat(3,1fr)} .grid-2{grid-template-columns:repeat(2,1fr)} }
+    .kpi{display:flex;justify-content:space-between;align-items:center}
+    .kpi b{font-size:28px;color:#111}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef5ff;color:#1d4ed8;font-size:12px}
+    select,input,button{padding:8px 10px;border:1px solid #dee2e6;border-radius:10px;background:#fff}
+    button{background:var(--c);color:#fff;border:none;cursor:pointer}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{border-bottom:1px solid #edf0f4;padding:8px 10px;text-align:left}
+    th{background:#f8fafc}
+    footer{margin-top:18px;color:#6c757d}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>SK – Dashboard</h1>
+  <div class="muted">Theo dõi bài kiểm tra theo đề</div>
+
+  <div class="toolbar card">
+    <span class="pill">Nguồn: Cloudflare Worker → Apps Script</span>
+    <span class="muted">•</span>
+    <label>ExamId:</label>
+    <select id="examSel"></select>
+    <button onclick="refresh()">Làm mới</button>
+    <span id="msg" class="muted"></span>
+  </div>
+
+  <div class="grid grid-3">
+    <div class="card kpi"><div><div class="muted">Tổng lượt nộp</div><b id="k_count">-</b></div></div>
+    <div class="card kpi"><div><div class="muted">Điểm TB (%)</div><b id="k_avg">-</b></div></div>
+    <div class="card kpi"><div><div class="muted">Min – Max (%)</div><b id="k_minmax">-</b></div></div>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:12px">
+    <div class="card"><canvas id="barCount"></canvas></div>
+    <div class="card"><canvas id="barAvg"></canvas></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <b>Chi tiết thống kê theo đề</b>
+    <div style="overflow:auto">
+      <table id="tbl">
+        <thead><tr><th>#</th><th>ExamId</th><th>Số lượt</th><th>%TB</th><th>Min%</th><th>Max%</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>© SK – Dashboard</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const API_URL = 'PASTE_YOUR_WORKER_URL_HERE';
+let charts = [];
+
+async function api(action, payload={}) {
+  const res = await fetch(API_URL+'?action='+action, {
+    method:'POST',
+    headers:{'content-type':'application/json'},
+    body: JSON.stringify(payload)
+  });
+  return await res.json();
+}
+function setKpi({count=0,avgPercent=0,minPercent=0,maxPercent=0}={}) {
+  document.getElementById('k_count').textContent = count;
+  document.getElementById('k_avg').textContent = avgPercent?.toFixed?.(1) ?? avgPercent;
+  document.getElementById('k_minmax').textContent = `${minPercent} – ${maxPercent}`;
+}
+function draw(id, cfg) {
+  if (charts[id]) charts[id].destroy();
+  charts[id] = new Chart(document.getElementById(id), cfg);
+}
+function fillTable(rows) {
+  const tb = document.querySelector('#tbl tbody'); tb.innerHTML = '';
+  rows.forEach((r,i)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i+1}</td><td>${r.examId}</td><td>${r.count}</td><td>${r.avgPercent}</td><td>${r.minPercent}</td><td>${r.maxPercent}</td>`;
+    tb.appendChild(tr);
+  });
+}
+function updateExamSel(rows) {
+  const sel = document.getElementById('examSel');
+  const cur = sel.value;
+  sel.innerHTML = `<option value="">(Tất cả)</option>` + rows.map(r=>`<option>${r.examId}</option>`).join('');
+  if (cur) sel.value = cur;
+}
+function aggregateAll(rows) {
+  if (!rows.length) return {count:0, avgPercent:0, minPercent:0, maxPercent:0};
+  const count = rows.reduce((a,b)=>a+b.count,0);
+  const avgPercent = Math.round(rows.reduce((a,b)=>a+b.avgPercent*b.count,0)*10/count)/10;
+  const minPercent = Math.min(...rows.map(r=>r.minPercent));
+  const maxPercent = Math.max(...rows.map(r=>r.maxPercent));
+  return {count, avgPercent, minPercent, maxPercent};
+}
+async function refresh() {
+  msg('Đang tải...');
+  const data = await api('adminStats',{});
+  if(!data.ok){ msg(data.reason,true); return; }
+  const rows = (data.stats||[]).sort((a,b)=>a.examId.localeCompare(b.examId));
+  updateExamSel(rows);
+  const sel = document.getElementById('examSel').value;
+  const view = sel ? rows.filter(r=>r.examId===sel) : rows;
+  setKpi(aggregateAll(view));
+  draw('barCount',{
+    type:'bar',
+    data:{ labels:view.map(r=>r.examId),
+           datasets:[{label:'Số lượt', data:view.map(r=>r.count)}] },
+    options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}
+  });
+  draw('barAvg',{
+    type:'bar',
+    data:{
+      labels:view.map(r=>r.examId),
+      datasets:[
+        {label:'Điểm TB (%)', data:view.map(r=>r.avgPercent)},
+        {label:'Min (%)', data:view.map(r=>r.minPercent)},
+        {label:'Max (%)', data:view.map(r=>r.maxPercent)}
+      ]
+    },
+    options:{responsive:true, scales:{y:{beginAtZero:true, max:100}}}
+  });
+  fillTable(view);
+  msg(`Đã tải ${rows.length} đề${sel?' (lọc 1 đề)':''}.`);
+}
+function msg(t,isErr=false){ const el=document.getElementById('msg'); el.textContent=t||''; el.style.color=isErr?'#c1121f':'#6c757d'; }
+refresh();
+</script>
+</body>
+</html>
