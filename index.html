@@ -378,17 +378,6 @@
         </div>
 
         <div class="field">
-          <label for="khoi">Khối <span class="en">/ Grade</span></label>
-          <select id="khoi" name="khoi">
-            <option value="">-- Chọn khối --</option>
-            <option value="10">Khối 10</option>
-            <option value="11">Khối 11</option>
-            <option value="12">Khối 12</option>
-          </select>
-          <small>Ví dụ: em đang học lớp 11A3 thì chọn <b>Khối 11</b>.</small>
-        </div>
-
-        <div class="field">
           <label for="dantoc">Dân tộc <span class="en">/ Ethnicity</span></label>
           <select id="dantoc" name="dantoc">
             <option value="">-- Chọn --</option>
@@ -401,7 +390,38 @@
             <option value="Khác">Khác</option>
           </select>
           <small>Nếu không có trong danh sách, chọn <b>Khác</b>.</small>
+        </div>        
+        
+        <div class="field">
+          <label for="khoi">Khối <span class="en">/ Grade</span></label>
+          <select id="khoi" name="khoi">
+            <option value="">-- Chọn khối --</option>
+            <option value="10">Khối 10</option>
+            <option value="11">Khối 11</option>
+            <option value="12">Khối 12</option>
+          </select>
+          <small>Ví dụ: em đang học lớp 11A3 thì chọn <b>Khối 11</b>.</small>
         </div>
+
+        <div class="field">
+          <label for="malop">
+            Lớp <span class="en">/ Class</span>
+          </label>
+          <input id="malop" name="malop" type="text"
+                 list="lop_suggestions"
+                 placeholder="VD: 12A1" />
+          <datalist id="lop_suggestions">
+            <option value="10A1"></option>
+            <option value="10A2"></option>
+            <option value="10A3"></option>
+            <option value="11A1"></option>
+            <option value="11A2"></option>
+            <option value="12A1"></option>
+            <option value="12A2"></option>
+          </datalist>
+          <small>Có sẵn gợi ý nhưng vẫn có thể tự nhập. Hệ thống sẽ tự IN HOA.</small>
+        </div>
+
 
         <div class="field">
           <label for="truong">Trường <span class="en">/ School</span></label>
@@ -450,24 +470,6 @@
           <small>Không bắt buộc.</small>
         </div>
 
-        <div class="field">
-          <label for="malop">
-            Lớp <span class="en">/ Class</span>
-          </label>
-          <input id="malop" name="malop" type="text"
-                 list="lop_suggestions"
-                 placeholder="VD: 12A1" />
-          <datalist id="lop_suggestions">
-            <option value="10A1"></option>
-            <option value="10A2"></option>
-            <option value="10A3"></option>
-            <option value="11A1"></option>
-            <option value="11A2"></option>
-            <option value="12A1"></option>
-            <option value="12A2"></option>
-          </datalist>
-          <small>Có sẵn gợi ý nhưng vẫn có thể tự nhập. Hệ thống sẽ tự IN HOA.</small>
-        </div>
 
         <div class="field">
           <label for="cccd">CCCD <span class="en">/ Citizen ID</span></label>
