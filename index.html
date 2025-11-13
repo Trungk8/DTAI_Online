@@ -5,96 +5,53 @@
   <title>SK – Hệ thống Kiểm tra Online</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Font đẹp hơn -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg: #0f172a;
-      --bg-soft: #020617;
+      --bg: #e5f0ff;
       --accent: #2563eb;
-      --accent-soft: #1d4ed8;
-      --accent-light: #60a5fa;
-      --danger: #ef4444;
-      --success: #22c55e;
-      --text-main: #e5e7eb;
-      --text-sub: #9ca3af;
-      --card-bg: #020617cc;
-      --border-soft: #1f2937;
-      --radius-lg: 24px;
-      --shadow-xl: 0 24px 60px rgba(15, 23, 42, .8);
-      --shadow-soft: 0 10px 30px rgba(15, 23, 42, .7);
+      --accent-soft: #eff6ff;
+      --accent-dark: #1e40af;
+      --border: #d0d7e2;
+      --text-main: #111827;
+      --text-sub: #6b7280;
+      --radius-lg: 20px;
+      --shadow: 0 18px 40px rgba(15, 23, 42, .16);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%, #000 100%);
+      background: radial-gradient(circle at top, #dbeafe 0, #eff6ff 40%, #ffffff 100%);
       color: var(--text-main);
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 32px 12px 40px;
-    }
-
-    /* Background deco */
-    .bg-blur {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      overflow: hidden;
-    }
-    .bg-blur::before,
-    .bg-blur::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      filter: blur(80px);
-      opacity: 0.65;
-    }
-    .bg-blur::before {
-      width: 360px;
-      height: 360px;
-      background: #22c55e33;
-      top: -120px;
-      left: -120px;
-    }
-    .bg-blur::after {
-      width: 420px;
-      height: 420px;
-      background: #3b82f633;
-      bottom: -160px;
-      right: -120px;
+      padding: 28px 12px 40px;
     }
 
     main.wrap {
       width: 100%;
-      max-width: 1100px;
-      background: linear-gradient(145deg, #020617ee, #020617dd);
-      border-radius: 32px;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      box-shadow: var(--shadow-xl);
-      padding: 24px 22px 28px;
-      backdrop-filter: blur(16px);
+      max-width: 1150px;
+      background: #ffffff;
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 22px 18px 24px;
     }
-
     @media (min-width: 768px) {
-      main.wrap {
-        padding: 28px 32px 32px;
-      }
+      main.wrap { padding: 26px 26px 28px; }
     }
 
     header.top {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
     @media (min-width: 768px) {
       header.top {
@@ -107,124 +64,110 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
     .brand-logo {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       border-radius: 16px;
-      background: radial-gradient(circle at 30% 20%, #facc15, #22c55e 35%, #2563eb 75%);
+      background: linear-gradient(135deg, #2563eb, #4ade80);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #0f172a;
+      color: #ffffff;
       font-weight: 800;
       font-size: 22px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, .75);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, .45);
     }
     .brand-text h1 {
       margin: 0;
       font-size: 20px;
-      letter-spacing: .02em;
     }
     .brand-text h1 span {
-      color: var(--accent-light);
+      color: var(--accent-dark);
     }
     .brand-text p {
-      margin: 4px 0 0;
+      margin: 3px 0 0;
       font-size: 13px;
       color: var(--text-sub);
     }
 
     .top-badge {
+      align-self: flex-start;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid #bfdbfe;
+      font-size: 12px;
+      color: var(--accent-dark);
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, .6);
-      border: 1px solid rgba(148, 163, 184, 0.28);
-      font-size: 12px;
-      color: var(--text-sub);
+      gap: 6px;
       white-space: nowrap;
     }
-    .top-badge span {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: rgba(22, 163, 74, .3);
-      font-size: 13px;
-    }
 
+    /* NAV */
     nav.nav-main {
-      margin-top: 10px;
+      margin-top: 8px;
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
     .nav-main button {
       flex: 1;
-      min-width: 135px;
+      min-width: 130px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      background: radial-gradient(circle at top left, #1d4ed8, #0f172a);
-      padding: 10px 14px;
-      cursor: pointer;
-      color: #eef2ff;
+      border: 1px solid #c7d2fe;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      padding: 8px 14px;
+      font-size: 13px;
       font-weight: 500;
-      font-size: 14px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      box-shadow: 0 10px 26px rgba(15, 23, 42, .8);
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, .40);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
     }
-    .nav-main button span.icon {
-      font-size: 17px;
+    .nav-main button.nav-secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border-color: #d0d7e2;
+      box-shadow: 0 4px 12px rgba(148, 163, 184, .35);
     }
     .nav-main button:hover {
       transform: translateY(-1px);
-      background: radial-gradient(circle at top, #2563eb, #020617);
-      box-shadow: 0 14px 34px rgba(15, 23, 42, .95);
-      border-color: rgba(129, 140, 248, .8);
-    }
-    .nav-main button.nav-secondary {
-      background: linear-gradient(135deg, #020617, #020617);
-      color: var(--text-main);
-      box-shadow: 0 4px 16px rgba(15, 23, 42, .9);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, .45);
     }
     .nav-main button.nav-secondary:hover {
-      background: radial-gradient(circle at top, #0f172a, #020617);
+      background: #f9fafb;
+      box-shadow: 0 10px 24px rgba(148, 163, 184, .4);
     }
 
+    /* LAYOUT */
     .layout {
       display: grid;
-      grid-template-columns: minmax(0, 3fr);
-      gap: 18px;
-      margin-top: 22px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 16px;
     }
-    @media (min-width: 950px) {
+    @media (min-width: 980px) {
       .layout {
-        grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-        align-items: flex-start;
+        grid-template-columns: minmax(0, 3.5fr) minmax(0, 2.3fr);
       }
     }
 
     .card {
-      background: var(--card-bg);
+      background: #ffffff;
       border-radius: var(--radius-lg);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      box-shadow: var(--shadow-soft);
-      padding: 18px 18px 20px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 10px 26px rgba(148, 163, 184, .20);
+      padding: 18px 16px 20px;
     }
     @media (min-width: 768px) {
-      .card {
-        padding: 20px 22px 22px;
-      }
+      .card { padding: 20px 20px 22px; }
     }
 
     .card h2 {
@@ -232,95 +175,64 @@
       font-size: 18px;
     }
     .card p.lead {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       font-size: 13px;
       color: var(--text-sub);
     }
 
-    /* Sections switching */
-    .card-section {
-      display: none;
-      animation: fadeIn .18s ease-out;
-    }
-    .card-section.active {
-      display: block;
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(4px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    .card-section { display: none; }
+    .card-section.active { display: block; }
 
-    /* Form */
-    form {
-      margin-top: 8px;
-    }
+    /* FORM */
+    form { margin-top: 8px; }
+
     .grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: 12px 14px;
+      gap: 10px 14px;
     }
     @media (min-width: 768px) {
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
+    .field { display: flex; flex-direction: column; }
     label {
-      display: block;
       font-size: 13px;
-      margin-bottom: 4px;
-      color: #cbd5f5;
       font-weight: 500;
+      margin-bottom: 3px;
+      color: #111827;
     }
     label span.en {
       font-size: 11px;
-      opacity: 0.8;
       font-weight: 400;
-    }
-    .field {
-      display: flex;
-      flex-direction: column;
+      color: var(--text-sub);
     }
 
     input,
     select,
     textarea {
       width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      background: #020617;
-      color: var(--text-main);
-      padding: 9px 11px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      padding: 8px 10px;
       font-size: 13px;
+      color: var(--text-main);
       outline: none;
       transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
     }
-    input::placeholder,
-    textarea::placeholder {
-      color: rgba(148, 163, 184, .7);
+    input::placeholder, textarea::placeholder {
+      color: #9ca3af;
       font-size: 12px;
     }
     input:focus,
     select:focus,
     textarea:focus {
-      border-color: var(--accent-light);
-      box-shadow: 0 0 0 1px rgba(96, 165, 250, .6);
-      background: #020617;
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 0 0 1px #bfdbfe;
     }
-    select {
-      padding-right: 28px;
-    }
-
-    textarea {
-      min-height: 74px;
-      resize: vertical;
-    }
+    textarea { min-height: 70px; resize: vertical; }
 
     .hint {
       font-size: 11px;
@@ -332,13 +244,13 @@
       display: flex;
       gap: 10px;
       justify-content: flex-end;
-      margin-top: 16px;
       flex-wrap: wrap;
+      margin-top: 14px;
     }
 
     .btn {
       border-radius: 999px;
-      padding: 9px 20px;
+      padding: 8px 18px;
       font-size: 13px;
       font-weight: 500;
       border: none;
@@ -350,21 +262,20 @@
     }
     .btn-primary {
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      box-shadow: 0 10px 22px rgba(37, 99, 235, .7);
+      color: #ffffff;
+      box-shadow: 0 10px 23px rgba(37, 99, 235, .45);
     }
     .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 12px 26px rgba(37, 99, 235, .9);
+      box-shadow: 0 13px 28px rgba(37, 99, 235, .55);
     }
     .btn-outline {
-      background: transparent;
+      background: #ffffff;
       color: var(--text-sub);
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      border: 1px solid #d1d5db;
     }
     .btn-outline:hover {
-      background: rgba(15, 23, 42, .7);
-      color: var(--text-main);
+      background: #f3f4f6;
     }
 
     .status {
@@ -380,16 +291,15 @@
       height: 8px;
       border-radius: 999px;
       background: #22c55e;
-      box-shadow: 0 0 0 5px rgba(34, 197, 94, .35);
     }
 
-    /* Right side: QR + info */
+    /* RIGHT CARD */
     .card-qr h3 {
       margin: 0 0 6px;
       font-size: 16px;
     }
     .card-qr p {
-      margin: 0 0 14px;
+      margin: 0 0 10px;
       font-size: 13px;
       color: var(--text-sub);
     }
@@ -398,15 +308,16 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      margin-top: 4px;
     }
     .qr-wrap img {
-      width: 220px;
-      height: 220px;
-      border-radius: 24px;
-      background: #020617;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      box-shadow: 0 20px 40px rgba(15, 23, 42, .85);
+      width: 210px;
+      height: 210px;
+      border-radius: 18px;
+      border: 1px solid #d1d5db;
+      box-shadow: 0 18px 34px rgba(156, 163, 175, .55);
+      background: #ffffff;
     }
     .qr-caption {
       font-size: 12px;
@@ -414,66 +325,38 @@
       text-align: center;
     }
     .qr-caption span {
-      color: var(--accent-light);
+      color: var(--accent-dark);
       font-weight: 500;
     }
 
     .list-check {
-      list-style: none;
-      margin: 12px 0 0;
-      padding: 0;
+      margin: 10px 0 0;
+      padding-left: 18px;
       font-size: 12px;
       color: var(--text-sub);
     }
-    .list-check li {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      margin-bottom: 4px;
-    }
-    .list-check li span.icon {
-      margin-top: 2px;
-      color: var(--success);
-    }
+    .list-check li { margin-bottom: 4px; }
 
     footer {
-      margin-top: 16px;
+      margin-top: 14px;
       padding-top: 10px;
-      border-top: 1px solid rgba(31, 41, 55, .9);
+      border-top: 1px solid #e5e7eb;
+      font-size: 11px;
+      color: var(--text-sub);
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--text-sub);
+      gap: 6px;
     }
     footer a {
-      color: var(--accent-light);
+      color: var(--accent-dark);
       text-decoration: none;
     }
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Small badges */
-    .badge-soft {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      border-radius: 999px;
-      padding: 4px 8px;
-      background: rgba(15, 23, 42, .9);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      font-size: 11px;
-      color: var(--text-sub);
-      margin-top: 6px;
-    }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 
 <body>
-  <div class="bg-blur" aria-hidden="true"></div>
-
   <main class="wrap">
     <!-- HEADER -->
     <header class="top">
@@ -481,73 +364,62 @@
         <div class="brand-logo">SK</div>
         <div class="brand-text">
           <h1>Hệ thống <span>Kiểm tra Online</span></h1>
-          <p>Đăng ký – Quản lý – Kiểm tra trực tuyến cho học sinh THPT</p>
+          <p>Đăng ký & tổ chức kiểm tra trực tuyến cho học sinh THPT</p>
         </div>
       </div>
-
       <div class="top-badge">
-        <span>⚡</span>
-        Dữ liệu lưu trên Google Sheet – Đồng bộ & an toàn
+        ⚡ Dữ liệu lưu trên Google Sheet – Tự động hóa bằng Apps Script
       </div>
     </header>
 
     <!-- NAV -->
     <nav class="nav-main">
       <button onclick="showView('reg')">
-        <span class="icon">📝</span>
-        <span>Đăng ký</span>
+        📝 <span>Đăng ký</span>
       </button>
       <button class="nav-secondary" onclick="showView('login')">
-        <span class="icon">🔐</span>
-        <span>Đăng nhập</span>
+        🔐 <span>Đăng nhập</span>
       </button>
       <button class="nav-secondary" onclick="showView('exam')">
-        <span class="icon">🧪</span>
-        <span>Vào thi</span>
+        🧪 <span>Vào thi</span>
       </button>
       <button class="nav-secondary" onclick="showView('review')">
-        <span class="icon">📊</span>
-        <span>Xem lại</span>
+        📊 <span>Xem lại</span>
       </button>
     </nav>
 
     <!-- MAIN LAYOUT -->
     <div class="layout">
-      <!-- LEFT: FORM / CONTENT -->
+      <!-- LEFT CARD -->
       <section class="card">
-        <!-- Section ĐĂNG KÝ (mặc định mở) -->
+        <!-- ĐĂNG KÝ – ACTIVE -->
         <div id="reg" class="card-section active">
           <h2>Đăng ký tài khoản học sinh</h2>
           <p class="lead">
-            Học sinh điền thông tin chính xác để nhà trường quản lý.  
-            Những trường có dấu * là bắt buộc.
+            Học sinh điền thông tin chính xác. Các mục có dấu * là bắt buộc.
           </p>
 
-          <form id="registerForm"
-                action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec"
-                method="POST">
+          <form
+            id="registerForm"
+            action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec"
+            method="POST"
+          >
             <div class="grid">
-              <!-- Họ tên -->
+              <!-- HỌ TÊN -->
               <div class="field">
-                <label for="hoten">
-                  Họ và tên – <span class="en">Full name *</span>
-                </label>
+                <label for="hoten">Họ và tên – <span class="en">Full name *</span></label>
                 <input type="text" id="hoten" name="hoten" placeholder="Nguyễn Văn A" required />
               </div>
 
-              <!-- Ngày sinh -->
+              <!-- NGÀY SINH -->
               <div class="field">
-                <label for="ngaysinh">
-                  Ngày sinh – <span class="en">Date of birth *</span>
-                </label>
+                <label for="ngaysinh">Ngày sinh – <span class="en">Date of birth *</span></label>
                 <input type="text" id="ngaysinh" name="ngaysinh" placeholder="dd/mm/yyyy" required />
               </div>
 
-              <!-- Giới tính -->
+              <!-- GIỚI TÍNH -->
               <div class="field">
-                <label for="gioitinh">
-                  Giới tính – <span class="en">Gender *</span>
-                </label>
+                <label for="gioitinh">Giới tính – <span class="en">Gender *</span></label>
                 <select id="gioitinh" name="gioitinh" required>
                   <option value="">-- Chọn giới tính --</option>
                   <option value="Nam">Nam</option>
@@ -556,256 +428,157 @@
                 </select>
               </div>
 
-              <!-- Dân tộc -->
+              <!-- DÂN TỘC LIST -->
               <div class="field">
-                <label for="dantoc">
-                  Dân tộc – <span class="en">Ethnicity</span>
-                </label>
-                <input type="text" id="dantoc" name="dantoc" placeholder="Kinh, M'Nông, ..." />
+                <label for="dantoc">Dân tộc – <span class="en">Ethnicity *</span></label>
+                <select id="dantoc" name="dantoc" required>
+                  <option value="">-- Chọn dân tộc --</option>
+                  <option value="Kinh">Kinh</option>
+                  <option value="Tày">Tày</option>
+                  <option value="Thái">Thái</option>
+                  <option value="Hoa">Hoa</option>
+                  <option value="Khmer">Khmer</option>
+                  <option value="Mường">Mường</option>
+                  <option value="Nùng">Nùng</option>
+                  <option value="H'Mông">H'Mông</option>
+                  <option value="Dao">Dao</option>
+                  <option value="Gia Rai">Gia Rai</option>
+                  <option value="Ê Đê">Ê Đê</option>
+                  <option value="Ba Na">Ba Na</option>
+                  <option value="Xơ Đăng">Xơ Đăng</option>
+                  <option value="Sán Chay">Sán Chay</option>
+                  <option value="Cơ Ho">Cơ Ho</option>
+                  <option value="Chăm">Chăm</option>
+                  <option value="Sán Dìu">Sán Dìu</option>
+                  <option value="Hrê">Hrê</option>
+                  <option value="Mnông">Mnông</option>
+                  <option value="Ra Glai">Ra Glai</option>
+                  <option value="Xtiêng">Xtiêng</option>
+                  <option value="Bru-Vân Kiều">Bru-Vân Kiều</option>
+                  <option value="Thổ">Thổ</option>
+                  <option value="Giáy">Giáy</option>
+                  <option value="Cơ Tu">Cơ Tu</option>
+                  <option value="Gié-Triêng">Gié-Triêng</option>
+                  <option value="Tà Ôi">Tà Ôi</option>
+                  <option value="Mạ">Mạ</option>
+                  <option value="Khơ Mú">Khơ Mú</option>
+                  <option value="Co">Co</option>
+                  <option value="Chơ Ro">Chơ Ro</option>
+                  <option value="Hà Nhì">Hà Nhì</option>
+                  <option value="Chu Ru">Chu Ru</option>
+                  <option value="Lào">Lào</option>
+                  <option value="La Chí">La Chí</option>
+                  <option value="La Ha">La Ha</option>
+                  <option value="Phù Lá">Phù Lá</option>
+                  <option value="La Hủ">La Hủ</option>
+                  <option value="Lự">Lự</option>
+                  <option value="Lô Lô">Lô Lô</option>
+                  <option value="Chứt">Chứt</option>
+                  <option value="Mảng">Mảng</option>
+                  <option value="Pà Thẻn">Pà Thẻn</option>
+                  <option value="Cờ Lao">Cờ Lao</option>
+                  <option value="Bố Y">Bố Y</option>
+                  <option value="Cống">Cống</option>
+                  <option value="Ngái">Ngái</option>
+                  <option value="Si La">Si La</option>
+                  <option value="Pu Péo">Pu Péo</option>
+                  <option value="Brâu">Brâu</option>
+                  <option value="Ơ Đu">Ơ Đu</option>
+                  <option value="Rơ Măm">Rơ Măm</option>
+                  <option value="Khác">Khác / Other</option>
+                </select>
               </div>
 
-              <!-- Trường -->
+              <!-- TỈNH / THÀNH PHỐ LIST -->
               <div class="field">
-                <label for="truong">
-                  Trường THPT/DTNT – <span class="en">School *</span>
-                </label>
-                <input type="text" id="truong" name="truong" placeholder="THPT Nguyễn Đình Chiểu" required />
+                <label for="tinh">Tỉnh / Thành phố – <span class="en">Province *</span></label>
+                <select id="tinh" name="tinh" required>
+                  <option value="">-- Chọn tỉnh / thành phố --</option>
+                  <option value="Hà Nội">Hà Nội</option>
+                  <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                  <option value="Hải Phòng">Hải Phòng</option>
+                  <option value="Đà Nẵng">Đà Nẵng</option>
+                  <option value="Cần Thơ">Cần Thơ</option>
+                  <option value="An Giang">An Giang</option>
+                  <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+                  <option value="Bắc Giang">Bắc Giang</option>
+                  <option value="Bắc Kạn">Bắc Kạn</option>
+                  <option value="Bạc Liêu">Bạc Liêu</option>
+                  <option value="Bắc Ninh">Bắc Ninh</option>
+                  <option value="Bến Tre">Bến Tre</option>
+                  <option value="Bình Định">Bình Định</option>
+                  <option value="Bình Dương">Bình Dương</option>
+                  <option value="Bình Phước">Bình Phước</option>
+                  <option value="Bình Thuận">Bình Thuận</option>
+                  <option value="Cà Mau">Cà Mau</option>
+                  <option value="Cao Bằng">Cao Bằng</option>
+                  <option value="Đắk Lắk">Đắk Lắk</option>
+                  <option value="Đắk Nông">Đắk Nông</option>
+                  <option value="Điện Biên">Điện Biên</option>
+                  <option value="Đồng Nai">Đồng Nai</option>
+                  <option value="Đồng Tháp">Đồng Tháp</option>
+                  <option value="Gia Lai">Gia Lai</option>
+                  <option value="Hà Giang">Hà Giang</option>
+                  <option value="Hà Nam">Hà Nam</option>
+                  <option value="Hà Tĩnh">Hà Tĩnh</option>
+                  <option value="Hải Dương">Hải Dương</option>
+                  <option value="Hậu Giang">Hậu Giang</option>
+                  <option value="Hòa Bình">Hòa Bình</option>
+                  <option value="Hưng Yên">Hưng Yên</option>
+                  <option value="Khánh Hòa">Khánh Hòa</option>
+                  <option value="Kiên Giang">Kiên Giang</option>
+                  <option value="Kon Tum">Kon Tum</option>
+                  <option value="Lai Châu">Lai Châu</option>
+                  <option value="Lâm Đồng">Lâm Đồng</option>
+                  <option value="Lạng Sơn">Lạng Sơn</option>
+                  <option value="Lào Cai">Lào Cai</option>
+                  <option value="Long An">Long An</option>
+                  <option value="Nam Định">Nam Định</option>
+                  <option value="Nghệ An">Nghệ An</option>
+                  <option value="Ninh Bình">Ninh Bình</option>
+                  <option value="Ninh Thuận">Ninh Thuận</option>
+                  <option value="Phú Thọ">Phú Thọ</option>
+                  <option value="Phú Yên">Phú Yên</option>
+                  <option value="Quảng Bình">Quảng Bình</option>
+                  <option value="Quảng Nam">Quảng Nam</option>
+                  <option value="Quảng Ngãi">Quảng Ngãi</option>
+                  <option value="Quảng Ninh">Quảng Ninh</option>
+                  <option value="Quảng Trị">Quảng Trị</option>
+                  <option value="Sóc Trăng">Sóc Trăng</option>
+                  <option value="Sơn La">Sơn La</option>
+                  <option value="Tây Ninh">Tây Ninh</option>
+                  <option value="Thái Bình">Thái Bình</option>
+                  <option value="Thái Nguyên">Thái Nguyên</option>
+                  <option value="Thanh Hóa">Thanh Hóa</option>
+                  <option value="Thừa Thiên Huế">Thừa Thiên Huế</option>
+                  <option value="Tiền Giang">Tiền Giang</option>
+                  <option value="Trà Vinh">Trà Vinh</option>
+                  <option value="Tuyên Quang">Tuyên Quang</option>
+                  <option value="Vĩnh Long">Vĩnh Long</option>
+                  <option value="Vĩnh Phúc">Vĩnh Phúc</option>
+                  <option value="Yên Bái">Yên Bái</option>
+                </select>
               </div>
 
-              <!-- Khối -->
+              <!-- XÃ / PHƯỜNG -->
               <div class="field">
-                <label for="khoi">
-                  Khối – <span class="en">Grade *</span>
-                </label>
-                <input type="text" id="khoi" name="khoi" placeholder="10 / 11 / 12" required />
+                <label for="xaphuong">Xã / Phường – <span class="en">Commune / Ward</span></label>
+                <input type="text" id="xaphuong" name="xaphuong" placeholder="VD: Phường 1, Xã Kiến Đức…" />
               </div>
 
-              <!-- Mã lớp -->
+              <!-- TRƯỜNG LIST -->
               <div class="field">
-                <label for="malop">
-                  Mã lớp – <span class="en">Class code *</span>
-                </label>
-                <input type="text" id="malop" name="malop" placeholder="12A1, 11B2, ..." required />
+                <label for="truong">Trường THPT/DTNT – <span class="en">School *</span></label>
+                <select id="truong" name="truong" required>
+                  <option value="">-- Chọn trường --</option>
+                  <option value="THPT Nguyễn Đình Chiểu">THPT Nguyễn Đình Chiểu</option>
+                  <option value="THPT Phạm Văn Đồng">THPT Phạm Văn Đồng</option>
+                  <option value="THPT chuyên">THPT chuyên (tỉnh)</option>
+                  <option value="THPT khác">Trường khác (ghi thêm trong ghi chú)</option>
+                </select>
               </div>
 
-              <!-- CCCD -->
+              <!-- KHỐI -->
               <div class="field">
-                <label for="cccd">
-                  Số CCCD – <span class="en">Citizen ID *</span>
-                </label>
-                <input
-                  type="text"
-                  id="cccd"
-                  name="cccd"
-                  placeholder="12 số CCCD của học sinh"
-                  minlength="9"
-                  maxlength="18"
-                  required
-                />
-                <div class="hint">Hệ thống có thể dùng CCCD để kiểm tra trùng lặp.</div>
-              </div>
-
-              <!-- Email -->
-              <div class="field">
-                <label for="email">
-                  Email – <span class="en">Email address *</span>
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="hs123@gmail.com"
-                  required
-                />
-                <div class="hint">Email dùng để nhận thông tin xác nhận đăng ký, mã vào thi (nếu có).</div>
-              </div>
-
-              <!-- Ghi chú -->
-              <div class="field" style="grid-column: 1 / -1;">
-                <label for="ghichu">
-                  Ghi chú thêm – <span class="en">Note (optional)</span>
-                </label>
-                <textarea id="ghichu" name="ghichu" placeholder="Ví dụ: thuộc diện ưu tiên, khó khăn, cần hỗ trợ thiết bị, ..."></textarea>
-              </div>
-            </div>
-
-            <div class="flex-row">
-              <button class="btn btn-outline" type="reset">
-                🧹 Xóa form
-              </button>
-              <button class="btn btn-primary" type="submit">
-                ✅ Gửi đăng ký
-              </button>
-            </div>
-
-            <div class="status">
-              <span class="dot"></span>
-              Dữ liệu sẽ được chuyển thẳng vào Google Sheet & hệ thống xử lý của thầy.
-            </div>
-          </form>
-
-          <div class="badge-soft">
-            ℹ️ Khi bấm <strong>Gửi đăng ký</strong>, trình duyệt sẽ mở trang xác nhận riêng của Google Apps Script.
-          </div>
-        </div>
-
-        <!-- Section ĐĂNG NHẬP -->
-        <div id="login" class="card-section">
-          <h2>Đăng nhập hệ thống</h2>
-          <p class="lead">
-            Chức năng đăng nhập có thể dùng cho học sinh vào phòng thi, xem lịch sử làm bài,
-            hoặc giáo viên quản trị. Phần này thầy có thể mở rộng sau.
-          </p>
-
-          <div class="badge-soft">
-            🚧 Hiện tạm là khung giao diện – sẽ kết nối với hệ thống sau.
-          </div>
-
-          <form>
-            <div class="grid">
-              <div class="field">
-                <label for="login_cccd">
-                  CCCD hoặc Email – <span class="en">Citizen ID / Email</span>
-                </label>
-                <input type="text" id="login_cccd" placeholder="Nhập CCCD hoặc Email" />
-              </div>
-              <div class="field">
-                <label for="login_pass">
-                  Mật khẩu – <span class="en">Password</span>
-                </label>
-                <input type="password" id="login_pass" placeholder="••••••••" />
-              </div>
-            </div>
-
-            <div class="flex-row">
-              <button class="btn btn-primary" type="button">
-                🔐 Đăng nhập (demo)
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <!-- Section VÀO THI -->
-        <div id="exam" class="card-section">
-          <h2>Vào thi Online</h2>
-          <p class="lead">
-            Khu vực này có thể hiển thị danh sách bài kiểm tra, mã đề, hoặc liên kết tới Google Forms /
-            hệ thống trắc nghiệm của thầy.
-          </p>
-
-          <ul class="list-check">
-            <li><span class="icon">✅</span><span>Nhập mã đề thi để chuyển tới đúng bài kiểm tra.</span></li>
-            <li><span class="icon">✅</span><span>Hạn chế truy cập bằng IP, thiết bị hoặc thời gian làm bài.</span></li>
-          </ul>
-
-          <form style="margin-top: 14px;">
-            <div class="grid">
-              <div class="field">
-                <label for="code_exam">
-                  Mã đề / Code – <span class="en">Exam code</span>
-                </label>
-                <input type="text" id="code_exam" placeholder="VD: SỬ-45P-01" />
-              </div>
-              <div class="field">
-                <label for="code_cccd">
-                  CCCD / Email xác thực – <span class="en">Identity</span>
-                </label>
-                <input type="text" id="code_cccd" placeholder="Nhập CCCD hoặc Email đã đăng ký" />
-              </div>
-            </div>
-
-            <div class="flex-row">
-              <button class="btn btn-primary" type="button">
-                🚀 Vào thi (demo)
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <!-- Section XEM LẠI -->
-        <div id="review" class="card-section">
-          <h2>Xem kết quả & lịch sử</h2>
-          <p class="lead">
-            Học sinh có thể sử dụng CCCD hoặc Email để tra cứu kết quả thi, điểm, nhận xét…
-            Dữ liệu có thể đọc trực tiếp từ Google Sheet hoặc Dashboard.
-          </p>
-
-          <form>
-            <div class="grid">
-              <div class="field">
-                <label for="review_cccd">
-                  CCCD / Email – <span class="en">Citizen ID / Email</span>
-                </label>
-                <input type="text" id="review_cccd" placeholder="Nhập CCCD hoặc Email đã đăng ký" />
-              </div>
-            </div>
-
-            <div class="flex-row">
-              <button class="btn btn-primary" type="button">
-                📊 Xem lịch sử (demo)
-              </button>
-            </div>
-          </form>
-
-          <ul class="list-check">
-            <li><span class="icon">📌</span><span>Có thể kết nối với Dashboard (Data Studio, Looker, …).</span></li>
-            <li><span class="icon">📌</span><span>Thống kê theo lớp, khối, môn, lần thi,…</span></li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- RIGHT: QR + THÔNG TIN -->
-      <aside class="card card-qr">
-        <h3>Quét QR để mở trang đăng ký</h3>
-        <p>
-          Học sinh dùng điện thoại quét mã dưới đây để mở trang đăng ký
-          <strong>GitHub Pages</strong>:
-          <code>trungk8.github.io/DTAI_Online/</code>.
-        </p>
-
-        <div class="qr-wrap">
-          <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Ftrungk8.github.io%2FDTAI_Online%2F"
-            alt="QR Code đăng ký"
-          />
-          <div class="qr-caption">
-            Mở camera hoặc ứng dụng quét mã để truy cập: <br />
-            <span>https://trungk8.github.io/DTAI_Online/</span>
-          </div>
-        </div>
-
-        <ul class="list-check">
-          <li><span class="icon">✔️</span><span>Phù hợp dán tại phòng học, bảng tin, trên slide hướng dẫn.</span></li>
-          <li><span class="icon">✔️</span><span>Giảm thao tác gõ đường link dài cho học sinh.</span></li>
-          <li><span class="icon">✔️</span><span>Thầy có thể thay URL khác nếu đổi tên repo / domain.</span></li>
-        </ul>
-      </aside>
-    </div>
-
-    <!-- FOOTER -->
-    <footer>
-      <div>© SK – Hệ thống kiểm tra Online. Dữ liệu được lưu trữ & xử lý qua Google Apps Script & Google Sheet.</div>
-      <div>
-        Trang chủ: <a href="https://trungk8.github.io/DTAI_Online/" target="_blank" rel="noopener">DTAI_Online</a>
-      </div>
-    </footer>
-  </main>
-
-  <script>
-    // Ẩn/hiện các section trong card bên trái
-    function showView(id) {
-      const sections = document.querySelectorAll(".card-section");
-      sections.forEach((s) => s.classList.remove("active"));
-      const target = document.getElementById(id);
-      if (target) {
-        target.classList.add("active");
-        // cuộn nhẹ lên top form trên mobile
-        window.scrollTo({
-          top: document.querySelector("main.wrap").offsetTop - 16,
-          behavior: "smooth",
-        });
-      }
-    }
-  </script>
-</body>
-</html>
+                <label for="khoi">Khối – <span class="en">Grade *</span></label>
+                <select
