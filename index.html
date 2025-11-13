@@ -5,7 +5,7 @@
   <title>SK – Hệ thống Kiểm tra Online</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    :root {
+    :root{
       --primary:#2563eb;
       --primary-soft:#dbeafe;
       --primary-dark:#1d4ed8;
@@ -68,7 +68,6 @@
       box-shadow:0 10px 26px rgba(37,99,235,.5);
       transform:translateY(-1px);
     }
-
     section.card{
       margin-top:24px;
       background:#fff;
@@ -89,7 +88,6 @@
     }
     .card h2 span.icon{font-size:1.4rem;}
 
-    /* FORM ĐĂNG KÝ */
     form{
       display:flex;
       flex-direction:column;
@@ -120,7 +118,7 @@
       color:var(--muted);
       font-size:.8rem;
     }
-    input, select, textarea{
+    input,select,textarea{
       width:100%;
       border-radius:999px;
       border:1px solid #e5e7eb;
@@ -135,7 +133,7 @@
       border-radius:12px;
       resize:vertical;
     }
-    input:focus, select:focus, textarea:focus{
+    input:focus,select:focus,textarea:focus{
       border-color:var(--primary);
       box-shadow:0 0 0 1px rgba(37,99,235,.35);
       background:#fff;
@@ -144,11 +142,6 @@
       font-size:.78rem;
       color:var(--muted);
       margin-top:2px;
-    }
-    .flex{
-      display:flex;
-      gap:8px;
-      align-items:center;
     }
     .btn-primary{
       margin-top:6px;
@@ -174,8 +167,6 @@
       font-size:.78rem;
       color:var(--muted);
     }
-
-    /* QR */
     .qr-wrap{
       margin-top:16px;
       text-align:center;
@@ -189,7 +180,6 @@
       padding:12px;
     }
 
-    /* VÀO THI */
     .exam-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -239,7 +229,6 @@
       box-shadow:0 10px 22px rgba(37,99,235,.5);
     }
 
-    /* DASHBOARD */
     .stat-row{
       display:flex;
       flex-wrap:wrap;
@@ -262,6 +251,7 @@
       font-weight:700;
       color:var(--primary-dark);
     }
+
     .table-wrapper{
       margin-top:12px;
       max-height:260px;
@@ -299,7 +289,6 @@
       font-weight:600;
     }
     .muted{color:var(--muted);font-size:.8rem;}
-
     .hidden{display:none;}
   </style>
 </head>
@@ -314,9 +303,10 @@
   </div>
 
   <nav>
-    <button id="btn-reg"   class="active" onclick="show('reg')">📝 Đăng ký</button>
-    <button id="btn-exam"  onclick="show('exam')">▶️ Vào thi</button>
-    <button id="btn-review"onclick="show('review')">📊 Dashboard</button>
+    <button id="btn-reg"    class="active" onclick="show('reg')">📝 Đăng ký</button>
+    <button id="btn-exam"   onclick="show('exam')">▶️ Vào thi</button>
+    <button id="btn-review" onclick="show('review')">📊 Dashboard</button>
+    <button id="btn-result" onclick="show('result')">✅ Kết quả</button>
   </nav>
 
   <!-- ĐĂNG KÝ -->
@@ -329,16 +319,13 @@
           method="POST">
 
       <div class="grid">
-        <!-- HỌ TÊN -->
         <div class="col-12">
           <label for="hoten">Họ và tên <span class="en">/ Full name</span></label>
           <input id="hoten" name="hoten" type="text" required
-                 placeholder="VD: Nguyễn Văn Trung"
-                 autocomplete="name">
+                 placeholder="VD: Nguyễn Văn Trung" autocomplete="name">
           <div class="hint">Nhập đúng chính tả. Hệ thống sẽ tự chuyển thành CHỮ IN HOA khi lưu.</div>
         </div>
 
-        <!-- NGÀY SINH + GIỚI TÍNH -->
         <div class="col-6">
           <label for="ngaysinh">Ngày sinh <span class="en">/ Date of birth</span></label>
           <input id="ngaysinh" name="ngaysinh" type="date" required>
@@ -354,7 +341,6 @@
           </select>
         </div>
 
-        <!-- DÂN TỘC -->
         <div class="col-6">
           <label for="dantoc">Dân tộc <span class="en">/ Ethnicity</span></label>
           <select id="dantoc" name="dantoc" required>
@@ -366,10 +352,9 @@
             <option value="Tày">Tày</option>
             <option value="Khác">Khác...</option>
           </select>
-          <div class="hint">Nếu không có trong danh sách, hãy chọn <b>Khác...</b> và ghi rõ trong Ghi chú.</div>
+          <div class="hint">Nếu không có trong danh sách, chọn <b>Khác...</b> và ghi rõ ở Ghi chú.</div>
         </div>
 
-        <!-- TRƯỜNG -->
         <div class="col-6">
           <label for="truong">Trường <span class="en">/ School</span></label>
           <select id="truong" name="truong">
@@ -380,10 +365,9 @@
           </select>
           <input id="truong_khac" name="truong_khac" type="text" class="hidden"
                  placeholder="Nhập tên trường khác...">
-          <div class="hint">Nếu chọn mục <b>Khác...</b>, hãy nhập tên trường ở ô bên dưới.</div>
+          <div class="hint">Nếu chọn <b>Khác...</b>, hãy nhập tên trường ở ô bên dưới.</div>
         </div>
 
-        <!-- XÃ / PHƯỜNG -->
         <div class="col-6">
           <label for="xa">Xã / Phường <span class="en">/ Ward</span></label>
           <select id="xa" name="xa">
@@ -391,11 +375,10 @@
             <option value="Phường 1">Phường 1</option>
             <option value="Phường 2">Phường 2</option>
             <option value="Phường 3">Phường 3</option>
-            <option value="Xã ...">Khác (nhập ở ghi chú)</option>
+            <option value="Khác">Khác (ghi ở Ghi chú)</option>
           </select>
         </div>
 
-        <!-- TỈNH -->
         <div class="col-6">
           <label for="tinh">Tỉnh / TP <span class="en">/ Province</span></label>
           <select id="tinh" name="tinh">
@@ -407,7 +390,6 @@
                  placeholder="Nhập tỉnh/thành khác...">
         </div>
 
-        <!-- KHỐI -->
         <div class="col-4">
           <label for="khoi">Khối <span class="en">/ Grade</span></label>
           <select id="khoi" name="khoi" required>
@@ -418,7 +400,6 @@
           </select>
         </div>
 
-        <!-- LỚP -->
         <div class="col-4">
           <label for="lopPreset">Lớp (chọn nhanh) <span class="en">/ Class preset</span></label>
           <select id="lopPreset">
@@ -433,10 +414,9 @@
         <div class="col-4">
           <label for="malop">Lớp (tùy ý) <span class="en">/ Class manual</span></label>
           <input id="malop" name="malop" type="text" placeholder="VD: 12A3">
-          <div class="hint">Có thể sửa/nhập lại. Hệ thống sẽ tự chuyển thành IN HOA.</div>
+          <div class="hint">Có thể sửa/nhập lại. Hệ thống tự chuyển sang IN HOA.</div>
         </div>
 
-        <!-- CCCD -->
         <div class="col-6">
           <label for="cccd">Số CCCD <span class="en">/ Citizen ID</span></label>
           <input id="cccd" name="cccd" type="text" required
@@ -445,7 +425,6 @@
           <div class="hint">Chỉ nhập <b>ký tự số</b>. Hệ thống kiểm tra trùng CCCD.</div>
         </div>
 
-        <!-- EMAIL -->
         <div class="col-6">
           <label for="email">Email <span class="en">/ Email</span></label>
           <input id="email" name="email" type="email" required
@@ -453,7 +432,6 @@
           <div class="hint">Dùng email đang sử dụng để nhận thông báo &amp; kết quả.</div>
         </div>
 
-        <!-- GHI CHÚ -->
         <div class="col-12">
           <label for="ghichu">Ghi chú <span class="en">/ Notes</span></label>
           <textarea id="ghichu" name="ghichu"
@@ -464,13 +442,11 @@
       <button class="btn-primary" type="submit">
         <span class="icon">🚀</span>Gửi đăng ký
       </button>
-
       <button class="btn-ghost" type="button" onclick="resetForm()">
         🔄 Xóa nhanh toàn bộ nội dung vừa nhập
       </button>
     </form>
 
-    <!-- QR CODE -->
     <div class="qr-wrap">
       <div class="hint" style="margin-bottom:6px;">
         Hoặc quét QR này để mở trang đăng ký trên điện thoại:
@@ -484,54 +460,45 @@
   <section id="exam" class="card hidden">
     <h2><span class="icon">▶️</span>Vào thi trực tuyến</h2>
     <div class="muted">
-      Chọn đúng <b>khối</b> và <b>môn/đề</b>. Hệ thống sẽ chuyển sang Google Form hoặc Quiz tương ứng.
-      (Thầy thay link thật của từng đề).
+      Chọn đúng <b>khối</b> và <b>môn/đề</b>. Hệ thống sẽ chuyển sang Google Form/Quiz tương ứng.
     </div>
 
     <div class="exam-grid">
-      <!-- KHỐI 10 -->
       <div class="exam-card">
         <span class="badge">Khối 10</span>
         <h3>Đề trắc nghiệm Sử 10 – Chương 1</h3>
         <p>Thời gian: 30 phút · 25 câu · Tự lưu điểm.</p>
-        <a class="pill-btn"
-           href="https://forms.gle/THAY_LINK_FORM_KHOI10_SU1"
+        <a class="pill-btn" href="https://forms.gle/THAY_LINK_FORM_KHOI10_SU1"
            target="_blank" rel="noopener">
           👉 Vào làm bài
         </a>
       </div>
 
-      <!-- KHỐI 11 -->
       <div class="exam-card">
         <span class="badge">Khối 11</span>
         <h3>Đề trắc nghiệm Sử 11 – Ôn HKI</h3>
         <p>Thời gian: 40 phút · 30 câu · Tự chấm.</p>
-        <a class="pill-btn"
-           href="https://forms.gle/THAY_LINK_FORM_KHOI11_SU"
+        <a class="pill-btn" href="https://forms.gle/THAY_LINK_FORM_KHOI11_SU"
            target="_blank" rel="noopener">
           👉 Vào làm bài
         </a>
       </div>
 
-      <!-- KHỐI 12 -->
       <div class="exam-card">
         <span class="badge">Khối 12</span>
         <h3>Đề luyện thi TN THPT – Sử 12</h3>
         <p>Thời gian: 50 phút · 40 câu · Random câu hỏi.</p>
-        <a class="pill-btn"
-           href="https://forms.gle/THAY_LINK_FORM_KHOI12_SU"
+        <a class="pill-btn" href="https://forms.gle/THAY_LINK_FORM_KHOI12_SU"
            target="_blank" rel="noopener">
           👉 Vào làm bài
         </a>
       </div>
 
-      <!-- MẪU THÊM -->
       <div class="exam-card">
         <span class="badge">Mọi khối</span>
         <h3>Đề thử hệ thống / khảo sát nhanh</h3>
         <p>Dùng để test hệ thống hoặc khảo sát ý kiến học sinh.</p>
-        <a class="pill-btn"
-           href="https://forms.gle/THAY_LINK_FORM_KHAO_SAT"
+        <a class="pill-btn" href="https://forms.gle/THAY_LINK_FORM_KHAO_SAT"
            target="_blank" rel="noopener">
           🧪 Làm khảo sát
         </a>
@@ -544,7 +511,6 @@
     <h2><span class="icon">📊</span>Dashboard – Thống kê đăng ký</h2>
     <div class="muted">
       Dashboard đọc trực tiếp dữ liệu từ Google Sheet (qua Web App).
-      Thầy nhớ chia sẻ Sheet dạng <b>Anyone with link – Viewer</b> nếu muốn dùng trên GitHub.
     </div>
 
     <div id="dash-loading" class="muted" style="margin-top:10px;">
@@ -586,9 +552,59 @@
               <th>Sĩ số</th>
             </tr>
           </thead>
-          <tbody id="tbl-lop">
-          </tbody>
+          <tbody id="tbl-lop"></tbody>
         </table>
+      </div>
+
+      <div class="stat-row" style="margin-top:14px;">
+        <div class="stat-card" style="flex:1 1 260px;">
+          <h4>Theo giới tính</h4>
+          <table>
+            <tbody id="tbl-gender"></tbody>
+          </table>
+          <h4 style="margin-top:8px;">Theo dân tộc</h4>
+          <table>
+            <tbody id="tbl-eth"></tbody>
+          </table>
+        </div>
+        <div class="stat-card" style="flex:1 1 260px;">
+          <h4>Theo trường</h4>
+          <table>
+            <tbody id="tbl-school"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KẾT QUẢ BÀI THI -->
+  <section id="result" class="card hidden">
+    <h2><span class="icon">✅</span>Kết quả bài thi (Google Form)</h2>
+    <div class="muted">
+      Dữ liệu lấy từ sheet điểm của Google Form/Quiz (file &amp; cột đã cấu hình trong <b>Code.gs</b>).
+      Hiển thị tối đa <b>200</b> lượt gần nhất.
+    </div>
+
+    <div id="res-loading" class="muted" style="margin-top:10px;">
+      ⏳ Đang tải danh sách kết quả...
+    </div>
+
+    <div id="res-content" class="hidden">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Thời gian</th>
+              <th>Họ tên</th>
+              <th>Lớp</th>
+              <th>Điểm</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-res"></tbody>
+        </table>
+      </div>
+      <div class="hint">
+        Gợi ý: lọc / tìm nhanh trên trình duyệt (Ctrl+F) theo tên học sinh, lớp,...
       </div>
     </div>
   </section>
@@ -598,54 +614,44 @@
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec";
 
   function show(sectionId){
-    document.getElementById("reg").classList.add("hidden");
-    document.getElementById("exam").classList.add("hidden");
-    document.getElementById("review").classList.add("hidden");
+    ["reg","exam","review","result"].forEach(id=>{
+      document.getElementById(id).classList.add("hidden");
+    });
+    ["btn-reg","btn-exam","btn-review","btn-result"].forEach(id=>{
+      document.getElementById(id).classList.remove("active");
+    });
 
-    document.getElementById("btn-reg").classList.remove("active");
-    document.getElementById("btn-exam").classList.remove("active");
-    document.getElementById("btn-review").classList.remove("active");
-
-    if(sectionId==="reg"){
-      document.getElementById("reg").classList.remove("hidden");
-      document.getElementById("btn-reg").classList.add("active");
-    }else if(sectionId==="exam"){
-      document.getElementById("exam").classList.remove("hidden");
-      document.getElementById("btn-exam").classList.add("active");
-    }else if(sectionId==="review"){
-      document.getElementById("review").classList.remove("hidden");
-      document.getElementById("btn-review").classList.add("active");
-      if(!window._dashboardLoaded){
-        loadDashboard();
-        window._dashboardLoaded = true;
-      }
-    }
+    document.getElementById(sectionId).classList.remove("hidden");
+    document.getElementById("btn-"+sectionId).classList.add("active");
     window.scrollTo({top:0,behavior:"smooth"});
+
+    if(sectionId==="review" && !window._dashboardLoaded){
+      loadDashboard();
+      window._dashboardLoaded = true;
+    }
+    if(sectionId==="result" && !window._resultsLoaded){
+      loadResults();
+      window._resultsLoaded = true;
+    }
   }
 
   function resetForm(){
     document.getElementById("registerForm").reset();
   }
 
-  // Auto IN HOA HỌ TÊN + LỚP
+  // IN HOA họ tên & lớp
   const hotenInput = document.getElementById("hoten");
-  hotenInput.addEventListener("blur", () => {
-    hotenInput.value = hotenInput.value.toUpperCase();
-  });
+  hotenInput.addEventListener("blur", ()=> hotenInput.value = hotenInput.value.toUpperCase());
   const malopInput = document.getElementById("malop");
-  malopInput.addEventListener("blur", () => {
-    malopInput.value = malopInput.value.toUpperCase();
-  });
+  malopInput.addEventListener("blur", ()=> malopInput.value = malopInput.value.toUpperCase());
 
-  // Đồng bộ preset lớp -> ô nhập
   const lopPreset = document.getElementById("lopPreset");
-  lopPreset.addEventListener("change", () => {
+  lopPreset.addEventListener("change", ()=>{
     if(lopPreset.value){
       malopInput.value = lopPreset.value.toUpperCase();
     }
   });
 
-  // Hiện ô "trường khác" & "tỉnh khác"
   document.getElementById("truong").addEventListener("change", e=>{
     document.getElementById("truong_khac").classList.toggle("hidden", e.target.value !== "");
   });
@@ -653,7 +659,7 @@
     document.getElementById("tinh_khac").classList.toggle("hidden", e.target.value !== "");
   });
 
-  /* DASHBOARD – LẤY DỮ LIỆU BẰNG JSONP */
+  /* DASHBOARD */
   function loadDashboard(){
     const s = document.createElement("script");
     const cbName = "renderDashboard";
@@ -661,38 +667,91 @@
     document.body.appendChild(s);
   }
 
-  function renderDashboard(data){
-    try{
-      document.getElementById("dash-loading").classList.add("hidden");
-      document.getElementById("dash-content").classList.remove("hidden");
-
-      const total = data.total || 0;
-      const byKhoi = data.byKhoi || {};
-      const byLop  = data.byLop || {};
-
-      document.getElementById("stat-total").textContent = total;
-      document.getElementById("stat-k10").textContent = byKhoi["10"] || 0;
-      document.getElementById("stat-k11").textContent = byKhoi["11"] || 0;
-      document.getElementById("stat-k12").textContent = byKhoi["12"] || 0;
-
-      const tbody = document.getElementById("tbl-lop");
-      tbody.innerHTML = "";
-      const entries = Object.entries(byLop).sort((a,b)=>a[0].localeCompare(b[0]));
-      entries.forEach(([lop,count])=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td><span class="badge-khoi">${lop}</span></td><td>${count}</td>`;
-        tbody.appendChild(tr);
-      });
-      if(entries.length===0){
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td colspan="2" class="muted">Chưa có dữ liệu.</td>`;
-        tbody.appendChild(tr);
-      }
-    }catch(err){
-      document.getElementById("dash-loading").textContent =
-        "Có lỗi khi tải thống kê: " + err;
-      document.getElementById("dash-loading").classList.remove("hidden");
+  function fillSimpleTable(tbodyId, map){
+    const tbody = document.getElementById(tbodyId);
+    tbody.innerHTML = "";
+    const entries = Object.entries(map || {}).sort((a,b)=>b[1]-a[1]);
+    if(entries.length === 0){
+      tbody.innerHTML = '<tr><td class="muted">Chưa có dữ liệu.</td><td></td></tr>';
+      return;
     }
+    entries.forEach(([key,val])=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${key || "(không rõ)"}</td><td>${val}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderDashboard(data){
+    document.getElementById("dash-loading").classList.add("hidden");
+    document.getElementById("dash-content").classList.remove("hidden");
+
+    const total = data.total || 0;
+    const byKhoi = data.byKhoi || {};
+    const byLop  = data.byLop  || {};
+    const byGender = data.byGender || {};
+    const byEth   = data.byEthnicity || {};
+    const bySchool= data.bySchool || {};
+
+    document.getElementById("stat-total").textContent = total;
+    document.getElementById("stat-k10").textContent = byKhoi["10"] || 0;
+    document.getElementById("stat-k11").textContent = byKhoi["11"] || 0;
+    document.getElementById("stat-k12").textContent = byKhoi["12"] || 0;
+
+    const tbodyLop = document.getElementById("tbl-lop");
+    tbodyLop.innerHTML = "";
+    const entriesLop = Object.entries(byLop).sort((a,b)=>a[0].localeCompare(b[0]));
+    if(entriesLop.length===0){
+      tbodyLop.innerHTML = '<tr><td colspan="2" class="muted">Chưa có dữ liệu.</td></tr>';
+    }else{
+      entriesLop.forEach(([lop,c])=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td><span class="badge-khoi">${lop}</span></td><td>${c}</td>`;
+        tbodyLop.appendChild(tr);
+      });
+    }
+
+    fillSimpleTable("tbl-gender", byGender);
+    fillSimpleTable("tbl-eth", byEth);
+    fillSimpleTable("tbl-school", bySchool);
+  }
+
+  /* KẾT QUẢ */
+  function loadResults(){
+    const s = document.createElement("script");
+    const cbName = "renderResults";
+    s.src = SCRIPT_URL + "?mode=results&callback=" + cbName + "&_=" + Date.now();
+    document.body.appendChild(s);
+  }
+
+  function renderResults(data){
+    document.getElementById("res-loading").classList.add("hidden");
+    document.getElementById("res-content").classList.remove("hidden");
+
+    const tbody = document.getElementById("tbl-res");
+    tbody.innerHTML = "";
+
+    if(data.error){
+      tbody.innerHTML =
+        `<tr><td colspan="4" class="muted">Lỗi khi đọc kết quả: ${data.error}</td></tr>`;
+      return;
+    }
+
+    const rows = data.rows || [];
+    if(rows.length === 0){
+      tbody.innerHTML = '<tr><td colspan="4" class="muted">Chưa có dữ liệu.</td></tr>';
+      return;
+    }
+
+    rows.forEach(r=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        `<td>${r.time || ""}</td>` +
+        `<td>${r.name || ""}</td>` +
+        `<td>${r.class || ""}</td>` +
+        `<td>${r.score || ""}</td>`;
+      tbody.appendChild(tr);
+    });
   }
 </script>
 </body>
