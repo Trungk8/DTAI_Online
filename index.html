@@ -1,740 +1,699 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   <title>SK – Hệ thống Kiểm tra Online</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
-      --bg1: #e0f2ff;
-      --bg2: #fef9c3;
-      --card-bg: #ffffff;
-      --main: #2563eb;
-      --main-soft: #dbeafe;
-      --accent: #f97316;
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --danger: #e11d48;
-      --radius-lg: 20px;
-      --radius-md: 12px;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.18);
+      --primary:#2563eb;
+      --primary-soft:#dbeafe;
+      --primary-dark:#1d4ed8;
+      --accent:#f97316;
+      --bg:#f3f4f6;
+      --text:#111827;
+      --muted:#6b7280;
+      --card-radius:18px;
+      --shadow-big:0 18px 45px rgba(15,23,42,.16);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#e0f2fe,#f9fafb);
+      color:var(--text);
+    }
+    .wrap{
+      max-width:960px;
+      margin:24px auto 40px;
+      padding:0 16px;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:1.5rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    h1 span.logo-dot{
+      width:26px;height:26px;
+      border-radius:999px;
+      background:conic-gradient(from 220deg,var(--primary),#10b981,#6366f1);
+      box-shadow:0 0 0 3px #eff6ff;
+    }
+    nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:8px;
+    }
+    nav button{
+      flex:1 1 120px;
+      border:none;
+      border-radius:999px;
+      padding:8px 14px;
+      background:#fff;
+      color:var(--muted);
+      font-weight:600;
+      box-shadow:0 8px 20px rgba(15,23,42,.08);
+      cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      gap:6px;
+      font-size:.9rem;
+      transition:.18s all ease;
+    }
+    nav button.active{
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      color:#fff;
+      box-shadow:0 10px 26px rgba(37,99,235,.5);
+      transform:translateY(-1px);
     }
 
-    * {
-      box-sizing: border-box;
+    section.card{
+      margin-top:24px;
+      background:#fff;
+      border-radius:var(--card-radius);
+      box-shadow:var(--shadow-big);
+      padding:20px 18px;
+    }
+    @media(min-width:720px){
+      section.card{padding:24px 22px;}
+    }
+    .card h2{
+      margin-top:0;
+      font-size:1.25rem;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .card h2 span.icon{font-size:1.4rem;}
+
+    /* FORM ĐĂNG KÝ */
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:8px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:12px;
+    }
+    .col-12{grid-column:span 12;}
+    .col-6{grid-column:span 12;}
+    .col-4{grid-column:span 12;}
+    @media(min-width:720px){
+      .col-6{grid-column:span 6;}
+      .col-4{grid-column:span 4;}
+    }
+    label{
+      display:block;
+      font-size:.85rem;
+      font-weight:600;
+      margin-bottom:4px;
+      color:var(--text);
+    }
+    label span.en{
+      font-weight:500;
+      color:var(--muted);
+      font-size:.8rem;
+    }
+    input, select, textarea{
+      width:100%;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      padding:9px 12px;
+      font-size:.9rem;
+      outline:none;
+      background:#f9fafb;
+      transition:.16s all ease;
+    }
+    textarea{
+      min-height:80px;
+      border-radius:12px;
+      resize:vertical;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color:var(--primary);
+      box-shadow:0 0 0 1px rgba(37,99,235,.35);
+      background:#fff;
+    }
+    .hint{
+      font-size:.78rem;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .flex{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .btn-primary{
+      margin-top:6px;
+      border:none;
+      border-radius:999px;
+      padding:9px 18px;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 12px 26px rgba(37,99,235,.5);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+    }
+    .btn-primary span.icon{font-size:1.1rem;}
+    .btn-ghost{
+      border-radius:999px;
+      padding:7px 12px;
+      border:1px dashed #d1d5db;
+      background:#f9fafb;
+      font-size:.78rem;
+      color:var(--muted);
     }
 
-    body {
-      margin: 0;
-      padding: 16px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      color: var(--text);
-      background: radial-gradient(circle at top left, var(--bg1), #ffffff 40%),
-        radial-gradient(circle at bottom right, var(--bg2), #ffffff 40%);
-      min-height: 100vh;
+    /* QR */
+    .qr-wrap{
+      margin-top:16px;
+      text-align:center;
+    }
+    .qr-wrap img{
+      width:180px;
+      max-width:60%;
+      border-radius:24px;
+      box-shadow:0 18px 45px rgba(15,23,42,.18);
+      background:#fff;
+      padding:12px;
     }
 
-    .wrap {
-      max-width: 640px;
-      margin: 0 auto;
+    /* VÀO THI */
+    .exam-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
+      margin-top:10px;
+    }
+    .exam-card{
+      background:linear-gradient(135deg,#eef2ff,#eff6ff);
+      border-radius:16px;
+      padding:12px 12px 13px;
+      position:relative;
+      overflow:hidden;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      padding:2px 8px;
+      font-size:.75rem;
+      background:rgba(37,99,235,.08);
+      color:var(--primary-dark);
+      font-weight:600;
+      gap:4px;
+    }
+    .exam-card h3{
+      margin:6px 0 4px;
+      font-size:1rem;
+    }
+    .exam-card p{
+      margin:0;
+      font-size:.82rem;
+      color:var(--muted);
+    }
+    .pill-btn{
+      margin-top:8px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:none;
+      background:var(--primary);
+      color:#fff;
+      font-size:.8rem;
+      font-weight:600;
+      text-decoration:none;
+      box-shadow:0 10px 22px rgba(37,99,235,.5);
     }
 
-    h1 {
-      font-size: 1.6rem;
-      margin: 8px 0 16px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    /* DASHBOARD */
+    .stat-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:8px;
     }
+    .stat-card{
+      flex:1 1 140px;
+      background:#f9fafb;
+      border-radius:14px;
+      padding:10px 12px;
+      border:1px solid #e5e7eb;
+    }
+    .stat-card h4{
+      margin:0 0 2px;
+      font-size:.85rem;
+    }
+    .stat-card .big{
+      font-size:1.3rem;
+      font-weight:700;
+      color:var(--primary-dark);
+    }
+    .table-wrapper{
+      margin-top:12px;
+      max-height:260px;
+      overflow:auto;
+      border-radius:12px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.8rem;
+    }
+    th,td{
+      padding:6px 8px;
+      border-bottom:1px solid #e5e7eb;
+      text-align:left;
+      white-space:nowrap;
+    }
+    th{
+      position:sticky;
+      top:0;
+      background:#e5e7eb;
+      z-index:1;
+    }
+    tr:nth-child(even) td{background:#fdfdfd;}
 
-    h1 span.logo-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--main), var(--accent));
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25);
+    .badge-khoi{
+      display:inline-block;
+      border-radius:999px;
+      padding:1px 8px;
+      font-size:.75rem;
+      background:#eff6ff;
+      color:var(--primary-dark);
+      font-weight:600;
     }
+    .muted{color:var(--muted);font-size:.8rem;}
 
-    nav {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    nav button {
-      flex: 1 1 110px;
-      border-radius: 999px;
-      border: none;
-      padding: 10px 12px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #0f172a;
-      background: #eff6ff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.18s ease;
-    }
-
-    nav button span.icon {
-      font-size: 1rem;
-    }
-
-    nav button.active {
-      background: linear-gradient(135deg, var(--main), #4f46e5);
-      color: #f9fafb;
-      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
-      transform: translateY(-1px);
-    }
-
-    nav button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      padding: 18px 18px 22px;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      backdrop-filter: blur(10px);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .card-header h2 {
-      font-size: 1.25rem;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .card-header h2 span.emoji {
-      font-size: 1.4rem;
-    }
-
-    .card-header small {
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-
-    .badge {
-      border-radius: 999px;
-      font-size: 0.75rem;
-      padding: 4px 10px;
-      background: var(--main-soft);
-      color: var(--main);
-      font-weight: 600;
-    }
-
-    .hint-top {
-      margin-top: 8px;
-      margin-bottom: 12px;
-      font-size: 0.85rem;
-      color: var(--muted);
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .hint-top span.icon {
-      font-size: 1.1rem;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .field-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .field-row .field {
-      flex: 1 1 0;
-    }
-
-    label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    label span.req {
-      color: var(--danger);
-      font-size: 0.9em;
-    }
-
-    label span.sub {
-      font-weight: 400;
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="date"],
-    select,
-    textarea {
-      width: 100%;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      padding: 10px 11px;
-      font-size: 0.9rem;
-      outline: none;
-      background: #f8fafc;
-      transition: all 0.16s ease;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: #9ca3af;
-      font-size: 0.85rem;
-    }
-
-    textarea {
-      min-height: 60px;
-      resize: vertical;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--main);
-      background: #ffffff;
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.1),
-        0 0 0 6px rgba(191, 219, 254, 0.9);
-    }
-
-    .helper {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .helper strong {
-      color: var(--main);
-    }
-
-    .btn-primary {
-      margin-top: 6px;
-      border-radius: 999px;
-      border: none;
-      padding: 11px 14px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #ffffff;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--main), #4f46e5);
-      box-shadow: 0 16px 32px rgba(37, 99, 235, 0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.18s ease;
-    }
-
-    .btn-primary span.icon {
-      font-size: 1.2rem;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 20px 40px rgba(30, 64, 175, 0.55);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-      box-shadow: 0 8px 18px rgba(30, 64, 175, 0.5);
-    }
-
-    .qr-block {
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, #eef2ff, #eff6ff);
-      border: 1px dashed rgba(129, 140, 248, 0.8);
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .qr-text {
-      flex: 1 1 200px;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    .qr-text strong {
-      color: var(--text);
-    }
-
-    .qr-img {
-      flex: 0 0 auto;
-    }
-
-    .qr-img img {
-      border-radius: 24px;
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
-      background: #ffffff;
-      padding: 12px;
-      max-width: 150px;
-      height: auto;
-    }
-
-    .view {
-      display: none;
-    }
-
-    .view.active {
-      display: block;
-    }
-
-    .placeholder-card {
-      margin-top: 10px;
-      padding: 16px;
-      border-radius: var(--radius-lg);
-      background: #f9fafb;
-      border: 1px dashed var(--border);
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .placeholder-card strong {
-      color: var(--main);
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 12px;
-      }
-      .card {
-        padding: 16px 14px 20px;
-      }
-      h1 {
-        font-size: 1.35rem;
-      }
-      nav button {
-        font-size: 0.85rem;
-        padding-inline: 10px;
-      }
-      .qr-img img {
-        max-width: 130px;
-      }
-    }
+    .hidden{display:none;}
   </style>
 </head>
-
 <body>
-  <div class="wrap">
-    <h1>
-      <span class="logo-dot"></span>
-      SK – Hệ thống Kiểm tra Online
-    </h1>
-
-    <nav>
-      <button class="active" onclick="showSection('reg', this)">
-        <span class="icon">📝</span>
-        Đăng ký
-      </button>
-      <button onclick="showSection('login', this)">
-        <span class="icon">🔑</span>
-        Đăng nhập
-      </button>
-      <button onclick="showSection('exam', this)">
-        <span class="icon">✅</span>
-        Vào thi
-      </button>
-      <button onclick="showSection('review', this)">
-        <span class="icon">📊</span>
-        Xem lại
-      </button>
-    </nav>
-
-    <!-- =========== VIEW: ĐĂNG KÝ =========== -->
-    <section id="reg" class="view active">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <h2>
-              <span class="emoji">📝</span>
-              Đăng ký tài khoản
-            </h2>
-            <small>Nhập thông tin một lần – dùng cho toàn bộ kỳ kiểm tra</small>
-          </div>
-          <span class="badge">BẢN PREMIUM</span>
-        </div>
-
-        <div class="hint-top">
-          <span class="icon">💡</span>
-          <span>
-            Nên nhập <strong>đầy đủ, chính xác</strong>. Các ô có dấu
-            <span style="color:#e11d48">*</span> là bắt buộc. Form tối ưu cho
-            điện thoại (bàn phím số cho CCCD, Email, …).
-          </span>
-        </div>
-
-        <form
-          id="registerForm"
-          method="POST"
-          action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec"
-        >
-          <!-- Họ tên + Ngày sinh + Giới tính -->
-          <div class="field-row">
-            <div class="field">
-              <label for="hoten">
-                Họ và tên <span class="req">*</span>
-                <span class="sub">(ghi đủ dấu)</span>
-              </label>
-              <input
-                type="text"
-                id="hoten"
-                name="hoten"
-                required
-                autocomplete="name"
-                placeholder="Ví dụ: Nguyễn Văn Trung"
-              />
-              <div class="helper">
-                Hệ thống sẽ tự <strong>chuyển thành CHỮ IN HOA</strong> khi gửi.
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="ngaysinh">
-                Ngày sinh <span class="req">*</span>
-                <span class="sub">(dd/mm/yyyy)</span>
-              </label>
-              <input
-                type="date"
-                id="ngaysinh"
-                name="ngaysinh"
-                required
-              />
-              <div class="helper">Chọn đúng ngày/tháng/năm sinh.</div>
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="gioitinh">Giới tính <span class="req">*</span></label>
-              <select id="gioitinh" name="gioitinh" required>
-                <option value="">-- Chọn giới tính --</option>
-                <option value="Nam">Nam</option>
-                <option value="Nữ">Nữ</option>
-                <option value="Khác">Khác</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="khoi">
-                Khối <span class="req">*</span>
-                <span class="sub">(10, 11 hoặc 12)</span>
-              </label>
-              <select id="khoi" name="khoi" required>
-                <option value="">-- Chọn khối --</option>
-                <option value="10">Khối 10</option>
-                <option value="11">Khối 11</option>
-                <option value="12">Khối 12</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Dân tộc + Trường -->
-          <div class="field-row">
-            <div class="field">
-              <label for="dantoc">
-                Dân tộc <span class="req">*</span>
-              </label>
-              <select id="dantoc" name="dantoc" required>
-                <option value="">-- Chọn dân tộc --</option>
-                <option value="Kinh">Kinh</option>
-                <option value="Tày">Tày</option>
-                <option value="Nùng">Nùng</option>
-                <option value="Thái">Thái</option>
-                <option value="Mường">Mường</option>
-                <option value="Ê-đê">Ê-đê</option>
-                <option value="Hoa">Hoa</option>
-                <option value="Khmer">Khmer</option>
-                <option value="Khác">Khác</option>
-              </select>
-              <div class="helper">
-                Nếu không có trong danh sách, chọn <strong>“Khác”</strong>.
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="truong">
-                Trường <span class="req">*</span>
-              </label>
-              <select id="truong" name="truong" required>
-                <option value="">-- Chọn trường --</option>
-                <option value="THPT Nguyen Dinh Chieu">
-                  THPT Nguyễn Đình Chiểu – Lâm Đồng
-                </option>
-                <option value="THPT Pham Van Dong">
-                  THPT Phạm Văn Đồng – Lâm Đồng
-                </option>
-                <option value="THPT Khac">Trường THPT khác</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Xã/Phường + Tỉnh -->
-          <div class="field-row">
-            <div class="field">
-              <label for="xa">
-                Xã/Phường <span class="req">*</span>
-              </label>
-              <select id="xa" name="xa">
-                <option value="">-- Chọn xã/phường --</option>
-                <option value="Xa Kien Duc">Xã Kiến Đức</option>
-                <option value="Phuong 1">Phường 1</option>
-                <option value="Phuong 2">Phường 2</option>
-                <option value="Xa Khac">Khác</option>
-              </select>
-              <div class="helper">
-                Có thể chọn tạm <strong>“Khác”</strong> nếu không có đúng tên.
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="tinh">
-                Tỉnh/TP <span class="req">*</span>
-              </label>
-              <select id="tinh" name="tinh">
-                <option value="">-- Chọn tỉnh/thành phố --</option>
-                <option value="Lam Dong">Lâm Đồng</option>
-                <option value="Dak Nong">Đắk Nông</option>
-                <option value="Ho Chi Minh">TP. Hồ Chí Minh</option>
-                <option value="Ha Noi">Hà Nội</option>
-                <option value="Tinh Khac">Tỉnh khác</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Khối / Mã lớp (select + text) -->
-          <div class="field-row">
-            <div class="field">
-              <label for="malop-select">
-                Lớp (chọn nhanh) <span class="sub">(có thể bỏ qua)</span>
-              </label>
-              <select id="malop-select">
-                <option value="">-- Chọn lớp gợi ý --</option>
-                <option value="10A1">10A1</option>
-                <option value="10A2">10A2</option>
-                <option value="11A1">11A1</option>
-                <option value="11A2">11A2</option>
-                <option value="12A1">12A1</option>
-                <option value="12A2">12A2</option>
-                <option value="Khac">Khác</option>
-              </select>
-              <div class="helper">
-                Chọn lớp gợi ý để điền nhanh, hoặc nhập tay ở ô bên cạnh.
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="malop">
-                Mã lớp <span class="req">*</span>
-                <span class="sub">(có thể sửa/nhập tay)</span>
-              </label>
-              <input
-                type="text"
-                id="malop"
-                name="malop"
-                required
-                placeholder="Ví dụ: 12A1"
-              />
-              <div class="helper">
-                Nếu chọn ở ô bên trái, hệ thống sẽ tự điền – thầy/cô vẫn có thể
-                thay đổi.
-              </div>
-            </div>
-          </div>
-
-          <!-- CCCD + Email -->
-          <div class="field-row">
-            <div class="field">
-              <label for="cccd">
-                Số CCCD/CMND <span class="req">*</span>
-                <span class="sub">(chỉ gõ số, không cách)</span>
-              </label>
-              <input
-                type="text"
-                id="cccd"
-                name="cccd"
-                required
-                inputmode="numeric"
-                pattern="[0-9]{9,12}"
-                maxlength="12"
-                placeholder="Ví dụ: 079123456789"
-              />
-              <div class="helper">
-                <strong>Dạng ký tự số</strong> (không phải kiểu số), giữ nguyên
-                số 0 ở đầu. Thường 12 số.
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="email">
-                Email <span class="req">*</span>
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                autocomplete="email"
-                inputmode="email"
-                placeholder="Ví dụ: hs.tenlop@gmail.com"
-              />
-              <div class="helper">
-                Nên dùng email thật để nhận thông báo, kết quả.
-              </div>
-            </div>
-          </div>
-
-          <!-- Ghi chú -->
-          <div class="field">
-            <label for="ghichu">
-              Ghi chú thêm
-              <span class="sub">(nếu có, ví dụ: hoàn cảnh đặc biệt,…)</span>
-            </label>
-            <textarea
-              id="ghichu"
-              name="ghichu"
-              placeholder="Ví dụ: Thuộc diện hộ nghèo, đang ở ký túc xá,…"
-            ></textarea>
-          </div>
-
-          <button type="submit" class="btn-primary">
-            <span class="icon">🚀</span>
-            Gửi đăng ký
-          </button>
-        </form>
-
-        <!-- QR CODE -->
-        <div class="qr-block">
-          <div class="qr-text">
-            <strong>Quét QR để mở form đăng ký trên điện thoại</strong><br />
-            Dùng camera hoặc ứng dụng quét QR, sau đó điền trực tiếp trên điện
-            thoại. Rất tiện nếu giáo viên chiếu mã này trên máy chiếu.
-          </div>
-          <div class="qr-img">
-            <img
-              src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Ftrungk8.github.io%2FDTAI_Online%2F"
-              alt="QR Code đăng ký"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- =========== VIEW: ĐĂNG NHẬP (PLACEHOLDER) =========== -->
-    <section id="login" class="view">
-      <div class="placeholder-card">
-        <strong>Đăng nhập</strong> hiện chưa cần cho bước đăng ký. Thầy có thể
-        dùng tab <strong>Đăng ký</strong> để nhập danh sách trước. Nếu muốn em
-        bổ sung hệ thống đăng nhập riêng (tài khoản, mật khẩu, phân quyền giáo
-        viên/học sinh) thì chỉ cần nói: <em>“Làm tiếp bước 2 – đăng nhập”</em>.
-      </div>
-    </section>
-
-    <!-- =========== VIEW: VÀO THI (PLACEHOLDER) =========== -->
-    <section id="exam" class="view">
-      <div class="placeholder-card">
-        Đây sẽ là khu vực <strong>Vào thi online</strong> (link đề, mã bài,
-        thời gian,…). Hiện tại thầy tập trung hoàn thiện form đăng ký. Khi
-        sẵn sàng, chỉ cần yêu cầu: <em>“Thiết kế giao diện Vào thi”</em>, em sẽ
-        làm tiếp.
-      </div>
-    </section>
-
-    <!-- =========== VIEW: XEM LẠI (PLACEHOLDER) =========== -->
-    <section id="review" class="view">
-      <div class="placeholder-card">
-        Phần <strong>Xem lại</strong> sẽ dùng để xem danh sách đã đăng ký, tra
-        cứu nhanh theo CCCD, Email,… Dữ liệu đang được lưu vào Google Sheet
-        <strong>DangKy</strong>. Nếu thầy muốn bảng thống kê/biểu đồ, em sẽ
-        thiết kế dashboard riêng.
-      </div>
-    </section>
+<div class="wrap">
+  <h1>
+    <span class="logo-dot"></span>
+    SK – Hệ thống Kiểm tra Online
+  </h1>
+  <div class="muted" style="margin-bottom:8px;">
+    Tối ưu cho điện thoại · Form sáng – dễ nhìn · Tự động IN HOA họ tên · Chống đăng ký trùng CCCD &amp; Email
   </div>
 
-  <script>
-    // Đổi tab (Đăng ký / Đăng nhập / Vào thi / Xem lại)
-    function showSection(id, btn) {
-      document.querySelectorAll(".view").forEach(function (s) {
-        s.classList.remove("active");
-      });
-      document.getElementById(id).classList.add("active");
+  <nav>
+    <button id="btn-reg"   class="active" onclick="show('reg')">📝 Đăng ký</button>
+    <button id="btn-exam"  onclick="show('exam')">▶️ Vào thi</button>
+    <button id="btn-review"onclick="show('review')">📊 Dashboard</button>
+  </nav>
 
-      document.querySelectorAll("nav button").forEach(function (b) {
-        b.classList.remove("active");
-      });
-      if (btn) btn.classList.add("active");
+  <!-- ĐĂNG KÝ -->
+  <section id="reg" class="card">
+    <h2><span class="icon">📝</span>Đăng ký tài khoản</h2>
+    <div class="muted">Điền thông tin cẩn thận. Các trường đều có gợi ý để nhập nhanh trên điện thoại.</div>
+
+    <form id="registerForm"
+          action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec"
+          method="POST">
+
+      <div class="grid">
+        <!-- HỌ TÊN -->
+        <div class="col-12">
+          <label for="hoten">Họ và tên <span class="en">/ Full name</span></label>
+          <input id="hoten" name="hoten" type="text" required
+                 placeholder="VD: Nguyễn Văn Trung"
+                 autocomplete="name">
+          <div class="hint">Nhập đúng chính tả. Hệ thống sẽ tự chuyển thành CHỮ IN HOA khi lưu.</div>
+        </div>
+
+        <!-- NGÀY SINH + GIỚI TÍNH -->
+        <div class="col-6">
+          <label for="ngaysinh">Ngày sinh <span class="en">/ Date of birth</span></label>
+          <input id="ngaysinh" name="ngaysinh" type="date" required>
+          <div class="hint">Chọn trên lịch cho nhanh, chuẩn định dạng.</div>
+        </div>
+        <div class="col-6">
+          <label for="gioitinh">Giới tính <span class="en">/ Gender</span></label>
+          <select id="gioitinh" name="gioitinh" required>
+            <option value="">-- Chọn --</option>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+            <option value="Khác">Khác</option>
+          </select>
+        </div>
+
+        <!-- DÂN TỘC -->
+        <div class="col-6">
+          <label for="dantoc">Dân tộc <span class="en">/ Ethnicity</span></label>
+          <select id="dantoc" name="dantoc" required>
+            <option value="">-- Chọn dân tộc --</option>
+            <option value="Kinh">Kinh</option>
+            <option value="Mạ">Mạ</option>
+            <option value="K'Ho">K'Ho</option>
+            <option value="Nùng">Nùng</option>
+            <option value="Tày">Tày</option>
+            <option value="Khác">Khác...</option>
+          </select>
+          <div class="hint">Nếu không có trong danh sách, hãy chọn <b>Khác...</b> và ghi rõ trong Ghi chú.</div>
+        </div>
+
+        <!-- TRƯỜNG -->
+        <div class="col-6">
+          <label for="truong">Trường <span class="en">/ School</span></label>
+          <select id="truong" name="truong">
+            <option value="THPT Nguyễn Đình Chiểu">THPT Nguyễn Đình Chiểu</option>
+            <option value="THPT Phạm Văn Đồng">THPT Phạm Văn Đồng</option>
+            <option value="THPT DTNT">THPT DTNT</option>
+            <option value="">Khác...</option>
+          </select>
+          <input id="truong_khac" name="truong_khac" type="text" class="hidden"
+                 placeholder="Nhập tên trường khác...">
+          <div class="hint">Nếu chọn mục <b>Khác...</b>, hãy nhập tên trường ở ô bên dưới.</div>
+        </div>
+
+        <!-- XÃ / PHƯỜNG -->
+        <div class="col-6">
+          <label for="xa">Xã / Phường <span class="en">/ Ward</span></label>
+          <select id="xa" name="xa">
+            <option value="">-- Chọn / nhập --</option>
+            <option value="Phường 1">Phường 1</option>
+            <option value="Phường 2">Phường 2</option>
+            <option value="Phường 3">Phường 3</option>
+            <option value="Xã ...">Khác (nhập ở ghi chú)</option>
+          </select>
+        </div>
+
+        <!-- TỈNH -->
+        <div class="col-6">
+          <label for="tinh">Tỉnh / TP <span class="en">/ Province</span></label>
+          <select id="tinh" name="tinh">
+            <option value="Lâm Đồng">Lâm Đồng</option>
+            <option value="Đắk Nông">Đắk Nông</option>
+            <option value="">Khác...</option>
+          </select>
+          <input id="tinh_khac" name="tinh_khac" type="text" class="hidden"
+                 placeholder="Nhập tỉnh/thành khác...">
+        </div>
+
+        <!-- KHỐI -->
+        <div class="col-4">
+          <label for="khoi">Khối <span class="en">/ Grade</span></label>
+          <select id="khoi" name="khoi" required>
+            <option value="">-- Chọn --</option>
+            <option value="10">Khối 10</option>
+            <option value="11">Khối 11</option>
+            <option value="12">Khối 12</option>
+          </select>
+        </div>
+
+        <!-- LỚP -->
+        <div class="col-4">
+          <label for="lopPreset">Lớp (chọn nhanh) <span class="en">/ Class preset</span></label>
+          <select id="lopPreset">
+            <option value="">-- Chọn --</option>
+            <option value="10A1">10A1</option>
+            <option value="10A2">10A2</option>
+            <option value="11A1">11A1</option>
+            <option value="12A1">12A1</option>
+          </select>
+          <div class="hint">Chọn mẫu nếu trùng với lớp của em.</div>
+        </div>
+        <div class="col-4">
+          <label for="malop">Lớp (tùy ý) <span class="en">/ Class manual</span></label>
+          <input id="malop" name="malop" type="text" placeholder="VD: 12A3">
+          <div class="hint">Có thể sửa/nhập lại. Hệ thống sẽ tự chuyển thành IN HOA.</div>
+        </div>
+
+        <!-- CCCD -->
+        <div class="col-6">
+          <label for="cccd">Số CCCD <span class="en">/ Citizen ID</span></label>
+          <input id="cccd" name="cccd" type="text" required
+                 placeholder="Nhập đủ 12 số"
+                 inputmode="numeric" pattern="[0-9]{9,12}">
+          <div class="hint">Chỉ nhập <b>ký tự số</b>. Hệ thống kiểm tra trùng CCCD.</div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="col-6">
+          <label for="email">Email <span class="en">/ Email</span></label>
+          <input id="email" name="email" type="email" required
+                 placeholder="VD: hs10a1@example.com" autocomplete="email">
+          <div class="hint">Dùng email đang sử dụng để nhận thông báo &amp; kết quả.</div>
+        </div>
+
+        <!-- GHI CHÚ -->
+        <div class="col-12">
+          <label for="ghichu">Ghi chú <span class="en">/ Notes</span></label>
+          <textarea id="ghichu" name="ghichu"
+                    placeholder="VD: Thuộc diện ưu tiên, dân tộc thiểu số, lớp đặc biệt,..."></textarea>
+        </div>
+      </div>
+
+      <button class="btn-primary" type="submit">
+        <span class="icon">🚀</span>Gửi đăng ký
+      </button>
+
+      <button class="btn-ghost" type="button" onclick="resetForm()">
+        🔄 Xóa nhanh toàn bộ nội dung vừa nhập
+      </button>
+    </form>
+
+    <!-- QR CODE -->
+    <div class="qr-wrap">
+      <div class="hint" style="margin-bottom:6px;">
+        Hoặc quét QR này để mở trang đăng ký trên điện thoại:
+      </div>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Ftrungk8.github.io%2FDTAI_Online%2F"
+           alt="QR Code đăng ký">
+    </div>
+  </section>
+
+  <!-- VÀO THI -->
+  <section id="exam" class="card hidden">
+    <h2><span class="icon">▶️</span>Vào thi trực tuyến</h2>
+    <div class="muted">
+      Chọn đúng <b>khối</b> và <b>môn/đề</b>. Hệ thống sẽ chuyển sang Google Form hoặc Quiz tương ứng.
+      (Thầy thay link thật của từng đề).
+    </div>
+
+    <div class="exam-grid">
+      <!-- KHỐI 10 -->
+      <div class="exam-card">
+        <span class="badge">Khối 10</span>
+        <h3>Đề trắc nghiệm Sử 10 – Chương 1</h3>
+        <p>Thời gian: 30 phút · 25 câu · Tự lưu điểm.</p>
+        <a class="pill-btn"
+           href="https://forms.gle/THAY_LINK_FORM_KHOI10_SU1"
+           target="_blank" rel="noopener">
+          👉 Vào làm bài
+        </a>
+      </div>
+
+      <!-- KHỐI 11 -->
+      <div class="exam-card">
+        <span class="badge">Khối 11</span>
+        <h3>Đề trắc nghiệm Sử 11 – Ôn HKI</h3>
+        <p>Thời gian: 40 phút · 30 câu · Tự chấm.</p>
+        <a class="pill-btn"
+           href="https://forms.gle/THAY_LINK_FORM_KHOI11_SU"
+           target="_blank" rel="noopener">
+          👉 Vào làm bài
+        </a>
+      </div>
+
+      <!-- KHỐI 12 -->
+      <div class="exam-card">
+        <span class="badge">Khối 12</span>
+        <h3>Đề luyện thi TN THPT – Sử 12</h3>
+        <p>Thời gian: 50 phút · 40 câu · Random câu hỏi.</p>
+        <a class="pill-btn"
+           href="https://forms.gle/THAY_LINK_FORM_KHOI12_SU"
+           target="_blank" rel="noopener">
+          👉 Vào làm bài
+        </a>
+      </div>
+
+      <!-- MẪU THÊM -->
+      <div class="exam-card">
+        <span class="badge">Mọi khối</span>
+        <h3>Đề thử hệ thống / khảo sát nhanh</h3>
+        <p>Dùng để test hệ thống hoặc khảo sát ý kiến học sinh.</p>
+        <a class="pill-btn"
+           href="https://forms.gle/THAY_LINK_FORM_KHAO_SAT"
+           target="_blank" rel="noopener">
+          🧪 Làm khảo sát
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="review" class="card hidden">
+    <h2><span class="icon">📊</span>Dashboard – Thống kê đăng ký</h2>
+    <div class="muted">
+      Dashboard đọc trực tiếp dữ liệu từ Google Sheet (qua Web App).
+      Thầy nhớ chia sẻ Sheet dạng <b>Anyone with link – Viewer</b> nếu muốn dùng trên GitHub.
+    </div>
+
+    <div id="dash-loading" class="muted" style="margin-top:10px;">
+      ⏳ Đang tải dữ liệu thống kê...
+    </div>
+
+    <div id="dash-content" class="hidden">
+      <div class="stat-row">
+        <div class="stat-card">
+          <h4>Tổng số học sinh</h4>
+          <div class="big" id="stat-total">0</div>
+          <div class="muted">Tất cả khối/lớp</div>
+        </div>
+        <div class="stat-card">
+          <h4>Khối 10</h4>
+          <div class="big" id="stat-k10">0</div>
+          <div class="muted">Sĩ số tạm thời</div>
+        </div>
+        <div class="stat-card">
+          <h4>Khối 11</h4>
+          <div class="big" id="stat-k11">0</div>
+          <div class="muted">Sĩ số tạm thời</div>
+        </div>
+        <div class="stat-card">
+          <h4>Khối 12</h4>
+          <div class="big" id="stat-k12">0</div>
+          <div class="muted">Sĩ số tạm thời</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:1rem;margin-top:14px;margin-bottom:6px;">
+        Bảng sĩ số theo lớp
+      </h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Lớp</th>
+              <th>Sĩ số</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-lop">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec";
+
+  function show(sectionId){
+    document.getElementById("reg").classList.add("hidden");
+    document.getElementById("exam").classList.add("hidden");
+    document.getElementById("review").classList.add("hidden");
+
+    document.getElementById("btn-reg").classList.remove("active");
+    document.getElementById("btn-exam").classList.remove("active");
+    document.getElementById("btn-review").classList.remove("active");
+
+    if(sectionId==="reg"){
+      document.getElementById("reg").classList.remove("hidden");
+      document.getElementById("btn-reg").classList.add("active");
+    }else if(sectionId==="exam"){
+      document.getElementById("exam").classList.remove("hidden");
+      document.getElementById("btn-exam").classList.add("active");
+    }else if(sectionId==="review"){
+      document.getElementById("review").classList.remove("hidden");
+      document.getElementById("btn-review").classList.add("active");
+      if(!window._dashboardLoaded){
+        loadDashboard();
+        window._dashboardLoaded = true;
+      }
     }
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
 
-    // Đồng bộ select lớp -> ô nhập mã lớp
-    const malopSelect = document.getElementById("malop-select");
-    const malopInput = document.getElementById("malop");
-    if (malopSelect) {
-      malopSelect.addEventListener("change", function () {
-        if (this.value && this.value !== "Khac") {
-          malopInput.value = this.value;
-        } else if (this.value === "Khac" && !malopInput.value) {
-          malopInput.focus();
-        }
-      });
+  function resetForm(){
+    document.getElementById("registerForm").reset();
+  }
+
+  // Auto IN HOA HỌ TÊN + LỚP
+  const hotenInput = document.getElementById("hoten");
+  hotenInput.addEventListener("blur", () => {
+    hotenInput.value = hotenInput.value.toUpperCase();
+  });
+  const malopInput = document.getElementById("malop");
+  malopInput.addEventListener("blur", () => {
+    malopInput.value = malopInput.value.toUpperCase();
+  });
+
+  // Đồng bộ preset lớp -> ô nhập
+  const lopPreset = document.getElementById("lopPreset");
+  lopPreset.addEventListener("change", () => {
+    if(lopPreset.value){
+      malopInput.value = lopPreset.value.toUpperCase();
     }
+  });
 
-    // Trước khi submit: chuẩn hóa HỌ VÀ TÊN thành IN HOA, trim khoảng trắng
-    const form = document.getElementById("registerForm");
-    if (form) {
-      form.addEventListener("submit", function () {
-        const nameInput = form.elements["hoten"];
-        if (nameInput && nameInput.value) {
-          nameInput.value = nameInput.value.trim().toUpperCase();
-        }
+  // Hiện ô "trường khác" & "tỉnh khác"
+  document.getElementById("truong").addEventListener("change", e=>{
+    document.getElementById("truong_khac").classList.toggle("hidden", e.target.value !== "");
+  });
+  document.getElementById("tinh").addEventListener("change", e=>{
+    document.getElementById("tinh_khac").classList.toggle("hidden", e.target.value !== "");
+  });
 
-        const malopValue = malopInput.value.trim();
-        if (malopValue) {
-          malopInput.value = malopValue.toUpperCase();
-        }
+  /* DASHBOARD – LẤY DỮ LIỆU BẰNG JSONP */
+  function loadDashboard(){
+    const s = document.createElement("script");
+    const cbName = "renderDashboard";
+    s.src = SCRIPT_URL + "?mode=stats&callback=" + cbName + "&_=" + Date.now();
+    document.body.appendChild(s);
+  }
 
-        const cccdInput = form.elements["cccd"];
-        if (cccdInput && cccdInput.value) {
-          cccdInput.value = cccdInput.value.replace(/\D/g, "");
-        }
+  function renderDashboard(data){
+    try{
+      document.getElementById("dash-loading").classList.add("hidden");
+      document.getElementById("dash-content").classList.remove("hidden");
+
+      const total = data.total || 0;
+      const byKhoi = data.byKhoi || {};
+      const byLop  = data.byLop || {};
+
+      document.getElementById("stat-total").textContent = total;
+      document.getElementById("stat-k10").textContent = byKhoi["10"] || 0;
+      document.getElementById("stat-k11").textContent = byKhoi["11"] || 0;
+      document.getElementById("stat-k12").textContent = byKhoi["12"] || 0;
+
+      const tbody = document.getElementById("tbl-lop");
+      tbody.innerHTML = "";
+      const entries = Object.entries(byLop).sort((a,b)=>a[0].localeCompare(b[0]));
+      entries.forEach(([lop,count])=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td><span class="badge-khoi">${lop}</span></td><td>${count}</td>`;
+        tbody.appendChild(tr);
       });
+      if(entries.length===0){
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="2" class="muted">Chưa có dữ liệu.</td>`;
+        tbody.appendChild(tr);
+      }
+    }catch(err){
+      document.getElementById("dash-loading").textContent =
+        "Có lỗi khi tải thống kê: " + err;
+      document.getElementById("dash-loading").classList.remove("hidden");
     }
-  </script>
+  }
+</script>
 </body>
 </html>
