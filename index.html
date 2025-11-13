@@ -504,11 +504,11 @@
     <iframe name="hidden_iframe" style="display:none"></iframe>
   </section>
 
-  <!-- ĐĂNG NHẬP (dự phòng) -->
+  <!-- ĐĂNG NHẬP (placeholder) -->
   <section id="login" class="panel">
     <h2>Đăng nhập (đang phát triển)</h2>
     <p class="lead">
-      Phần đăng nhập tài khoản giáo viên / quản trị sẽ được bổ sung sau. Hiện tại thầy/cô dùng trực tiếp dashboard và Sheet để xem số liệu.
+      Phần đăng nhập tài khoản giáo viên / quản trị sẽ bổ sung sau. Hiện tại dùng trực tiếp Dashboard & Google Sheet.
     </p>
   </section>
 
@@ -516,7 +516,7 @@
   <section id="exam" class="panel">
     <h2>Vào thi</h2>
     <p class="lead">
-      Học sinh bấm vào nút bên dưới để vào đề thi Google Form/Quiz tương ứng.
+      Học sinh bấm nút bên dưới để vào đề thi Google Form/Quiz tương ứng.
     </p>
     <div class="field">
       <label>Đề thi chính <span class="en">/ Main quiz link</span></label>
@@ -664,7 +664,6 @@
     btn.innerHTML = "⏳ Đang gửi dữ liệu...";
     status.textContent = "Đang gửi thông tin lên hệ thống, vui lòng chờ trong giây lát...";
     setTimeout(() => {
-      // Sau ~2s, thông thường Apps Script đã trả về HTML thành công/thất bại.
       btn.disabled = false;
       btn.innerHTML = "<span>✅ Gửi thông tin đăng ký</span>";
       status.textContent = "Nếu màn hình hiển thị thông báo 'Đăng ký thành công' thì dữ liệu đã được ghi nhận.";
