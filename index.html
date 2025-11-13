@@ -2,206 +2,810 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SK – Hệ thống Kiểm tra Online</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Font đẹp hơn -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
   <style>
-    :root{--c:#0d6efd}
-    *{box-sizing:border-box} body{font-family:system-ui,Arial,sans-serif;background:#f6f8fb;margin:0}
-    .wrap{max-width:1000px;margin:24px auto;padding:0 16px}
-    nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-    nav button{padding:10px 14px;border:none;border-radius:12px;background:var(--c);color:#fff;cursor:pointer;font-weight:700;box-shadow:0 5px 18px rgba(13,110,253,.15)}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
-    .card{background:#fff;border:1px solid #e9ecef;border-radius:16px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
-    h1{margin:4px 0 16px 0}
-    label{font-weight:600}
-    input,select,textarea{width:100%;padding:10px;border:1px solid #dee2e6;border-radius:10px;background:#fff}
-    .btn{padding:10px 14px;border-radius:12px;border:none;background:#111;color:#fff;cursor:pointer}
-    .ok{color:#0a7a1e;font-weight:700}.err{color:#c1121f;font-weight:700}.muted{color:#6c757d}
-    .mt{margin-top:10px}.mb{margin-bottom:10px}
-    .q{padding:12px;border:1px solid #f1f3f5;border-radius:12px;margin:10px 0}
-    .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef5ff;color:#1d4ed8;font-size:12px}
-    .flex{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    .timer{font-weight:800;color:#1d3557}
-    footer{margin-top:32px;color:#6c757d}
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #020617;
+      --accent: #2563eb;
+      --accent-soft: #1d4ed8;
+      --accent-light: #60a5fa;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --text-main: #e5e7eb;
+      --text-sub: #9ca3af;
+      --card-bg: #020617cc;
+      --border-soft: #1f2937;
+      --radius-lg: 24px;
+      --shadow-xl: 0 24px 60px rgba(15, 23, 42, .8);
+      --shadow-soft: 0 10px 30px rgba(15, 23, 42, .7);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 32px 12px 40px;
+    }
+
+    /* Background deco */
+    .bg-blur {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .bg-blur::before,
+    .bg-blur::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(80px);
+      opacity: 0.65;
+    }
+    .bg-blur::before {
+      width: 360px;
+      height: 360px;
+      background: #22c55e33;
+      top: -120px;
+      left: -120px;
+    }
+    .bg-blur::after {
+      width: 420px;
+      height: 420px;
+      background: #3b82f633;
+      bottom: -160px;
+      right: -120px;
+    }
+
+    main.wrap {
+      width: 100%;
+      max-width: 1100px;
+      background: linear-gradient(145deg, #020617ee, #020617dd);
+      border-radius: 32px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: var(--shadow-xl);
+      padding: 24px 22px 28px;
+      backdrop-filter: blur(16px);
+    }
+
+    @media (min-width: 768px) {
+      main.wrap {
+        padding: 28px 32px 32px;
+      }
+    }
+
+    header.top {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (min-width: 768px) {
+      header.top {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: radial-gradient(circle at 30% 20%, #facc15, #22c55e 35%, #2563eb 75%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 22px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, .75);
+    }
+    .brand-text h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: .02em;
+    }
+    .brand-text h1 span {
+      color: var(--accent-light);
+    }
+    .brand-text p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, .6);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      font-size: 12px;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+    .top-badge span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, .3);
+      font-size: 13px;
+    }
+
+    nav.nav-main {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .nav-main button {
+      flex: 1;
+      min-width: 135px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: radial-gradient(circle at top left, #1d4ed8, #0f172a);
+      padding: 10px 14px;
+      cursor: pointer;
+      color: #eef2ff;
+      font-weight: 500;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, .8);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .nav-main button span.icon {
+      font-size: 17px;
+    }
+    .nav-main button:hover {
+      transform: translateY(-1px);
+      background: radial-gradient(circle at top, #2563eb, #020617);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, .95);
+      border-color: rgba(129, 140, 248, .8);
+    }
+    .nav-main button.nav-secondary {
+      background: linear-gradient(135deg, #020617, #020617);
+      color: var(--text-main);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, .9);
+    }
+    .nav-main button.nav-secondary:hover {
+      background: radial-gradient(circle at top, #0f172a, #020617);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+    @media (min-width: 950px) {
+      .layout {
+        grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+        align-items: flex-start;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 20px;
+    }
+    @media (min-width: 768px) {
+      .card {
+        padding: 20px 22px 22px;
+      }
+    }
+
+    .card h2 {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+    .card p.lead {
+      margin: 0 0 14px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    /* Sections switching */
+    .card-section {
+      display: none;
+      animation: fadeIn .18s ease-out;
+    }
+    .card-section.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Form */
+    form {
+      margin-top: 8px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px 14px;
+    }
+    @media (min-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #cbd5f5;
+      font-weight: 500;
+    }
+    label span.en {
+      font-size: 11px;
+      opacity: 0.8;
+      font-weight: 400;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: #020617;
+      color: var(--text-main);
+      padding: 9px 11px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(148, 163, 184, .7);
+      font-size: 12px;
+    }
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent-light);
+      box-shadow: 0 0 0 1px rgba(96, 165, 250, .6);
+      background: #020617;
+    }
+    select {
+      padding-right: 28px;
+    }
+
+    textarea {
+      min-height: 74px;
+      resize: vertical;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    .flex-row {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 9px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, .7);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(37, 99, 235, .9);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text-sub);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+    .btn-outline:hover {
+      background: rgba(15, 23, 42, .7);
+      color: var(--text-main);
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-sub);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 5px rgba(34, 197, 94, .35);
+    }
+
+    /* Right side: QR + info */
+    .card-qr h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+    .card-qr p {
+      margin: 0 0 14px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .qr-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .qr-wrap img {
+      width: 220px;
+      height: 220px;
+      border-radius: 24px;
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, .85);
+    }
+    .qr-caption {
+      font-size: 12px;
+      color: var(--text-sub);
+      text-align: center;
+    }
+    .qr-caption span {
+      color: var(--accent-light);
+      font-weight: 500;
+    }
+
+    .list-check {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+    .list-check li {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .list-check li span.icon {
+      margin-top: 2px;
+      color: var(--success);
+    }
+
+    footer {
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(31, 41, 55, .9);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+    footer a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Small badges */
+    .badge-soft {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: rgba(15, 23, 42, .9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 6px;
+    }
   </style>
 </head>
+
 <body>
-<div class="wrap">
-  <h1>SK – Hệ thống Kiểm tra Online</h1>
-  <nav>
-    <button onclick="show('reg')">Đăng ký</button>
-    <button onclick="show('login')">Đăng nhập</button>
-    <button onclick="show('exam')">Vào thi</button>
-    <button onclick="show('review')">Xem lại</button>
-  </nav>
+  <div class="bg-blur" aria-hidden="true"></div>
 
-<section id="reg" class="card" style="display:none">
-<h3>Đăng ký tài khoản</h3>
-<form
-  id="registerForm"
-  action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec"
-  method="POST"
-  style="width: 100%;"
->
-    <div class="grid">
-        <div class="col" style="grid-column:span 6"><label>Họ và tên</label><input type="text" name="hoten" required /></div>
-        <div class="col" style="grid-column:span 3"><label>Ngày sinh</label><input type="text" name="ngaysinh" placeholder="dd/mm/yyyy" /></div>
-        <div class="col" style="grid-column:span 3"><label>Giới tính</label>
-            <select name="gioitinh"><option value="Nam">Nam</option><option value="Nữ">Nữ</option></select>
+  <main class="wrap">
+    <!-- HEADER -->
+    <header class="top">
+      <div class="brand">
+        <div class="brand-logo">SK</div>
+        <div class="brand-text">
+          <h1>Hệ thống <span>Kiểm tra Online</span></h1>
+          <p>Đăng ký – Quản lý – Kiểm tra trực tuyến cho học sinh THPT</p>
         </div>
-        <div class="col" style="grid-column:span 6"><label>Dân tộc</label><input type="text" name="dantoc" /></div>
-        <div class="col" style="grid-column:span 6"><label>Trường</label><input type="text" name="truong" /></div>
-        <div class="col" style="grid-column:span 3"><label>Khối</label><input type="text" name="khoi" /></div>
-        <div class="col" style="grid-column:span 3"><label>Mã lớp</label><input type="text" name="malop" /></div>
-        <div class="col" style="grid-column:span 6"><label>Số CCCD</label><input type="text" name="cccd" required /></div>
-
-        <div class="col" style="grid-column:span 6"><label>Email</label><input type="email" name="email" required /></div>
-        <div class="col" style="grid-column:span 12"><label>Ghi chú</label><textarea name="ghichu"></textarea></div>
-    </div>
-    <div class="flex mt">
-        <button class="btn" type="submit">Gửi đăng ký</button>
-    </div>
-</form>
-</section>
-
-
-  <section id="login" class="card" style="display:none">
-    <h3>Đăng nhập</h3>
-    <div class="grid">
-      <div style="grid-column:span 6"><label>CCCD</label><input id="l_cccd"/></div>
-      <div style="grid-column:span 6"><label>Mật khẩu</label><input id="l_pw" type="password"/></div>
-    </div>
-    <div class="flex mt">
-      <button class="btn" onclick="doLogin()">Đăng nhập</button>
-      <span id="msgLogin" class="muted"></span>
-    </div>
-  </section>
-
-  <section id="exam" class="card" style="display:none">
-    <h3>Vào thi</h3>
-    <div class="flex">
-      <label>Khối</label><input id="e_grade" style="width:120px">
-      <label>Môn</label><input id="e_subject" style="width:160px">
-      <button class="btn" onclick="loadExams()">Tải đề</button>
-      <span id="msgExam" class="muted"></span>
-    </div>
-    <div id="examList" class="mt"></div>
-
-    <div id="doExam" style="display:none">
-      <hr class="mb">
-      <div class="flex">
-        <div class="pill" id="examTitle"></div>
-        <div class="timer">⏱ <span id="timeLeft">--:--</span></div>
       </div>
-      <div id="questions" class="mt"></div>
-      <div class="flex mt">
-        <button class="btn" onclick="submitExam()">Nộp bài</button>
-        <span id="msgSubmit" class="muted"></span>
+
+      <div class="top-badge">
+        <span>⚡</span>
+        Dữ liệu lưu trên Google Sheet – Đồng bộ & an toàn
       </div>
+    </header>
+
+    <!-- NAV -->
+    <nav class="nav-main">
+      <button onclick="showView('reg')">
+        <span class="icon">📝</span>
+        <span>Đăng ký</span>
+      </button>
+      <button class="nav-secondary" onclick="showView('login')">
+        <span class="icon">🔐</span>
+        <span>Đăng nhập</span>
+      </button>
+      <button class="nav-secondary" onclick="showView('exam')">
+        <span class="icon">🧪</span>
+        <span>Vào thi</span>
+      </button>
+      <button class="nav-secondary" onclick="showView('review')">
+        <span class="icon">📊</span>
+        <span>Xem lại</span>
+      </button>
+    </nav>
+
+    <!-- MAIN LAYOUT -->
+    <div class="layout">
+      <!-- LEFT: FORM / CONTENT -->
+      <section class="card">
+        <!-- Section ĐĂNG KÝ (mặc định mở) -->
+        <div id="reg" class="card-section active">
+          <h2>Đăng ký tài khoản học sinh</h2>
+          <p class="lead">
+            Học sinh điền thông tin chính xác để nhà trường quản lý.  
+            Những trường có dấu * là bắt buộc.
+          </p>
+
+          <form id="registerForm"
+                action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec"
+                method="POST">
+            <div class="grid">
+              <!-- Họ tên -->
+              <div class="field">
+                <label for="hoten">
+                  Họ và tên – <span class="en">Full name *</span>
+                </label>
+                <input type="text" id="hoten" name="hoten" placeholder="Nguyễn Văn A" required />
+              </div>
+
+              <!-- Ngày sinh -->
+              <div class="field">
+                <label for="ngaysinh">
+                  Ngày sinh – <span class="en">Date of birth *</span>
+                </label>
+                <input type="text" id="ngaysinh" name="ngaysinh" placeholder="dd/mm/yyyy" required />
+              </div>
+
+              <!-- Giới tính -->
+              <div class="field">
+                <label for="gioitinh">
+                  Giới tính – <span class="en">Gender *</span>
+                </label>
+                <select id="gioitinh" name="gioitinh" required>
+                  <option value="">-- Chọn giới tính --</option>
+                  <option value="Nam">Nam</option>
+                  <option value="Nữ">Nữ</option>
+                  <option value="Khác">Khác</option>
+                </select>
+              </div>
+
+              <!-- Dân tộc -->
+              <div class="field">
+                <label for="dantoc">
+                  Dân tộc – <span class="en">Ethnicity</span>
+                </label>
+                <input type="text" id="dantoc" name="dantoc" placeholder="Kinh, M'Nông, ..." />
+              </div>
+
+              <!-- Trường -->
+              <div class="field">
+                <label for="truong">
+                  Trường THPT/DTNT – <span class="en">School *</span>
+                </label>
+                <input type="text" id="truong" name="truong" placeholder="THPT Nguyễn Đình Chiểu" required />
+              </div>
+
+              <!-- Khối -->
+              <div class="field">
+                <label for="khoi">
+                  Khối – <span class="en">Grade *</span>
+                </label>
+                <input type="text" id="khoi" name="khoi" placeholder="10 / 11 / 12" required />
+              </div>
+
+              <!-- Mã lớp -->
+              <div class="field">
+                <label for="malop">
+                  Mã lớp – <span class="en">Class code *</span>
+                </label>
+                <input type="text" id="malop" name="malop" placeholder="12A1, 11B2, ..." required />
+              </div>
+
+              <!-- CCCD -->
+              <div class="field">
+                <label for="cccd">
+                  Số CCCD – <span class="en">Citizen ID *</span>
+                </label>
+                <input
+                  type="text"
+                  id="cccd"
+                  name="cccd"
+                  placeholder="12 số CCCD của học sinh"
+                  minlength="9"
+                  maxlength="18"
+                  required
+                />
+                <div class="hint">Hệ thống có thể dùng CCCD để kiểm tra trùng lặp.</div>
+              </div>
+
+              <!-- Email -->
+              <div class="field">
+                <label for="email">
+                  Email – <span class="en">Email address *</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="hs123@gmail.com"
+                  required
+                />
+                <div class="hint">Email dùng để nhận thông tin xác nhận đăng ký, mã vào thi (nếu có).</div>
+              </div>
+
+              <!-- Ghi chú -->
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="ghichu">
+                  Ghi chú thêm – <span class="en">Note (optional)</span>
+                </label>
+                <textarea id="ghichu" name="ghichu" placeholder="Ví dụ: thuộc diện ưu tiên, khó khăn, cần hỗ trợ thiết bị, ..."></textarea>
+              </div>
+            </div>
+
+            <div class="flex-row">
+              <button class="btn btn-outline" type="reset">
+                🧹 Xóa form
+              </button>
+              <button class="btn btn-primary" type="submit">
+                ✅ Gửi đăng ký
+              </button>
+            </div>
+
+            <div class="status">
+              <span class="dot"></span>
+              Dữ liệu sẽ được chuyển thẳng vào Google Sheet & hệ thống xử lý của thầy.
+            </div>
+          </form>
+
+          <div class="badge-soft">
+            ℹ️ Khi bấm <strong>Gửi đăng ký</strong>, trình duyệt sẽ mở trang xác nhận riêng của Google Apps Script.
+          </div>
+        </div>
+
+        <!-- Section ĐĂNG NHẬP -->
+        <div id="login" class="card-section">
+          <h2>Đăng nhập hệ thống</h2>
+          <p class="lead">
+            Chức năng đăng nhập có thể dùng cho học sinh vào phòng thi, xem lịch sử làm bài,
+            hoặc giáo viên quản trị. Phần này thầy có thể mở rộng sau.
+          </p>
+
+          <div class="badge-soft">
+            🚧 Hiện tạm là khung giao diện – sẽ kết nối với hệ thống sau.
+          </div>
+
+          <form>
+            <div class="grid">
+              <div class="field">
+                <label for="login_cccd">
+                  CCCD hoặc Email – <span class="en">Citizen ID / Email</span>
+                </label>
+                <input type="text" id="login_cccd" placeholder="Nhập CCCD hoặc Email" />
+              </div>
+              <div class="field">
+                <label for="login_pass">
+                  Mật khẩu – <span class="en">Password</span>
+                </label>
+                <input type="password" id="login_pass" placeholder="••••••••" />
+              </div>
+            </div>
+
+            <div class="flex-row">
+              <button class="btn btn-primary" type="button">
+                🔐 Đăng nhập (demo)
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Section VÀO THI -->
+        <div id="exam" class="card-section">
+          <h2>Vào thi Online</h2>
+          <p class="lead">
+            Khu vực này có thể hiển thị danh sách bài kiểm tra, mã đề, hoặc liên kết tới Google Forms /
+            hệ thống trắc nghiệm của thầy.
+          </p>
+
+          <ul class="list-check">
+            <li><span class="icon">✅</span><span>Nhập mã đề thi để chuyển tới đúng bài kiểm tra.</span></li>
+            <li><span class="icon">✅</span><span>Hạn chế truy cập bằng IP, thiết bị hoặc thời gian làm bài.</span></li>
+          </ul>
+
+          <form style="margin-top: 14px;">
+            <div class="grid">
+              <div class="field">
+                <label for="code_exam">
+                  Mã đề / Code – <span class="en">Exam code</span>
+                </label>
+                <input type="text" id="code_exam" placeholder="VD: SỬ-45P-01" />
+              </div>
+              <div class="field">
+                <label for="code_cccd">
+                  CCCD / Email xác thực – <span class="en">Identity</span>
+                </label>
+                <input type="text" id="code_cccd" placeholder="Nhập CCCD hoặc Email đã đăng ký" />
+              </div>
+            </div>
+
+            <div class="flex-row">
+              <button class="btn btn-primary" type="button">
+                🚀 Vào thi (demo)
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Section XEM LẠI -->
+        <div id="review" class="card-section">
+          <h2>Xem kết quả & lịch sử</h2>
+          <p class="lead">
+            Học sinh có thể sử dụng CCCD hoặc Email để tra cứu kết quả thi, điểm, nhận xét…
+            Dữ liệu có thể đọc trực tiếp từ Google Sheet hoặc Dashboard.
+          </p>
+
+          <form>
+            <div class="grid">
+              <div class="field">
+                <label for="review_cccd">
+                  CCCD / Email – <span class="en">Citizen ID / Email</span>
+                </label>
+                <input type="text" id="review_cccd" placeholder="Nhập CCCD hoặc Email đã đăng ký" />
+              </div>
+            </div>
+
+            <div class="flex-row">
+              <button class="btn btn-primary" type="button">
+                📊 Xem lịch sử (demo)
+              </button>
+            </div>
+          </form>
+
+          <ul class="list-check">
+            <li><span class="icon">📌</span><span>Có thể kết nối với Dashboard (Data Studio, Looker, …).</span></li>
+            <li><span class="icon">📌</span><span>Thống kê theo lớp, khối, môn, lần thi,…</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- RIGHT: QR + THÔNG TIN -->
+      <aside class="card card-qr">
+        <h3>Quét QR để mở trang đăng ký</h3>
+        <p>
+          Học sinh dùng điện thoại quét mã dưới đây để mở trang đăng ký
+          <strong>GitHub Pages</strong>:
+          <code>trungk8.github.io/DTAI_Online/</code>.
+        </p>
+
+        <div class="qr-wrap">
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Ftrungk8.github.io%2FDTAI_Online%2F"
+            alt="QR Code đăng ký"
+          />
+          <div class="qr-caption">
+            Mở camera hoặc ứng dụng quét mã để truy cập: <br />
+            <span>https://trungk8.github.io/DTAI_Online/</span>
+          </div>
+        </div>
+
+        <ul class="list-check">
+          <li><span class="icon">✔️</span><span>Phù hợp dán tại phòng học, bảng tin, trên slide hướng dẫn.</span></li>
+          <li><span class="icon">✔️</span><span>Giảm thao tác gõ đường link dài cho học sinh.</span></li>
+          <li><span class="icon">✔️</span><span>Thầy có thể thay URL khác nếu đổi tên repo / domain.</span></li>
+        </ul>
+      </aside>
     </div>
-  </section>
 
-  <section id="review" class="card" style="display:none">
-    <h3>Kết quả gần nhất</h3>
-    <pre id="reviewBox" style="white-space:pre-wrap"></pre>
-  </section>
+    <!-- FOOTER -->
+    <footer>
+      <div>© SK – Hệ thống kiểm tra Online. Dữ liệu được lưu trữ & xử lý qua Google Apps Script & Google Sheet.</div>
+      <div>
+        Trang chủ: <a href="https://trungk8.github.io/DTAI_Online/" target="_blank" rel="noopener">DTAI_Online</a>
+      </div>
+    </footer>
+  </main>
 
-  <footer>© SK – Hệ thống kiểm tra Online</footer>
-</div>
-
-<script>
-const API_URL = 'PASTE_YOUR_WORKER_URL_HERE';
-let token=null, currentExam=null, timer=null, deadline=0, questions=[];
-function show(id){ for(const s of ['reg','login','exam','review']) document.getElementById(s).style.display=(s===id?'block':'none'); }
-function gid(id){ return document.getElementById(id); }
-function msg(id, text, isErr=false, isOk=false){
-  const el = gid(id); el.textContent=text||''; el.className = isErr? 'err' : (isOk? 'ok' : 'muted');
-}
-async function api(action, payload={}, method='POST'){
-  const res = await fetch(API_URL + '?action=' + encodeURIComponent(action), {
-    method, headers: {'content-type':'application/json'},
-    body: method==='GET'?undefined:JSON.stringify(payload)
-  });
-  return await res.json();
-}
-function normalizeFullname(s=''){
-  s = s.toLowerCase().trim().replace(/\s+/g,' ').replace(/(^|\s)\S/g, m=>m.toUpperCase());
-  gid('r_fullname').value = s; return s;
-}
-async function doRegister(){
-  msg('msgReg','Đang gửi...', false,false);
-  const payload = {
-    fullname: normalizeFullname(gid('r_fullname').value),
-    birth: gid('r_birth').value, gender: gid('r_gender').value, ethnicity: gid('r_ethnicity').value,
-    school: gid('r_school').value, grade: gid('r_grade').value, classCode: gid('r_class').value,
-    cccd: gid('r_cccd').value, email: gid('r_email').value, note: gid('r_note').value
-  };
-  const data = await api('register', payload);
-  if(data.ok) msg('msgReg', data.msg || 'OK', false,true); else msg('msgReg', data.reason || 'Lỗi', true,false);
-}
-async function doLogin(){
-  msg('msgLogin','Đang đăng nhập...',false,false);
-  const data = await api('login', { cccd: gid('l_cccd').value, password: gid('l_pw').value });
-  if(data.ok){ token = data.token; msg('msgLogin','Thành công',false,true); show('exam'); }
-  else msg('msgLogin',data.reason, true,false);
-}
-async function loadExams(){
-  msg('msgExam','Đang tải...',false,false);
-  const data = await api('getExams', { grade: gid('e_grade').value, subject: gid('e_subject').value });
-  if(!data.ok){ msg('msgExam', data.reason, true,false); return; }
-  const box = gid('examList'); box.innerHTML='';
-  data.exams.forEach(ex=>{
-    const div = document.createElement('div'); div.className='q';
-    div.innerHTML = `<b>${ex.title}</b> • <span class=pill>${ex.subject} - khối ${ex.grade}</span> • ${ex.durationMin} phút 
-      <div class=mt><button class=btn onclick="startExam('${ex.ExamId}', ${ex.durationMin})">Bắt đầu</button></div>`;
-    box.appendChild(div);
-  });
-  msg('msgExam',`Tìm thấy ${data.exams.length} đề`, false,true);
-}
-async function startExam(examId, durationMin){
-  const data = await api('getQuestions', { examId });
-  if(!data.ok){ alert(data.reason); return; }
-  currentExam = { examId, durationMin };
-  questions = data.questions||[];
-  gid('examTitle').textContent = `ExamId: ${examId} • Số câu: ${questions.length}`;
-  gid('questions').innerHTML = questions.map((q,i)=>{
-    const opts = (q.choices||[]).map((c,idx)=>{
-      const name = `q_${q.qid}`;
-      if(q.type==='multi') return `<label><input type="checkbox" name="${name}" value="${c.value||c}" /> ${c.label||c}</label>`;
-      const t = (q.type==='tf'?'radio':'radio');
-      return `<label><input type="${t}" name="${name}" value="${c.value||c}" /> ${c.label||c}</label>`;
-    }).join('<br>');
-    return `<div class="q"><b>Câu ${i+1}:</b> ${q.text}<div class=mt>${opts}</div></div>`;
-  }).join('');
-  gid('doExam').style.display = 'block';
-  if(timer) clearInterval(timer);
-  deadline = Date.now() + durationMin*60*1000;
-  tick(); timer = setInterval(tick, 1000);
-}
-function tick(){
-  const left = Math.max(0, deadline-Date.now());
-  const m = Math.floor(left/60000), s = Math.floor((left%60000)/1000);
-  gid('timeLeft').textContent = ('0'+m).slice(-2)+':'+('0'+s).slice(-2);
-  if(left<=0){ clearInterval(timer); submitExam(); }
-}
-async function submitExam(){
-  const used = Math.round((currentExam.durationMin*60*1000 - Math.max(0, deadline-Date.now()))/1000);
-  const answers = questions.map(q=>{
-    const name = `q_${q.qid}`;
-    if(q.type==='multi'){
-      return { qid:q.qid, answer:[...document.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value).join(',') };
-    }else{
-      const el = document.querySelector(`input[name="${name}"]:checked`);
-      return { qid:q.qid, answer: el?el.value:'' };
+  <script>
+    // Ẩn/hiện các section trong card bên trái
+    function showView(id) {
+      const sections = document.querySelectorAll(".card-section");
+      sections.forEach((s) => s.classList.remove("active"));
+      const target = document.getElementById(id);
+      if (target) {
+        target.classList.add("active");
+        // cuộn nhẹ lên top form trên mobile
+        window.scrollTo({
+          top: document.querySelector("main.wrap").offsetTop - 16,
+          behavior: "smooth",
+        });
+      }
     }
-  });
-  const data = await api('submitExam', { token, examId: currentExam.examId, answers, durationUsedSec: used });
-  if(data.ok){
-    msg('msgSubmit', `Điểm: ${data.score}/${data.total} (${data.percent}%)`, false,true);
-    gid('reviewBox').textContent = JSON.stringify(data, null, 2);
-    show('review');
-  }else msg('msgSubmit', data.reason, true,false);
-}
-</script>
+  </script>
 </body>
 </html>
