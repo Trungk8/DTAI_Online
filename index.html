@@ -2,31 +2,26 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>SK – Hệ thống Kiểm tra Online | THPT Nguyễn Đình Chiểu</title>
+  <title>SK – Hệ thống Kiểm tra Online</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Font + Chart.js -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Chart.js cho Dashboard -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    /* =========================
-       KHU VỰC TÙY CHỈNH NHANH
-       Thầy chỉ cần đổi mã màu ở đây
-       ========================= */
     :root{
-      --primary:#1d4ed8;        /* Xanh dương chủ đạo */
-      --primary-soft:#dbeafe;   /* Xanh nhạt cho nền/badge */
-      --accent:#fb923c;         /* Cam nhấn */
+      /* ⭐ Thầy muốn đổi màu chỉ cần sửa 4 biến sau */
+      --primary:#2563eb;
+      --primary-soft:#dbeafe;
       --bg:#f3f4f6;
       --card:#ffffff;
       --muted:#6b7280;
       --shadow-lg:0 18px 45px rgba(15,23,42,.14);
       --radius-lg:18px;
     }
-
     *{box-sizing:border-box;margin:0;padding:0}
     body{
       font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -40,7 +35,7 @@
       margin:0 auto;
     }
 
-    /* ===== HEADER + LOGO ===== */
+    /************* HEADER + LOGO *************/
     header{
       display:flex;
       justify-content:space-between;
@@ -48,69 +43,59 @@
       gap:12px;
       margin-bottom:14px;
     }
-    .brand{
+    .logo-box{
       display:flex;
+      align-items:center;
       gap:10px;
-      align-items:flex-start;
     }
     .logo-circle{
-      width:46px;
-      height:46px;
+      width:48px;
+      height:48px;
       border-radius:999px;
-      background:conic-gradient(from 210deg,var(--primary),#22c55e,var(--accent),var(--primary));
-      padding:2px;
-      box-shadow:0 10px 25px rgba(15,23,42,.35);
+      background:conic-gradient(from 210deg at 50% 50%,#1d4ed8,#60a5fa,#4f46e5,#1d4ed8);
       display:flex;
       align-items:center;
       justify-content:center;
+      box-shadow:0 12px 30px rgba(37,99,235,.65);
+      padding:2px;
     }
     .logo-inner{
       width:100%;
       height:100%;
       border-radius:999px;
-      background:#f9fafb;
+      background:#fff;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-weight:800;
       font-size:.7rem;
-      color:var(--primary);
+      font-weight:700;
+      color:#1f2937;
       text-align:center;
-      line-height:1.1;
+      padding:4px;
     }
-    /*
-      👉 Nếu có file logo thật, thầy chỉ cần thay phần .logo-inner
-      bằng <img src="logo-ndc.png"> (đặt width:100%;height:100%;border-radius:999px;object-fit:cover;)
+    /* 👉 Nếu thầy muốn dùng logo thật:
+       Thay <div class="logo-inner">…</div> bên dưới bằng:
+       <img src="LINK_LOGO_THAT" style="width:100%;height:100%;border-radius:999px;object-fit:cover;">
     */
 
-    header h1{
-      font-size:1.32rem;
-      margin-bottom:3px;
-    }
-    header h1 span.school{
-      color:var(--primary);
-    }
-    header p{
-      font-size:.9rem;
-      color:var(--muted);
-    }
+    header h1{font-size:1.35rem;margin-bottom:4px;}
+    header p{font-size:.9rem;color:var(--muted);}
     .badge-top{
       padding:3px 9px;
       border-radius:999px;
-      background:#f9731615;
-      color:#c2410c;
+      background:#eff6ff;
+      color:#1d4ed8;
       font-size:.75rem;
       font-weight:500;
       display:inline-flex;
       align-items:center;
       gap:6px;
-      margin-top:2px;
     }
     .badge-top span.dot{
-      width:6px;height:6px;border-radius:999px;background:#f97316;
+      width:6px;height:6px;border-radius:999px;background:#1d4ed8;
     }
 
-    /* ===== NAV ===== */
+    /************* NAV *************/
     nav{
       display:flex;
       flex-wrap:wrap;
@@ -124,24 +109,27 @@
       font-size:.86rem;
       font-weight:500;
       cursor:pointer;
-      background:#ffffffcc;
+      background:#ffffffb8;
       color:#374151;
       box-shadow:0 8px 22px rgba(15,23,42,.12);
       display:inline-flex;
       align-items:center;
       gap:6px;
-      transition:all .15s ease;
-    }
-    nav button:hover{
-      transform:translateY(-1px);
-      box-shadow:0 10px 26px rgba(15,23,42,.18);
+      transition:transform .08s ease, box-shadow .08s ease, background .08s ease;
     }
     nav button.active{
-      background:linear-gradient(135deg,var(--primary),#4f46e5);
+      background:linear-gradient(135deg,#2563eb,#4f46e5);
       color:#fff;
       box-shadow:0 12px 30px rgba(37,99,235,.55);
     }
     nav button span.icon{font-size:1rem;}
+    nav button[disabled]{
+      opacity:.55;
+      cursor:not-allowed;
+      box-shadow:none;
+      background:#e5e7eb;
+      color:#6b7280;
+    }
 
     main{display:block;}
     section.page{
@@ -163,16 +151,20 @@
       margin-bottom:12px;
     }
 
-    /* ===== FORM ĐĂNG KÝ ===== */
+    /************* FORM ĐĂNG KÝ *************/
     .grid-2{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
       gap:10px 14px;
     }
-    .field{display:flex;flex-direction:column;gap:4px;}
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
     label{
       font-size:.8rem;
-      font-weight:600;
+      font-weight:500;
       color:#374151;
     }
     input,select,textarea{
@@ -187,7 +179,7 @@
     input:focus,select:focus,textarea:focus{
       border-color:var(--primary);
       box-shadow:0 0 0 1px rgba(37,99,235,.35);
-      background:#ffffff;
+      background:#fff;
     }
     textarea{min-height:60px;resize:vertical;}
     .hint{
@@ -202,17 +194,12 @@
       font-size:.9rem;
       font-weight:600;
       color:#fff;
-      background:linear-gradient(135deg,var(--primary),var(--accent));
-      box-shadow:0 12px 26px rgba(249,115,22,.55);
+      background:linear-gradient(135deg,#2563eb,#4f46e5);
+      box-shadow:0 12px 26px rgba(37,99,235,.55);
       cursor:pointer;
       display:inline-flex;
       align-items:center;
       gap:6px;
-      transition:transform .12s ease, box-shadow .12s ease;
-    }
-    .btn-primary:hover{
-      transform:translateY(-1px);
-      box-shadow:0 14px 32px rgba(249,115,22,.7);
     }
     .btn-primary span.icon{font-size:1rem;}
     .note-small{
@@ -237,7 +224,7 @@
       width:100%;
     }
 
-    /* ===== DASHBOARD ===== */
+    /************* DASHBOARD *************/
     .cards{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
@@ -245,7 +232,7 @@
       margin-bottom:12px;
     }
     .card-mini{
-      background:linear-gradient(135deg,#f9fafb,#e5f2ff);
+      background:#f9fafb;
       border-radius:14px;
       padding:10px 11px;
       box-shadow:0 10px 28px rgba(15,23,42,.08) inset;
@@ -260,7 +247,6 @@
     .card-mini .value{
       font-size:1.4rem;
       font-weight:700;
-      color:var(--primary);
     }
     .card-mini .sub{
       font-size:.78rem;
@@ -281,8 +267,12 @@
       flex-direction:column;
       min-height:210px;
     }
-    .chart-card h3{font-size:.9rem;margin-bottom:3px;}
-    .chart-card p{font-size:.78rem;color:var(--muted);margin-bottom:8px;}
+    .chart-card h3{
+      font-size:.9rem;margin-bottom:3px;
+    }
+    .chart-card p{
+      font-size:.78rem;color:var(--muted);margin-bottom:8px;
+    }
     .chart-wrapper{flex:1;min-height:160px;}
     .badge{
       display:inline-flex;
@@ -299,7 +289,7 @@
       width:7px;height:7px;border-radius:999px;background:var(--primary);
     }
 
-    /* ===== XEM KẾT QUẢ ===== */
+    /************* XEM KẾT QUẢ *************/
     .results{
       margin-top:8px;
       display:grid;
@@ -307,7 +297,7 @@
       gap:10px;
     }
     .result-card{
-      background:linear-gradient(145deg,#f9fafb,#e5f2ff);
+      background:#f9fafb;
       border-radius:16px;
       padding:10px 11px;
       box-shadow:0 16px 42px rgba(15,23,42,.14) inset;
@@ -318,7 +308,7 @@
       content:"";
       position:absolute;
       inset:0;
-      background:radial-gradient(circle at top left,rgba(37,99,235,.13),transparent);
+      background:linear-gradient(135deg,rgba(37,99,235,.06),transparent);
       pointer-events:none;
     }
     .result-name{
@@ -355,57 +345,66 @@
       border-radius:999px;
       background:#e5e7eb;
     }
-    .status-msg{margin-top:8px;font-size:.82rem;}
+    .status-msg{
+      margin-top:8px;
+      font-size:.82rem;
+    }
     .status-empty{color:var(--muted);}
     .status-error{color:#b91c1c;}
 
     @media(max-width:640px){
       header{flex-direction:column;align-items:flex-start;}
-      .brand{align-items:center;}
     }
   </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="brand">
-      <!-- LOGO TRƯỜNG (tạm thời là hình tròn NĐC) -->
+    <div class="logo-box">
       <div class="logo-circle">
         <div class="logo-inner">
-          NĐC<br/>LĐ
+          THPT<br>NGUYỄN<br>ĐÌNH CHIỂU
         </div>
       </div>
-
       <div>
-        <h1>
-          SK – Hệ thống Kiểm tra Online<br/>
-          <span class="school">Trường THPT Nguyễn Đình Chiểu – Lâm Đồng</span>
-        </h1>
-        <p>Đăng ký – Làm bài – Xem Dashboard – Tra cứu kết quả trên cùng một nền tảng.</p>
-        <div class="badge-top"><span class="dot"></span><span>Bản PREMIUM – tối ưu cho học sinh THPT</span></div>
+        <h1>SK – Hệ thống Kiểm tra Online</h1>
+        <p>Đăng ký – Đăng nhập – Vào thi – Dashboard – Tra cứu kết quả trên cùng một trang.</p>
+        <div class="badge-top"><span class="dot"></span><span>Phiên bản PREMIUM • Đồng bộ màu – font – logo</span></div>
       </div>
     </div>
   </header>
 
   <nav>
-    <button class="active" onclick="show('reg', this)"><span class="icon">📝</span>Đăng ký</button>
-    <button onclick="show('login', this)"><span class="icon">🔐</span>Đăng nhập</button>
-    <button onclick="show('exam', this)"><span class="icon">🧪</span>Vào thi</button>
-    <button onclick="show('review', this)"><span class="icon">📄</span>Hướng dẫn/Xem lại</button>
-    <button onclick="show('dash', this)"><span class="icon">📊</span>Dashboard điểm</button>
-    <button onclick="show('lookup', this)"><span class="icon">🔎</span>Xem kết quả</button>
+    <button id="btnReg" class="active" onclick="show('reg', this)">
+      <span class="icon">📝</span>Đăng ký
+    </button>
+    <button id="btnLogin" onclick="show('login', this)">
+      <span class="icon">🔐</span>Đăng nhập
+    </button>
+    <button id="btnExam" onclick="show('exam', this)" data-auth="1" disabled title="Cần đăng nhập bằng mật khẩu đã gửi qua email">
+      <span class="icon">🧪</span>Vào thi
+    </button>
+    <button id="btnReview" onclick="show('review', this)" data-auth="1" disabled title="Cần đăng nhập">
+      <span class="icon">📄</span>Xem lại
+    </button>
+    <button id="btnDash" onclick="show('dash', this)" data-auth="1" disabled title="Cần đăng nhập">
+      <span class="icon">📊</span>Dashboard
+    </button>
+    <button id="btnLookup" onclick="show('lookup', this)" data-auth="1" disabled title="Cần đăng nhập">
+      <span class="icon">🔎</span>Xem kết quả
+    </button>
   </nav>
 
   <main>
     <!-- 1. ĐĂNG KÝ -->
     <section id="reg" class="page active">
-      <h2 class="section-title">1. Đăng ký tham gia hệ thống</h2>
+      <h2 class="section-title">Đăng ký tham gia kiểm tra</h2>
       <p class="section-desc">
-        Học sinh nhập đầy đủ thông tin bên dưới. Hệ thống sẽ tự chuyển <b>Họ tên</b> về IN HOA và kiểm tra trùng
-        <b>CCCD / Email</b> trước khi lưu.
+        Vui lòng nhập thông tin chính xác. Họ tên và Lớp sẽ tự chuyển sang
+        <b>CHỮ IN HOA</b> để đồng bộ dữ liệu. Hệ thống kiểm tra trùng <b>CCCD</b> hoặc <b>Email</b> trước khi lưu.
       </p>
 
-      <!-- 👉 THAY URL WEB APP TẠI ĐÂY -->
+      <!-- 👉 THAY URL WEB APP TẠI ĐÂY (TRÙNG VỚI WEB_APP_URL Ở DƯỚI) -->
       <form id="regForm"
             method="post"
             action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec">
@@ -413,12 +412,27 @@
           <div class="field">
             <label for="hoten">Họ và tên (IN HOA)</label>
             <input id="hoten" name="hoten" placeholder="VD: NGUYỄN VĂN A" required />
-            <div class="hint">Có thể gõ thường; hệ thống tự chuyển sang IN HOA khi lưu.</div>
+            <div class="hint">Nhập thường cũng được, hệ thống sẽ tự đổi thành IN HOA khi lưu.</div>
           </div>
+
+          <!-- Ngày sinh: 3 ô Day / Month / Year + hidden -->
           <div class="field">
-            <label for="ngaysinh">Ngày sinh</label>
-            <input id="ngaysinh" name="ngaysinh" type="date" />
+            <label>Ngày sinh</label>
+            <div style="display:flex;gap:6px;">
+              <select id="dob_day" aria-label="Ngày">
+                <option value="">Ngày</option>
+              </select>
+              <select id="dob_month" aria-label="Tháng">
+                <option value="">Tháng</option>
+              </select>
+              <select id="dob_year" aria-label="Năm">
+                <option value="">Năm</option>
+              </select>
+            </div>
+            <input type="hidden" id="ngaysinh" name="ngaysinh">
+            <div class="hint">Chọn lần lượt Ngày – Tháng – Năm, hệ thống sẽ ghép thành dd/mm/yyyy.</div>
           </div>
+
           <div class="field">
             <label for="gioitinh">Giới tính</label>
             <select id="gioitinh" name="gioitinh">
@@ -428,6 +442,7 @@
               <option>Khác</option>
             </select>
           </div>
+
           <div class="field">
             <label for="dantoc">Dân tộc</label>
             <select id="dantoc" name="dantoc">
@@ -439,6 +454,7 @@
               <option>Khác</option>
             </select>
           </div>
+
           <div class="field">
             <label for="truong">Trường</label>
             <select id="truong" name="truong">
@@ -448,12 +464,14 @@
               <option>THPT Đức Trọng</option>
               <option>Trường khác (ghi chú)</option>
             </select>
-            <div class="hint">Nếu không có trong danh sách, chọn “Trường khác” và ghi rõ ở Ghi chú.</div>
+            <div class="hint">Nếu trường chưa có trong danh sách, chọn “Trường khác” và ghi rõ ở Ghi chú.</div>
           </div>
+
           <div class="field">
             <label for="xa">Xã/Phường</label>
-            <input id="xa" name="xa" placeholder="VD: Xã Kiến Đức" />
+            <input id="xa" name="xa" placeholder="VD: Xã Quảng Tín" />
           </div>
+
           <div class="field">
             <label for="tinh">Tỉnh/TP</label>
             <select id="tinh" name="tinh">
@@ -465,6 +483,7 @@
               <option value="Khác">Tỉnh/TP khác</option>
             </select>
           </div>
+
           <div class="field">
             <label for="khoi">Khối</label>
             <select id="khoi" name="khoi" required>
@@ -474,21 +493,25 @@
               <option>12</option>
             </select>
           </div>
+
           <div class="field">
             <label for="malop">Lớp</label>
             <input id="malop" name="malop" placeholder="VD: 12A1" />
             <div class="hint">Nhập đúng định dạng: 10A1, 11A2, 12A5,…</div>
           </div>
+
           <div class="field">
             <label for="cccd">CCCD</label>
-            <input id="cccd" name="cccd" inputmode="numeric" placeholder="Chỉ nhập số" />
-            <div class="hint">Lưu dạng “chuỗi số”; không tính toán trên trường này.</div>
+            <input id="cccd" name="cccd" inputmode="numeric" pattern="[0-9]*" placeholder="Chỉ nhập số" />
+            <div class="hint">Hệ thống lưu CCCD dạng chuỗi số, không thực hiện phép tính trên trường này.</div>
           </div>
+
           <div class="field">
             <label for="email">Email</label>
             <input id="email" name="email" type="email" placeholder="VD: ten@gmail.com" />
-            <div class="hint">Hệ thống gửi xác nhận đăng ký & thông tin phòng thi về email này.</div>
+            <div class="hint">Dùng để hệ thống gửi email <b>Xác nhận đăng ký</b> kèm <b>Mật khẩu truy cập</b>.</div>
           </div>
+
           <div class="field">
             <label for="ghichu">Ghi chú thêm</label>
             <textarea id="ghichu" name="ghichu" placeholder="VD: Trường khác, hoàn cảnh đặc biệt, ..."></textarea>
@@ -499,7 +522,7 @@
           <span class="icon">✅</span><span>Gửi đăng ký</span>
         </button>
         <div class="note-small">
-          Sau khi gửi, hệ thống sẽ hiển thị thông báo <b>Thành công</b> hoặc <b>Trùng thông tin</b> và gửi email cho học sinh (nếu có).
+          Sau khi gửi, hệ thống sẽ hiện thông báo Thành công / Trùng thông tin và gửi email cho học sinh (nếu có).
         </div>
       </form>
 
@@ -510,43 +533,55 @@
       </div>
     </section>
 
-    <!-- 2. ĐĂNG NHẬP -->
+    <!-- 2. ĐĂNG NHẬP (có khóa các tab khác) -->
     <section id="login" class="page">
-      <h2 class="section-title">2. Đăng nhập (dành cho giáo viên/quản trị)</h2>
-      <p class="section-desc">Thầy có thể tận dụng khu vực này cho tài khoản nội bộ (hiện là giao diện minh họa, chưa kết nối backend).</p>
-      <div class="grid-2">
-        <div class="field">
-          <label>Tài khoản</label>
-          <input placeholder="Tài khoản giáo viên / quản trị" />
+      <h2 class="section-title">Đăng nhập hệ thống</h2>
+      <p class="section-desc">
+        Mỗi học sinh sẽ nhận được <b>Mật khẩu truy cập</b> qua email xác nhận đăng ký.
+        Nhập mật khẩu này để mở các chức năng: Vào thi, Dashboard, Xem kết quả.
+      </p>
+
+      <form id="loginForm" autocomplete="off">
+        <div class="grid-2">
+          <div class="field">
+            <label for="login_id">CCCD hoặc Email</label>
+            <input id="login_id" placeholder="Không bắt buộc – chỉ để thầy dễ quản lý" />
+            <div class="hint">Thông tin này không dùng để kiểm tra, chỉ lưu trên máy của học sinh (localStorage).</div>
+          </div>
+          <div class="field">
+            <label for="login_password">Mật khẩu truy cập</label>
+            <input id="login_password" type="password" placeholder="Nhập đúng mật khẩu trong email" required />
+          </div>
         </div>
-        <div class="field">
-          <label>Mật khẩu</label>
-          <input type="password" placeholder="Mật khẩu" />
+        <button class="btn-primary" type="submit">
+          <span class="icon">🔐</span><span>Đăng nhập</span>
+        </button>
+        <div id="loginMsg" class="status-msg status-empty"></div>
+        <div class="note-small">
+          Gợi ý: trong <code>Code.gs</code>, thầy dùng chung một mã (VD: <b>SK2025</b>) và gửi trong email xác nhận.
+          Ở đây, JS sẽ kiểm tra đúng mã đó trước khi mở các tab còn lại.
         </div>
-      </div>
-      <button class="btn-primary" type="button" onclick="alert('Demo giao diện – chưa kết nối hệ thống đăng nhập.')">
-        <span class="icon">🔐</span><span>Đăng nhập (demo)</span>
-      </button>
+      </form>
     </section>
 
     <!-- 3. VÀO THI -->
     <section id="exam" class="page">
-      <h2 class="section-title">3. Vào thi (Google Form/Quiz)</h2>
-      <p class="section-desc">Dán liên kết bài kiểm tra để học sinh bấm vào làm bài.</p>
+      <h2 class="section-title">Vào thi</h2>
+      <p class="section-desc">Thầy dán liên kết Google Form/Quiz vào đây để học sinh bấm vào làm bài. Học sinh cần đăng nhập trước khi thi.</p>
       <div class="field">
         <label>Liên kết bài kiểm tra</label>
         <input id="examLink" placeholder="https://docs.google.com/forms/..." value="" />
-        <div class="hint">Có thể thay link này theo từng đợt kiểm tra.</div>
+        <div class="hint">Khi triển khai thật, thầy có thể cố định link này hoặc thay đổi theo từng đợt kiểm tra.</div>
       </div>
       <button class="btn-primary" type="button" onclick="openExam()">
         <span class="icon">🧪</span><span>Mở bài kiểm tra</span>
       </button>
     </section>
 
-    <!-- 4. HƯỚNG DẪN / XEM LẠI -->
+    <!-- 4. XEM LẠI (sheet điểm) -->
     <section id="review" class="page">
-      <h2 class="section-title">4. Hướng dẫn / Xem lại dữ liệu</h2>
-      <p class="section-desc">Đặt link Google Sheet điểm hoặc hướng dẫn nội bộ cho giáo viên.</p>
+      <h2 class="section-title">Xem sheet điểm gốc</h2>
+      <p class="section-desc">Đặt link xem nhanh Google Sheet điểm (DiemThi) dành cho giáo viên / quản trị.</p>
       <div class="field">
         <label>Liên kết sheet điểm (DiemThi)</label>
         <input id="sheetLink" placeholder="https://docs.google.com/spreadsheets/..." value="" />
@@ -556,10 +591,10 @@
       </button>
     </section>
 
-    <!-- 5. DASHBOARD -->
+    <!-- 5. DASHBOARD – JSONP mode=stats -->
     <section id="dash" class="page">
-      <h2 class="section-title">5. Dashboard thống kê điểm</h2>
-      <p class="section-desc">Thống kê số lượng bài thi theo Khối, Lớp, Giới tính, Dân tộc, Trường – dữ liệu lấy trực tiếp từ sheet DiemThi.</p>
+      <h2 class="section-title">Dashboard thống kê</h2>
+      <p class="section-desc">Thống kê số lượng bài thi theo Khối, Lớp, Giới tính, Dân tộc, Trường – dữ liệu lấy trực tiếp từ sheet điểm.</p>
 
       <div class="cards">
         <div class="card-mini">
@@ -568,14 +603,14 @@
           <div class="sub" id="dashTotalNote">Đang tải dữ liệu…</div>
         </div>
         <div class="card-mini">
-          <h3>Số khối tham gia</h3>
+          <h3>Số khối</h3>
           <div class="value" id="dashGrade">–</div>
           <div class="sub">Khối có ít nhất 1 học sinh.</div>
         </div>
         <div class="card-mini">
           <h3>Số lớp</h3>
           <div class="value" id="dashClass">–</div>
-          <div class="sub">Tổng số lớp xuất hiện trong sheet điểm.</div>
+          <div class="sub">Tổng số lớp xuất hiện.</div>
         </div>
         <div class="card-mini">
           <h3>Số trường</h3>
@@ -591,7 +626,7 @@
           <div class="chart-wrapper"><canvas id="chartGrade"></canvas></div>
         </div>
         <div class="chart-card">
-          <h3>Top lớp làm bài</h3>
+          <h3>Top lớp</h3>
           <p>Những lớp có nhiều lượt làm bài nhất.</p>
           <div class="chart-wrapper"><canvas id="chartClass"></canvas></div>
         </div>
@@ -603,36 +638,33 @@
         <div class="chart-card">
           <h3>Dân tộc / Trường</h3>
           <p>Top dân tộc và trường có nhiều lượt làm bài.</p>
-          <div class="badge"><span class="dot"></span><span>Hiển thị Top 6 mục.</span></div>
+          <div class="badge"><span class="dot"></span><span>Chỉ hiển thị Top 6 mục.</span></div>
           <div class="chart-wrapper" style="margin-top:6px;"><canvas id="chartEthnicSchool"></canvas></div>
         </div>
       </div>
     </section>
 
-    <!-- 6. XEM KẾT QUẢ -->
+    <!-- 6. XEM KẾT QUẢ – JSONP mode=search -->
     <section id="lookup" class="page">
-      <h2 class="section-title">6. Xem lại kết quả bài thi</h2>
-      <p class="section-desc">
-        Nhập <b>CCCD</b> hoặc <b>Họ tên (IN HOA)</b> + <b>Lớp</b> để tra cứu kết quả từ sheet DiemThi.
-        Ưu tiên tra cứu chính xác theo CCCD.
-      </p>
+      <h2 class="section-title">Xem lại kết quả bài thi</h2>
+      <p class="section-desc">Nhập <b>CCCD</b> hoặc <b>Họ tên (IN HOA)</b> + <b>Lớp</b> để tra cứu kết quả từ sheet điểm DiemThi.</p>
 
       <form id="searchForm">
         <div class="grid-2">
           <div class="field">
             <label for="s_cccd">CCCD (ưu tiên)</label>
-            <input id="s_cccd" name="cccd" inputmode="numeric" placeholder="Chỉ nhập số, VD: 0790xxxxxxx" />
+            <input id="s_cccd" name="cccd" inputmode="numeric" pattern="[0-9]*" placeholder="Chỉ nhập số, VD: 0790xxxxxxx" />
             <div class="hint">Nếu nhập CCCD, hệ thống sẽ tìm chính xác theo CCCD trước.</div>
           </div>
           <div class="field">
             <label for="s_name">Họ tên (IN HOA)</label>
             <input id="s_name" name="name" placeholder="VD: NGUYỄN VĂN A" />
-            <div class="hint">Có thể gõ thường; hệ thống tự chuyển sang IN HOA khi gửi.</div>
+            <div class="hint">Nhập thường cũng được, hệ thống tự chuyển sang IN HOA khi gửi.</div>
           </div>
           <div class="field">
             <label for="s_class">Lớp</label>
             <input id="s_class" name="className" placeholder="VD: 12A1" />
-            <div class="hint">Có thể bỏ trống; sẽ tìm theo Họ tên trên toàn bộ khối.</div>
+            <div class="hint">Có thể bỏ trống Lớp (sẽ tìm theo Họ tên trên toàn bộ khối).</div>
           </div>
         </div>
         <button type="submit" class="btn-primary">
@@ -646,9 +678,16 @@
 </div>
 
 <script>
-  // 👉 NHỚ CẬP NHẬT CÙNG MỘT URL VỚI action CỦA FORM
+  /***************** CẤU HÌNH CHUNG *****************/
+  // 👉 NHỚ CẬP NHẬT CÙNG MỘT URL VỚI action CỦA FORM ĐĂNG KÝ
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec";
 
+  // 👉 Mật khẩu truy cập chung (thầy dùng cùng mã này trong email xác nhận từ Code.gs)
+  const ACCESS_CODE = "SK2025"; // THẦY ĐỔI TÙY Ý
+
+  let isLoggedIn = false;
+
+  /***************** CHUYỂN TAB *****************/
   function show(id, btn){
     document.querySelectorAll("section.page").forEach(sec=>{
       sec.classList.toggle("active", sec.id === id);
@@ -659,18 +698,128 @@
     }
   }
 
-  function openExam(){
-    const link = document.getElementById("examLink").value.trim();
-    if(!link){ alert("Nhập link Google Form/Quiz trước khi mở."); return; }
-    window.open(link,"_blank");
+  /***************** NGÀY SINH: 3 Ô NGÀY/THÁNG/NĂM *****************/
+  function initDobSelects(){
+    const daySel   = document.getElementById("dob_day");
+    const monthSel = document.getElementById("dob_month");
+    const yearSel  = document.getElementById("dob_year");
+    const hidden   = document.getElementById("ngaysinh");
+    if(!daySel || !monthSel || !yearSel || !hidden) return;
+
+    for(let d=1; d<=31; d++){
+      const opt = document.createElement("option");
+      opt.value = d;
+      opt.textContent = d;
+      daySel.appendChild(opt);
+    }
+
+    const months = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+    const monthNames = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+    months.forEach((m,idx)=>{
+      const opt = document.createElement("option");
+      opt.value = m;
+      opt.textContent = "Tháng " + monthNames[idx];
+      monthSel.appendChild(opt);
+    });
+
+    const nowYear = new Date().getFullYear();
+    // Học sinh THPT ~ từ 2005-2015 (thầy có thể chỉnh)
+    for(let y=2005; y<=nowYear; y++){
+      const opt = document.createElement("option");
+      opt.value = y;
+      opt.textContent = y;
+      yearSel.appendChild(opt);
+    }
+
+    function updateDob(){
+      const d = daySel.value;
+      const m = monthSel.value;
+      const y = yearSel.value;
+      if(d && m && y){
+        const dd = d.toString().padStart(2,"0");
+        const mm = m.toString().padStart(2,"0");
+        hidden.value = dd + "/" + mm + "/" + y;
+      }else{
+        hidden.value = "";
+      }
+    }
+    daySel.addEventListener("change", updateDob);
+    monthSel.addEventListener("change", updateDob);
+    yearSel.addEventListener("change", updateDob);
   }
-  function openSheet(){
-    const link = document.getElementById("sheetLink").value.trim();
-    if(!link){ alert("Nhập link Google Sheet điểm DiemThi trước đã."); return; }
+
+  /***************** ĐĂNG NHẬP & KHÓA TAB *****************/
+  function updateAuthUI(){
+    document.querySelectorAll("nav button[data-auth]").forEach(btn=>{
+      btn.disabled = !isLoggedIn;
+      btn.title = isLoggedIn ? "" : "Cần đăng nhập bằng mật khẩu đã gửi qua email";
+    });
+  }
+
+  function loadAuthFromStorage(){
+    const flag = window.localStorage.getItem("sk_online_logged");
+    if(flag === "1"){
+      isLoggedIn = true;
+      updateAuthUI();
+    }
+  }
+
+  document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const pass = document.getElementById("login_password").value.trim();
+    const msgEl = document.getElementById("loginMsg");
+    msgEl.className = "status-msg status-empty";
+
+    if(!pass){
+      msgEl.textContent = "Vui lòng nhập mật khẩu truy cập.";
+      return;
+    }
+    if(pass === ACCESS_CODE){
+      isLoggedIn = true;
+      window.localStorage.setItem("sk_online_logged","1");
+      msgEl.textContent = "Đăng nhập thành công. Thầy/cô có thể chuyển sang Vào thi, Dashboard, Xem kết quả.";
+      updateAuthUI();
+      // tự chuyển sang tab Vào thi
+      const btnExam = document.getElementById("btnExam");
+      if(btnExam) show("exam", btnExam);
+    }else{
+      msgEl.textContent = "Mật khẩu chưa đúng. Kiểm tra lại email xác nhận đăng ký.";
+      msgEl.className = "status-msg status-error";
+    }
+  });
+
+  /***************** LIÊN KẾT THI & SHEET *****************/
+  function requireLogin(){
+    if(!isLoggedIn){
+      alert("Cần đăng nhập bằng mật khẩu đã gửi qua email trước khi sử dụng chức năng này.");
+      const btnLogin = document.getElementById("btnLogin");
+      if(btnLogin) show("login", btnLogin);
+      return false;
+    }
+    return true;
+  }
+
+  function openExam(){
+    if(!requireLogin()) return;
+    const link = document.getElementById("examLink").value.trim();
+    if(!link){
+      alert("Thầy/chị nhập link Google Form/Quiz trước đã nhé.");
+      return;
+    }
     window.open(link,"_blank");
   }
 
-  // ===== JSONP helper =====
+  function openSheet(){
+    if(!requireLogin()) return;
+    const link = document.getElementById("sheetLink").value.trim();
+    if(!link){
+      alert("Nhập link Google Sheet điểm DiemThi trước đã.");
+      return;
+    }
+    window.open(link,"_blank");
+  }
+
+  /***************** JSONP HELPER *****************/
   function callJsonp(url, callbackName){
     return new Promise(resolve=>{
       window[callbackName] = function(data){ resolve(data); };
@@ -680,7 +829,7 @@
     });
   }
 
-  // ===== DASHBOARD =====
+  /***************** DASHBOARD *****************/
   let chartGrade, chartClass, chartGender, chartEthnicSchool;
 
   function topEntries(obj, limit){
@@ -692,7 +841,7 @@
   async function loadDashboard(){
     try{
       const data = await callJsonp(WEB_APP_URL + "?mode=stats","statsCallback");
-      if(!data){ throw new Error("Không có dữ liệu."); }
+      if(!data) throw new Error("Không có dữ liệu.");
 
       const total = data.total || data.rows || 0;
       document.getElementById("dashTotal").textContent = total;
@@ -708,17 +857,21 @@
       document.getElementById("dashClass").textContent  = Object.keys(classes).length;
       document.getElementById("dashSchool").textContent = Object.keys(schools).length;
 
+      // Khối
       const gLabels = Object.keys(grades);
       const gValues = gLabels.map(k=>grades[k].count||0);
       drawBar("chartGrade","Số bài theo khối",gLabels,gValues,c=>chartGrade=c);
 
+      // Lớp (top 10)
       const topClass = topEntries(classes,10);
       drawBar("chartClass","Top lớp", topClass.map(x=>x[0]), topClass.map(x=>x[1].count||0), c=>chartClass=c);
 
+      // Giới tính
       const genLabels = Object.keys(genders);
       const genValues = genLabels.map(k=>genders[k].count||genders[k]||0);
       drawPie("chartGender",genLabels,genValues,c=>chartGender=c);
 
+      // Dân tộc + Trường (top 6)
       const topEth = topEntries(ethnics,6);
       const topSch = topEntries(schools,6);
       const labels = topEth.map(x=>x[0]).concat(topSch.map(x=>"Trg: "+x[0]));
@@ -748,6 +901,7 @@
     });
     if(setRef) setRef(c);
   }
+
   function drawPie(canvasId,labels,values,setRef){
     const ctx = document.getElementById(canvasId).getContext("2d");
     const c = new Chart(ctx,{
@@ -763,12 +917,13 @@
     if(setRef) setRef(c);
   }
 
-  // ===== XEM KẾT QUẢ =====
+  /***************** TRA CỨU KẾT QUẢ *****************/
   function buildSearchUrl(){
     const cccdRaw = document.getElementById("s_cccd").value.trim();
     const cccd = cccdRaw.replace(/\D/g,"");
     let name = document.getElementById("s_name").value.trim();
     let cls  = document.getElementById("s_class").value.trim();
+
     if(name) name = name.toLocaleUpperCase("vi-VN");
     if(cls)  cls  = cls.toUpperCase();
 
@@ -821,6 +976,8 @@
 
   document.getElementById("searchForm").addEventListener("submit",async function(e){
     e.preventDefault();
+    if(!requireLogin()) return;
+
     const statusEl = document.getElementById("status");
     const resultsEl= document.getElementById("results");
     resultsEl.innerHTML="";
@@ -838,7 +995,13 @@
     }
   });
 
-  document.addEventListener("DOMContentLoaded", loadDashboard);
+  /***************** KHỞI TẠO *****************/
+  document.addEventListener("DOMContentLoaded", function(){
+    initDobSelects();
+    loadAuthFromStorage();
+    updateAuthUI();
+    loadDashboard();
+  });
 </script>
 </body>
 </html>
