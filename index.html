@@ -1,256 +1,252 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <title>DTAI_Online – Hệ thống kiểm tra & đánh giá trực tuyến</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <title>DTAI Online – Đăng ký & Kiểm tra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
       --bg: #0f172a;
       --bg-soft: #020617;
-      --card: #020617;
-      --primary: #2563eb;
-      --primary-soft: rgba(37,99,235,0.14);
-      --accent: #fbbf24;
-      --accent-soft: rgba(251,191,36,0.18);
-      --border-subtle: rgba(148,163,184,0.35);
-      --text-main: #e5e7eb;
-      --text-soft: #9ca3af;
-      --danger: #dc2626;
-      --danger-soft: rgba(220,38,38,0.14);
+      --card: #0b1220;
+      --accent: #2563eb;
+      --accent-soft: #1d4ed8;
+      --accent-grad-1: #4f46e5;
+      --accent-grad-2: #22c55e;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --danger: #f97373;
+      --border: #1f2937;
       --radius-lg: 20px;
-      --radius-pill: 999px;
-      --shadow-soft: 0 32px 60px rgba(15,23,42,0.65);
+      --radius-md: 14px;
+      --shadow-strong: 0 30px 80px rgba(15,23,42,0.85);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1f2937, #020617 55%, #000 100%);
-      color: var(--text-main);
-    }
+    * { box-sizing: border-box; }
 
     body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 45%, #000 100%);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
-      align-items: stretch;
+      align-items: center;
       justify-content: center;
-      padding: 12px;
+      padding: 18px;
     }
 
     .shell {
       width: 100%;
-      max-width: 1120px;
-      background: radial-gradient(circle at top left, rgba(59,130,246,0.12), transparent 55%),
-                  radial-gradient(circle at bottom right, rgba(251,191,36,0.1), transparent 55%),
-                  #020617;
-      border-radius: 26px;
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(148,163,184,0.4);
-      padding: 18px 20px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      max-width: 1080px;
+      background: radial-gradient(circle at top left,#1f2937,#020617);
+      border-radius: 28px;
+      padding: 22px 22px 24px;
+      box-shadow: var(--shadow-strong);
+      border: 1px solid rgba(148,163,184,0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(59,130,246,0.20) 0, transparent 60%),
+        radial-gradient(circle at 80% 0, rgba(56,189,248,0.18) 0, transparent 55%),
+        radial-gradient(circle at 50% 100%, rgba(99,102,241,0.20) 0, transparent 60%);
+      opacity: .7;
+      pointer-events: none;
+    }
+
+    .shell-inner {
+      position: relative;
+      z-index: 1;
     }
 
     header.app-header {
       display: flex;
       align-items: center;
       gap: 16px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid rgba(148,163,184,0.35);
+      margin-bottom: 14px;
     }
 
     .logo-circle {
-      width: 64px;
-      height: 64px;
+      width: 56px;
+      height: 56px;
       border-radius: 999px;
-      background: radial-gradient(circle at 20% 20%, #4f46e5, #0f172a 60%);
-      border: 2px solid rgba(191,219,254,0.85);
+      padding: 2px;
+      background: conic-gradient(from 160deg, #22c55e, #2563eb, #a855f7, #22c55e);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 18px 40px rgba(37,99,235,0.65);
+      box-shadow: 0 15px 40px rgba(37,99,235,0.5);
+      flex-shrink: 0;
       overflow: hidden;
     }
 
-    .logo-inner {
-      width: 80%;
-      height: 80%;
-      border-radius: 999px;
-      border: 2px solid rgba(248,250,252,0.9);
+    .logo-circle-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 20%, #1f2937, #020617);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      text-align: center;
-      text-transform: uppercase;
-      line-height: 1.25;
       color: #e5e7eb;
-      background: radial-gradient(circle at top, #22c55e, #0f172a);
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-align: center;
       padding: 4px;
     }
 
-    .title-block h1 {
-      margin: 0;
-      font-size: 1.4rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .title-badge {
-      padding: 2px 8px;
+    /* Thay bằng logo trường thật nếu muốn */
+    .logo-circle-inner img {
+      width: 100%;
+      height: 100%;
       border-radius: 999px;
-      font-size: 0.7rem;
-      background: rgba(37,99,235,0.18);
-      color: #bfdbfe;
-      border: 1px solid rgba(59,130,246,0.6);
+      object-fit: cover;
+      display: none; /* Bật lên khi có logo thật */
     }
 
-    .title-block p {
-      margin: 4px 0 0;
-      font-size: 0.9rem;
-      color: var(--text-soft);
+    .app-title-block {
+      flex: 1;
+      min-width: 0;
     }
 
-    @media (max-width: 680px) {
-      header.app-header {
-        align-items: flex-start;
-      }
-      .title-block h1 {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    .app-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #93c5fd;
     }
 
-    .nav-tabs {
+    .app-title {
+      margin: 2px 0 4px;
+      font-size: 1.2rem;
+      font-weight: 650;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: baseline;
+    }
+
+    .app-title span.en {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .app-subtitle {
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    nav.app-nav {
       display: flex;
       gap: 6px;
+      margin: 10px 0 12px;
       flex-wrap: wrap;
-      margin-top: 4px;
     }
 
-    .nav-btn {
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(148,163,184,0.45);
-      padding: 6px 12px;
-      background: rgba(15,23,42,0.72);
-      color: var(--text-soft);
-      font-size: 0.82rem;
+    nav.app-nav button {
+      flex: 1;
+      min-width: 0;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.55);
+      background: rgba(15,23,42,0.9);
+      color: #d1d5db;
+      padding: 7px 10px;
+      font-size: 0.78rem;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       cursor: pointer;
-      transition: all 0.18s ease-out;
+      outline: none;
+      backdrop-filter: blur(14px);
+      transition: all .18s ease-out;
     }
 
-    .nav-btn span.icon {
-      font-size: 1rem;
+    nav.app-nav button span.icon {
+      font-size: 0.9rem;
     }
 
-    .nav-btn.active {
-      background: linear-gradient(135deg,#2563eb,#4f46e5);
+    nav.app-nav button.active {
+      background: radial-gradient(circle at top left, #22c55e, #2563eb);
       color: #f9fafb;
       border-color: transparent;
-      box-shadow: 0 14px 30px rgba(37,99,235,0.6);
+      box-shadow: 0 12px 30px rgba(37,99,235,0.65);
     }
 
-    .nav-btn:hover:not(.active) {
-      border-color: rgba(129,140,248,0.8);
-      color: #e5e7eb;
-      background: rgba(15,23,42,0.94);
+    nav.app-nav button:hover:not(.active) {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.3);
     }
 
-    main {
-      display: grid;
-      grid-template-columns: minmax(0,1.35fr) minmax(0,1fr);
-      gap: 16px;
-    }
-
-    @media (max-width: 880px) {
-      main {
-        grid-template-columns: minmax(0,1fr);
-      }
-    }
-
-    .left-pane, .right-pane {
-      border-radius: 18px;
-    }
-
-    .left-pane {
-      background: linear-gradient(160deg, rgba(15,23,42,0.96), rgba(15,23,42,0.98));
+    main.app-main {
+      border-radius: var(--radius-lg);
       border: 1px solid rgba(148,163,184,0.35);
+      background: linear-gradient(135deg, rgba(15,23,42,0.85), rgba(15,23,42,0.98));
       padding: 16px 16px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      min-height: 320px;
+      max-height: calc(100vh - 170px);
+      overflow: auto;
     }
 
-    .right-pane {
-      background: radial-gradient(circle at top,rgba(37,99,235,0.32),transparent 58%),
-                  linear-gradient(145deg,#020617,#020617);
-      border: 1px solid rgba(55,65,81,0.7);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .section-title {
-      margin: 0;
-      font-size: 1.02rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: #e5e7eb;
-    }
-
-    .section-desc {
-      margin: 4px 0 10px;
-      font-size: 0.82rem;
-      color: var(--text-soft);
-    }
-
-    .page {
+    section.page {
       display: none;
+      animation: fadeIn .2s ease-out;
     }
-    .page.active {
+
+    section.page.active {
       display: block;
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      margin: 0 0 4px;
+      font-size: 1.02rem;
+    }
+    .section-desc {
+      margin: 0 0 12px;
+      font-size: 0.83rem;
+      color: var(--muted);
+    }
+
     form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      margin-top: 4px;
     }
 
-    .field-row {
+    .grid-2 {
       display: grid;
-      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-      gap: 10px;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 10px 12px;
     }
 
-    @media (max-width: 720px) {
-      .field-row {
+    @media (max-width: 768px) {
+      .grid-2 {
         grid-template-columns: minmax(0,1fr);
+      }
+      .shell {
+        padding: 16px 14px 18px;
+        border-radius: 22px;
+      }
+      main.app-main {
+        max-height: none;
       }
     }
 
     .field {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
+      margin-bottom: 8px;
     }
 
     .field label {
@@ -258,1262 +254,872 @@
       color: #cbd5f5;
       display: flex;
       justify-content: space-between;
-      gap: 6px;
+      align-items: baseline;
+      gap: 8px;
     }
 
-    .field small {
-      font-size: 0.72rem;
-      color: var(--text-soft);
+    .field label span.en {
+      font-size: 0.74rem;
+      color: #9ca3af;
+      font-weight: 400;
     }
 
     .field input,
     .field select,
     .field textarea {
-      border-radius: 11px;
-      border: 1px solid rgba(148,163,184,0.55);
-      background: rgba(15,23,42,0.92);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(15,23,42,0.88);
+      padding: 6px 9px;
       color: #e5e7eb;
-      padding: 7px 10px;
-      font-size: 0.84rem;
+      font-size: 0.8rem;
       outline: none;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-      min-height: 33px;
-    }
-
-    .field textarea {
-      resize: vertical;
-      min-height: 70px;
+      width: 100%;
     }
 
     .field input::placeholder,
     .field textarea::placeholder {
-      color: rgba(148,163,184,0.9);
+      color: #6b7280;
     }
 
     .field input:focus,
     .field select:focus,
     .field textarea:focus {
-      border-color: rgba(59,130,246,0.9);
-      box-shadow: 0 0 0 1px rgba(59,130,246,0.9);
-      background: rgba(15,23,42,0.98);
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.5);
     }
 
-    .dob-row {
-      display: grid;
-      grid-template-columns: 0.9fr 0.9fr 1.2fr;
-      gap: 6px;
+    .field textarea {
+      resize: vertical;
+      min-height: 48px;
+      max-height: 120px;
     }
 
-    .badge-required {
-      color: #f97373;
-      font-weight: 600;
-    }
-
-    .btn-primary,
-    .btn-ghost,
-    .btn-small {
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.84rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 7px 16px;
-      transition: all 0.18s ease-out;
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg,#2563eb,#4f46e5);
-      color: #f9fafb;
-      box-shadow: 0 16px 34px rgba(37,99,235,0.7);
-    }
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 22px 40px rgba(37,99,235,0.8);
-    }
-
-    .btn-ghost {
-      background: rgba(15,23,42,0.85);
-      color: #e5e7eb;
-      border: 1px solid rgba(148,163,184,0.6);
-      padding-inline: 14px;
-    }
-    .btn-ghost:hover {
-      background: rgba(15,23,42,0.98);
-      border-color: rgba(59,130,246,0.8);
-    }
-
-    .btn-small {
-      background: rgba(15,23,42,0.9);
-      color: var(--text-soft);
-      padding: 4px 10px;
-      font-size: 0.78rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.5);
-    }
-    .btn-small:hover {
-      background: rgba(15,23,42,0.98);
-      color: #e5e7eb;
-      border-color: rgba(59,130,246,0.9);
-    }
-
-    .btn-primary .icon,
-    .btn-ghost .icon,
-    .btn-small .icon {
-      font-size: 1rem;
+    .hint {
+      font-size: 0.72rem;
+      color: #9ca3af;
     }
 
     .note-small {
       font-size: 0.75rem;
-      color: var(--text-soft);
-      margin-top: 4px;
+      color: var(--muted);
+      margin-top: 6px;
     }
 
-    .login-status {
-      font-size: 0.8rem;
-      color: var(--text-soft);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-    }
-
-    .login-dot {
-      width: 8px;
-      height: 8px;
+    .btn-primary {
       border-radius: 999px;
-      background: #16a34a;
-      box-shadow: 0 0 0 4px rgba(22,163,74,0.35);
-    }
-    .login-dot.off {
-      background: #6b7280;
-      box-shadow: none;
-    }
-
-    .right-pane-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .stat-card {
-      background: rgba(15,23,42,0.92);
-      border-radius: 14px;
-      border: 1px solid rgba(148,163,184,0.45);
-      padding: 8px 10px;
-      font-size: 0.78rem;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .stat-card .label {
-      color: var(--text-soft);
-    }
-    .stat-card .value {
-      font-size: 1rem;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.82rem;
       font-weight: 600;
-      color: #e5e7eb;
-    }
-    .stat-card .sub {
-      font-size: 0.7rem;
-      color: var(--text-soft);
-    }
-
-    .table-wrapper {
-      margin-top: 8px;
-      border-radius: 14px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: rgba(15,23,42,0.9);
-      max-height: 260px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .table-wrapper header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 10px;
-      border-bottom: 1px solid rgba(55,65,81,0.9);
-      font-size: 0.78rem;
-      color: var(--text-soft);
-    }
-
-    .table-scroll {
-      overflow: auto;
-      font-size: 0.8rem;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 420px;
-    }
-    th, td {
-      padding: 4px 8px;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-    }
-    th {
-      text-align: left;
-      font-weight: 500;
-      font-size: 0.78rem;
-      color: var(--text-soft);
-      background: rgba(15,23,42,0.96);
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-    tr:nth-child(even) td {
-      background: rgba(15,23,42,0.96);
-    }
-
-    .card-mini {
-      background: rgba(15,23,42,0.92);
-      border-radius: 14px;
-      border: 1px solid rgba(148,163,184,0.55);
-      padding: 8px 10px;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 8px;
-    }
-
-    .card-mini h3 {
-      margin: 0 0 2px;
-      font-size: 0.9rem;
-      color: #e5e7eb;
-    }
-
-    .card-mini .sub {
-      font-size: 0.76rem;
-      color: var(--text-soft);
-    }
-
-    .exam-warning {
-      color: #fbbf24;
-      font-weight: 600;
-    }
-
-    .pill-tag {
       display: inline-flex;
       align-items: center;
-      border-radius: 999px;
-      padding: 2px 8px;
-      font-size: 0.7rem;
-      border: 1px solid rgba(148,163,184,0.7);
-      color: #e5e7eb;
-      gap: 4px;
-    }
-
-    .pill-tag span.dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #22c55e;
-    }
-
-    .search-row {
-      display: grid;
-      grid-template-columns: minmax(0,1.2fr) minmax(0,0.9fr) minmax(0,0.8fr);
-      gap: 6px;
+      gap: 7px;
+      background-image: linear-gradient(120deg,var(--accent-grad-1),var(--accent-grad-2));
+      color: #f9fafb;
+      cursor: pointer;
+      box-shadow: 0 16px 40px rgba(56,189,248,0.55);
       margin-top: 6px;
     }
-
-    @media (max-width: 720px) {
-      .search-row {
-        grid-template-columns: minmax(0,1fr);
-      }
+    .btn-primary .icon {
+      font-size: 0.92rem;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
     }
 
-    .pill-soft {
-      font-size: 0.74rem;
-      padding: 2px 6px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.5);
-      color: var(--text-soft);
-    }
-
-    .result-card {
-      border-radius: 14px;
-      border: 1px solid rgba(148,163,184,0.55);
-      background: rgba(15,23,42,0.9);
-      padding: 8px 10px;
+    .status-msg {
+      margin-top: 8px;
       font-size: 0.78rem;
-      margin-top: 6px;
+    }
+    .status-empty { color: var(--muted); }
+    .status-error { color: #fca5a5; }
+    .status-ok    { color: #4ade80; }
+
+    .exam-student-card{
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(15,23,42,0.95);
+      border: 1px dashed rgba(148,163,184,0.6);
+      font-size: 0.8rem;
+    }
+    .exam-student-card h3{
+      margin: 0 0 6px;
+      font-size: 0.9rem;
+    }
+    .exam-student-card p{
+      margin: 2px 0;
     }
 
-    .result-card h4 {
-      margin: 0 0 4px;
-      font-size: 0.86rem;
+    .exam-time-box{
+      margin: 12px 0 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(30,64,175,0.25);
+      border: 1px solid rgba(129,140,248,0.7);
+      font-size: 0.8rem;
+    }
+    .exam-time-box b{
+      color: #bfdbfe;
+    }
+    .exam-time-box .time-main{
+      font-weight: 600;
       color: #e5e7eb;
     }
 
-    .result-card .meta {
-      font-size: 0.76rem;
-      color: var(--text-soft);
+    .question-card {
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      background: rgba(15,23,42,0.9);
+      font-size: 0.78rem;
     }
+    .question-card .q-code {
+      font-size: 0.72rem;
+      color: #9ca3af;
+    }
+    .question-card .q-text {
+      margin: 4px 0;
+    }
+    .question-card ul {
+      padding-left: 18px;
+      margin: 4px 0;
+    }
+    .question-card li span.key {
+      font-weight: 600;
+      color: #4ade80;
+      margin-left: 4px;
+    }
+
+    .pill {
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      font-size:0.7rem;
+      padding:2px 7px;
+      border-radius:999px;
+      background:rgba(31,41,55,0.95);
+      border:1px solid rgba(148,163,184,0.7);
+      color:#e5e7eb;
+    }
+
   </style>
 </head>
 <body>
-<div class="shell">
-  <header class="app-header">
-    <div class="logo-circle">
-      <!-- THẦY CÓ LOGO THẬT THÌ THAY block sau bằng <img src="LINK_LOGO" style="width:100%;height:100%;border-radius:999px;object-fit:cover;"> -->
-      <div class="logo-inner">
-        THPT<br>NGUYỄN<br>ĐÌNH CHIỂU
-      </div>
-    </div>
-    <div class="title-block">
-      <h1>
-        DTAI_Online
-        <span class="title-badge">SK – Hệ thống kiểm tra &amp; đánh giá Online</span>
-      </h1>
-      <p>Quản lý đăng ký – ca thi – Dashboard – tra cứu kết quả theo SK kiểm tra, thi Online.</p>
-      <div class="nav-tabs">
-        <button class="nav-btn active" data-target="register">
-          <span class="icon">📝</span><span>Đăng ký thông tin</span>
-        </button>
-        <button class="nav-btn" data-target="login">
-          <span class="icon">🔐</span><span>Đăng nhập (ACCESS_CODE)</span>
-        </button>
-        <button class="nav-btn" data-target="exam">
-          <span class="icon">🧪</span><span>Vào ca thi</span>
-        </button>
-        <button class="nav-btn" data-target="dashboard">
-          <span class="icon">📊</span><span>Dashboard điểm</span>
-        </button>
-        <button class="nav-btn" data-target="lookup">
-          <span class="icon">📄</span><span>Xem kết quả</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <!-- LEFT: FORM PAGES -->
-    <div class="left-pane">
-      <!-- 1. ĐĂNG KÝ -->
-      <section id="register" class="page active">
-        <h2 class="section-title">Đăng ký thông tin thí sinh</h2>
-        <p class="section-desc">
-          Điền chính xác các thông tin bên dưới. Hệ thống sẽ gửi email xác nhận kèm mật khẩu
-          <b>ACCESS_CODE</b> để đăng nhập trước khi vào thi và xem kết quả.
-        </p>
-
-        <form id="regForm"
-              method="POST"
-              action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec"
-              onsubmit="return handleRegisterSubmit(event)">
-          <!-- Họ và tên -->
-          <div class="field">
-            <label>
-              <span>Họ và tên</span>
-              <span class="badge-required">(*) IN HOA tự động</span>
-            </label>
-            <input type="text" name="hoten" id="hoten" required
-                   placeholder="Ví dụ: Nguyễn Văn A" autocomplete="name" />
-            <small>Nhập bình thường, hệ thống sẽ tự chuyển thành CHỮ IN HOA khi lưu.</small>
+  <div class="shell">
+    <div class="shell-inner">
+      <header class="app-header">
+        <div class="logo-circle">
+          <div class="logo-circle-inner">
+            <!-- Nếu có LOGO PNG/JPG của Trường, bật dòng dưới và tắt chữ DTAI -->
+            <!-- <img src="LINK_LOGO_TRUONG.png" alt="Logo"> -->
+            <span>DTAI<br>Online</span>
           </div>
+        </div>
+        <div class="app-title-block">
+          <div class="app-kicker">DTAI – Digital Testing & Assessment Initiative</div>
+          <div class="app-title">
+            <span>Hệ thống kiểm tra Online</span>
+            <span class="en">/ Online Assessment System</span>
+          </div>
+          <div class="app-subtitle">
+            Trường THPT Nguyễn Đình Chiểu – Song ngữ Việt–Anh / Bilingual VI–EN
+          </div>
+        </div>
+      </header>
 
-          <!-- Ngày sinh + Giới tính -->
-          <div class="field-row">
-            <div class="field">
-              <label><span>Ngày sinh</span><span class="badge-required">(*)</span></label>
-              <div class="dob-row">
-                <select id="dobDay"></select>
-                <select id="dobMonth"></select>
-                <select id="dobYear"></select>
+      <nav class="app-nav">
+        <button class="active" onclick="show('register', this)"><span class="icon">📝</span><span>Đăng ký / Register</span></button>
+        <button onclick="show('login', this)"><span class="icon">🔐</span><span>Đăng nhập / Login</span></button>
+        <button onclick="show('exam', this)"><span class="icon">🧪</span><span>Vào thi / Take exam</span></button>
+        <button onclick="show('bank', this)"><span class="icon">📚</span><span>Ngân hàng câu hỏi / Question bank</span></button>
+      </nav>
+
+      <main class="app-main">
+        <!-- 1. ĐĂNG KÝ / REGISTRATION -->
+        <section id="register" class="page active">
+          <h2 class="section-title">Đăng ký thí sinh / Candidate registration</h2>
+          <p class="section-desc">
+            Điền thông tin đầy đủ, chính xác. Sau khi đăng ký, hệ thống sẽ gửi mật khẩu truy cập về email của bạn. /
+            Please fill in accurate information. A personal password will be sent to your email after registration.
+          </p>
+
+          <!-- POST thẳng vào Apps Script -->
+          <form id="regForm" method="post" target="_blank">
+            <div class="grid-2">
+              <div class="field">
+                <label for="hoten">
+                  <span>Họ và tên</span>
+                  <span class="en">Full name</span>
+                </label>
+                <input id="hoten" name="hoten" placeholder="Nguyễn Văn A..." required />
+                <div class="hint">Ghi IN HOA sẽ được hệ thống tự xử lý / System will convert to UPPERCASE.</div>
               </div>
-              <input type="hidden" name="ngaysinh" id="ngaysinh" />
-              <small>Chọn lần lượt <b>Ngày – Tháng – Năm</b>. Hệ thống tự ghép theo dạng dd/mm/yyyy.</small>
+
+              <div class="field">
+                <label for="ngaysinh">
+                  <span>Ngày sinh</span>
+                  <span class="en">Date of birth</span>
+                </label>
+                <input id="ngaysinh" name="ngaysinh" inputmode="numeric" placeholder="dd/mm/yyyy" />
+                <div class="hint">Nhập trực tiếp: 01/09/2008 (dễ nhập trên điện thoại) / Type directly: 01/09/2008.</div>
+              </div>
             </div>
-            <div class="field">
-              <label><span>Giới tính</span><span class="badge-required">(*)</span></label>
-              <select name="gioitinh" id="gioitinh" required>
-                <option value="">-- Chọn giới tính --</option>
-                <option value="Nam">Nam</option>
-                <option value="Nữ">Nữ</option>
-                <option value="Khác">Khác</option>
-              </select>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="gioitinh">
+                  <span>Giới tính</span><span class="en">Gender</span>
+                </label>
+                <select id="gioitinh" name="gioitinh">
+                  <option value="">-- Chọn / Select --</option>
+                  <option value="Nam">Nam / Male</option>
+                  <option value="Nữ">Nữ / Female</option>
+                  <option value="Khác">Khác / Other</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="khoi">
+                  <span>Khối</span><span class="en">Grade</span>
+                </label>
+                <select id="khoi" name="khoi">
+                  <option value="">-- Chọn / Select --</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+              </div>
             </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="dantoc">
+                  <span>Dân tộc</span><span class="en">Ethnicity</span>
+                </label>
+                <select id="dantoc" name="dantoc">
+                  <option value="">-- Chọn / Select --</option>
+                  <option value="Kinh">Kinh</option>
+                  <option value="M'Nông">M'Nông</option>
+                  <option value="Êđê">Êđê</option>
+                  <option value="Chu Ru">Chu Ru</option>
+                  <option value="Khác">Khác / Other</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="truong">
+                  <span>Trường</span><span class="en">School</span>
+                </label>
+                <select id="truong" name="truong">
+                  <option value="">-- Chọn / Select --</option>
+                  <option value="THPT Nguyễn Đình Chiểu">THPT Nguyễn Đình Chiểu</option>
+                  <option value="THPT Phạm Văn Đồng">THPT Phạm Văn Đồng</option>
+                  <option value="THCS & THPT khác">Trường khác / Other school</option>
+                </select>
+                <div class="hint">Nếu không có trong danh sách, ghi rõ ở ô Ghi chú. / If not in the list, use Notes.</div>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="xa">
+                  <span>Xã/Phường</span><span class="en">Ward/Commune</span>
+                </label>
+                <input id="xa" name="xa" placeholder="Quảng Tín..." />
+              </div>
+
+              <div class="field">
+                <label for="tinh">
+                  <span>Tỉnh/TP</span><span class="en">Province/City</span>
+                </label>
+                <select id="tinh" name="tinh">
+                  <option value="">-- Chọn / Select --</option>
+                  <option value="Lâm Đồng">Lâm Đồng</option>
+                  <option value="Đắk Nông">Đắk Nông</option>
+                  <option value="Đắk Lắk">Đắk Lắk</option>
+                  <option value="Khác">Khác / Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="malop">
+                  <span>Lớp</span><span class="en">Class</span>
+                </label>
+                <input id="malop" name="malop" placeholder="12A1, 11B2..." />
+                <div class="hint">Hệ thống sẽ tự chuyển sang IN HOA. / System will convert to UPPERCASE.</div>
+              </div>
+
+              <div class="field">
+                <label for="cccd">
+                  <span>CCCD</span><span class="en">Citizen ID</span>
+                </label>
+                <input id="cccd" name="cccd" inputmode="numeric" placeholder="Chỉ nhập số / Digits only" required />
+                <div class="hint">Dùng CCCD này để đăng nhập hệ thống. / Use this CCCD to login.</div>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="email">
+                  <span>Email</span><span class="en">Email</span>
+                </label>
+                <input id="email" name="email" type="email" placeholder="yourname@gmail.com" required />
+                <div class="hint">Hệ thống gửi mật khẩu về email này. / Password will be sent to this email.</div>
+              </div>
+
+              <div class="field">
+                <label for="ghichu">
+                  <span>Ghi chú</span><span class="en">Notes</span>
+                </label>
+                <textarea id="ghichu" name="ghichu" placeholder="Ghi chú thêm nếu cần / Any extra notes"></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+              <span class="icon">🚀</span>
+              <span>Gửi đăng ký / Submit registration</span>
+            </button>
+            <div class="note-small">
+              Sau khi bấm Gửi, hệ thống Apps Script sẽ mở trang thông báo và gửi email xác nhận. /
+              After submitting, Apps Script will show a confirmation page and send an email.
+            </div>
+          </form>
+        </section>
+
+        <!-- 2. ĐĂNG NHẬP / LOGIN -->
+        <section id="login" class="page">
+          <h2 class="section-title">Đăng nhập hệ thống / Login</h2>
+          <p class="section-desc">
+            Sử dụng CCCD và mật khẩu đã được gửi qua email sau khi đăng ký. /
+            Use your CCCD and password sent to your email after registration.
+          </p>
+
+          <form id="loginForm">
+            <div class="grid-2">
+              <div class="field">
+                <label for="login_cccd">
+                  <span>CCCD</span><span class="en">Citizen ID</span>
+                </label>
+                <input id="login_cccd" name="cccd" inputmode="numeric" placeholder="Chỉ nhập số / Digits only" required />
+                <div class="hint">Giống CCCD đã dùng khi đăng ký. / Same CCCD as in registration.</div>
+              </div>
+              <div class="field">
+                <label for="login_pass">
+                  <span>Mật khẩu</span><span class="en">Password</span>
+                </label>
+                <input id="login_pass" name="pass" type="password" placeholder="Mật khẩu 6 ký tự / 6-char password" required />
+                <div class="hint">Do hệ thống sinh tự động và gửi email. / Generated automatically and emailed.</div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+              <span class="icon">🔐</span>
+              <span>Đăng nhập / Login</span>
+            </button>
+            <div class="note-small">
+              Quên mật khẩu? Liên hệ giáo viên phụ trách để được cấp lại. /
+              Forgot password? Contact your teacher to reset.
+            </div>
+          </form>
+
+          <div id="loginStatus" class="status-msg status-empty"></div>
+        </section>
+
+        <!-- 3. VÀO THI / TAKE EXAM -->
+        <section id="exam" class="page">
+          <h2 class="section-title">Vào thi / Take exam</h2>
+          <p class="section-desc">
+            Học sinh cần đăng nhập trước, hệ thống sẽ hiển thị thông tin và danh sách ca thi đang mở. /
+            Students must login first, system will show their info and active exam sessions.
+          </p>
+
+          <div id="examNeedsLogin" class="note-small">
+            Bạn chưa đăng nhập. Vui lòng vào tab <b>Đăng nhập / Login</b> để tiếp tục. /
+            You are not logged in yet. Please go to <b>Login</b> tab first.
           </div>
 
-          <!-- Dân tộc + Trường -->
-          <div class="field-row">
-            <div class="field">
-              <label><span>Dân tộc</span><span class="badge-required">(*)</span></label>
-              <select name="dantoc" id="dantoc" required>
-                <option value="">-- Chọn dân tộc --</option>
-                <option value="Kinh">Kinh</option>
-                <option value="M'Nông">M'Nông</option>
-                <option value="Êđê">Êđê</option>
-                <option value="Nùng">Nùng</option>
-                <option value="Tày">Tày</option>
-                <option value="Thái">Thái</option>
-                <option value="Hoa">Hoa</option>
-                <option value="Khmer">Khmer</option>
-                <option value="Khác">Khác</option>
-              </select>
-              <small>Chọn đúng theo giấy khai sinh.</small>
+          <div id="examPanel" style="display:none;">
+            <div class="exam-student-card">
+              <h3>Thông tin thí sinh / Candidate info</h3>
+              <p><b>Họ và tên / Name:</b> <span id="examStudentName"></span></p>
+              <p><b>CCCD:</b> <span id="examStudentCccd"></span></p>
+              <p><b>Email:</b> <span id="examStudentEmail"></span></p>
+              <p><b>Lớp / Class:</b> <span id="examStudentClass"></span></p>
             </div>
-            <div class="field">
-              <label><span>Trường THPT</span><span class="badge-required">(*)</span></label>
-              <select name="truong" id="truong" required>
-                <option value="">-- Chọn trường --</option>
-                <option value="THPT Nguyễn Đình Chiểu">THPT Nguyễn Đình Chiểu</option>
-                <option value="THPT Phạm Văn Đồng">THPT Phạm Văn Đồng</option>
-                <option value="Trường khác">Trường khác...</option>
-              </select>
-              <input type="text" name="truong_khac" id="truong_khac"
-                     placeholder="Nếu chọn 'Trường khác', ghi tên tại đây" />
-            </div>
-          </div>
 
-          <!-- Địa chỉ -->
-          <div class="field-row">
-            <div class="field">
-              <label><span>Xã / Phường</span></label>
-              <input type="text" name="xa" id="xa" placeholder="Ví dụ: Xã Quảng Tín" />
-            </div>
-            <div class="field">
-              <label><span>Tỉnh / Thành phố</span></label>
-              <select name="tinh" id="tinh">
-                <option value="">-- Chọn tỉnh / thành phố --</option>
-                <option value="Lâm Đồng">Lâm Đồng</option>
-                <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
-                <option value="Hà Nội">Hà Nội</option>
-                <option value="Đắk Nông">Đắk Nông</option>
-                <option value="Đà Nẵng">Đà Nẵng</option>
-                <option value="Khác">Khác...</option>
-              </select>
-              <input type="text" name="tinh_khac" id="tinh_khac"
-                     placeholder="Nếu chọn 'Khác', ghi tên tại đây" />
-            </div>
-          </div>
+            <div class="grid-2">
+              <div class="field">
+                <label for="subjectSelect">
+                  <span>Môn kiểm tra</span><span class="en">Subject</span>
+                </label>
+                <select id="subjectSelect">
+                  <option value="">-- Chọn môn / Select subject --</option>
+                  <option>Toán</option>
+                  <option>Lý</option>
+                  <option>Hóa</option>
+                  <option>Sinh</option>
+                  <option>Tin</option>
+                  <option>Văn</option>
+                  <option>Sử</option>
+                  <option>Địa</option>
+                  <option>Ngoại ngữ</option>
+                  <option>GDKTPL</option>
+                  <option>CNN</option>
+                  <option>CNTrTr</option>
+                  <option>Thể dục</option>
+                  <option>Quốc phòng an ninh</option>
+                </select>
+                <div class="hint">Môn dùng cho thống kê, báo cáo SK. / Used for reporting.</div>
+              </div>
 
-          <!-- Khối + Lớp -->
-          <div class="field-row">
-            <div class="field">
-              <label><span>Khối</span><span class="badge-required">(*)</span></label>
-              <select name="khoi" id="khoi" required>
-                <option value="">-- Chọn khối --</option>
-                <option value="10">Khối 10</option>
-                <option value="11">Khối 11</option>
-                <option value="12">Khối 12</option>
-              </select>
+              <div class="field">
+                <label for="examSelect">
+                  <span>Mã ca thi</span><span class="en">Exam session</span>
+                </label>
+                <select id="examSelect">
+                  <option value="">-- Chọn ca thi / Select exam --</option>
+                </select>
+                <div class="hint">
+                  Dữ liệu từ sheet <b>CauHinhThi</b> (MaKyThi, HinhThuc TKTx/TKDk/KTCK...). /
+                  Data is from <b>CauHinhThi</b> sheet.
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label><span>Lớp (Mã lớp)</span><span class="badge-required">(*)</span></label>
-              <input type="text" name="malop" id="malop" required
-                     placeholder="VD: 12A1, 11A2..." />
-              <small>Nhập mã lớp, hệ thống sẽ tự chuyển thành in hoa (VD: 12A1).</small>
-            </div>
-          </div>
 
-          <!-- CCCD + Email -->
-          <div class="field-row">
+            <div class="exam-time-box">
+              <div><b>Hình thức / Type:</b> <span id="examType">–</span></div>
+              <div><b>Thời gian / Time:</b> <span id="examTimeRange" class="time-main">–</span></div>
+              <div><b>Còn lại / Remaining:</b> <span id="examCountdown">–</span></div>
+              <div id="examWarning" class="note-small"></div>
+            </div>
+
+            <button class="btn-primary" type="button" onclick="startExam()">
+              <span class="icon">🧪</span>
+              <span>Vào làm bài / Start exam</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 4. NGÂN HÀNG CÂU HỎI / QUESTION BANK PREVIEW -->
+        <section id="bank" class="page">
+          <h2 class="section-title">Ngân hàng câu hỏi / Question bank</h2>
+          <p class="section-desc">
+            Dữ liệu được import từ file Word → Google Docs → bảng QuestionBank trong Google Sheet. /
+            Data is imported from Word → Google Docs → QuestionBank sheet.
+          </p>
+
+          <div class="grid-2">
             <div class="field">
-              <label>
-                <span>Số CCCD</span>
-                <span class="badge-required">(*) ký tự số</span>
+              <label for="bankType">
+                <span>Loại câu hỏi</span><span class="en">Question type</span>
               </label>
-              <input type="text" name="cccd" id="cccd"
-                     inputmode="numeric"
-                     placeholder="Nhập dãy số CCCD (không cách)" />
-              <small>Hệ thống chỉ giữ lại ký tự số, dùng để kiểm tra trùng đăng ký và tra cứu kết quả.</small>
+              <select id="bankType">
+                <option value="">(Tất cả / All)</option>
+                <option value="SC">SC – Một đáp án đúng / Single choice</option>
+                <option value="MC">MC – Nhiều đáp án đúng / Multiple choice</option>
+                <option value="TF1">TF1 – Đúng/Sai, 1 lựa chọn</option>
+                <option value="TFM">TFM – Nhiều mệnh đề Đ/S</option>
+              </select>
             </div>
             <div class="field">
-              <label><span>Email nhận thông tin</span><span class="badge-required">(*)</span></label>
-              <input type="email" name="email" id="email" required
-                     placeholder="VD: hs123@gmail.com" autocomplete="email" />
-              <small>Dùng email thật để nhận <b>ACCESS_CODE</b> &amp; thông tin đăng ký.</small>
+              <label for="bankLimit">
+                <span>Số câu hiển thị</span><span class="en">Number of questions</span>
+              </label>
+              <input id="bankLimit" type="number" min="1" max="100" value="10" />
             </div>
           </div>
 
-          <!-- Ghi chú -->
-          <div class="field">
-            <label><span>Ghi chú (nếu có)</span></label>
-            <textarea name="ghichu" id="ghichu"
-                      placeholder="Ví dụ: HS diện ưu tiên, ghi chú sức khỏe, thiết bị..."></textarea>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
-            <button type="submit" class="btn-primary">
-              <span class="icon">📩</span><span>Gửi đăng ký</span>
-            </button>
-            <button type="reset" class="btn-ghost">
-              <span class="icon">♻️</span><span>Xóa form</span>
-            </button>
-            <span class="note-small">
-              Sau khi gửi, kiểm tra email để lấy mật khẩu <b>ACCESS_CODE</b> đăng nhập hệ thống.
-            </span>
-          </div>
-        </form>
-      </section>
-
-      <!-- 2. ĐĂNG NHẬP -->
-      <section id="login" class="page">
-        <h2 class="section-title">Đăng nhập ACCESS_CODE</h2>
-        <p class="section-desc">
-          Nhập mật khẩu <b>ACCESS_CODE</b> đã được gửi qua email sau khi đăng ký.
-          Sau khi đăng nhập, học sinh mới dùng được các chức năng: Vào thi, Dashboard, Xem kết quả.
-        </p>
-
-        <form onsubmit="return handleLogin(event)">
-          <div class="field">
-            <label>
-              <span>Mật khẩu ACCESS_CODE</span>
-              <span class="badge-required">(*)</span>
-            </label>
-            <input type="password" id="accessCodeInput"
-                   placeholder="Nhập ACCESS_CODE (VD: SK2025)" required />
-            <small>Mật khẩu dùng chung cho kỳ thi, do nhà trường cung cấp (không phải mật khẩu email).</small>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
-            <button type="submit" class="btn-primary">
-              <span class="icon">🔓</span><span>Đăng nhập hệ thống</span>
-            </button>
-            <button type="button" class="btn-ghost" onclick="handleLogout()">
-              <span class="icon">🚪</span><span>Đăng xuất</span>
-            </button>
-          </div>
-        </form>
-      </section>
-
-      <!-- 3. VÀO THI -->
-      <section id="exam" class="page">
-        <h2 class="section-title">Vào ca thi</h2>
-        <p class="section-desc">
-          Hệ thống tự lấy cấu hình kỳ thi từ sheet <b>CauHinhThi</b> (MaKyThi, hình thức TKTx/TKDk/KTCk,
-          thời gian bắt đầu – kết thúc). Chỉ trong khoảng thời gian cho phép, nút <b>Vào làm bài</b> mới mở.
-        </p>
-
-        <div class="card-mini" id="examConfigBox">
-          <h3 id="examTitle">Chưa cấu hình kỳ thi</h3>
-
-          <div class="sub">
-            <b>Mã ca thi:</b> <span id="examCodeText">–</span>
-          </div>
-
-          <div class="sub" id="examTypeText">
-            Hãy kiểm tra sheet <b>CauHinhThi</b> trong file Đăng ký.
-          </div>
-
-          <div class="sub" id="examTimeText"></div>
-
-          <div class="sub exam-warning" id="examWarningText"></div>
-
-          <div class="sub" id="examStatusText"></div>
-
-          <div class="sub">
-            <b>Đồng hồ:</b> <span id="examCountdown">--:--:--</span>
-          </div>
-        </div>
-
-        <button id="btnStartExam" class="btn-primary" type="button" onclick="openExam()" disabled>
-          <span class="icon">🧪</span><span>Vào làm bài kiểm tra</span>
-        </button>
-
-        <div class="note-small" id="examNote">
-          Hết giờ làm bài, hệ thống sẽ <b>tự động khóa nút Vào thi</b> (không cho mở đề mới).
-          Việc nộp bài bên trong Google Form vẫn do học sinh bấm “GỬI” và/hoặc add-on trong Google Form xử lý.
-        </div>
-      </section>
-
-      <!-- 4. XEM KẾT QUẢ -->
-      <section id="lookup" class="page">
-        <h2 class="section-title">Tra cứu kết quả bài thi</h2>
-        <p class="section-desc">
-          Học sinh có thể xem điểm bằng cách nhập <b>CCCD</b> hoặc <b>Họ tên (IN HOA) + Lớp</b>.
-          Dữ liệu lấy từ sheet <b>DiemThi</b>.
-        </p>
-
-        <div class="pill-soft">
-          Hệ thống yêu cầu đã <b>Đăng nhập ACCESS_CODE</b> trước khi tra cứu.
-        </div>
-
-        <div class="search-row">
-          <div class="field">
-            <label><span>CCCD (ưu tiên)</span></label>
-            <input type="text" id="srCccd" inputmode="numeric"
-                   placeholder="Nhập CCCD để tra cứu nhanh" />
-          </div>
-          <div class="field">
-            <label><span>Họ tên (IN HOA)</span></label>
-            <input type="text" id="srName"
-                   placeholder="VD: NGUYỄN VĂN A" />
-          </div>
-          <div class="field">
-            <label><span>Lớp (mã lớp)</span></label>
-            <input type="text" id="srClass"
-                   placeholder="VD: 12A1" />
-          </div>
-        </div>
-
-        <div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <button type="button" class="btn-primary" onclick="handleSearchResult()">
-            <span class="icon">🔍</span><span>Tra cứu kết quả</span>
+          <button type="button" class="btn-primary" onclick="loadBankPreview()">
+            <span class="icon">📥</span>
+            <span>Tải xem nhanh / Load preview</span>
           </button>
-          <button type="button" class="btn-ghost" onclick="clearSearchResult()">
-            <span class="icon">🧹</span><span>Xóa kết quả</span>
-          </button>
-          <span class="note-small">Ưu tiên nhập CCCD. Nếu không nhớ, dùng HỌ TÊN (IN HOA) + LỚP.</span>
-        </div>
 
-        <div id="lookupResult" style="margin-top:8px;"></div>
-      </section>
+          <div id="bankStatus" class="status-msg status-empty"></div>
+          <div id="bankList" style="margin-top:8px;"></div>
+
+          <div class="note-small">
+            Cấu trúc Word/Docs: mỗi hàng là 1 câu, các cột Code, QuestionVI/EN, Type (SC/MC/TF1/TFM),
+            A/B/C/D_VI/EN + Key, ExplanationVI/EN. /  
+            Word/Docs structure: each row is a question with Code, QuestionVI/EN, Type, A/B/C/D + Key, Explanation.
+          </div>
+        </section>
+      </main>
     </div>
-
-    <!-- RIGHT: DASHBOARD -->
-    <div class="right-pane">
-      <div class="right-pane-header">
-        <div>
-          <div style="font-size:0.86rem;color:#e5e7eb;font-weight:600;display:flex;align-items:center;gap:6px;">
-            <span>Dashboard điểm – DTAI_Online</span>
-          </div>
-          <div style="font-size:0.75rem;color:var(--text-soft);">
-            Thống kê bài làm từ sheet <b>DiemThi</b> (Google Form/Quiz).
-          </div>
-        </div>
-        <div class="login-status">
-          <span id="authStatusText">Chưa đăng nhập</span>
-          <span class="login-dot off" id="authStatusDot"></span>
-        </div>
-      </div>
-
-      <div class="stat-grid" id="statGrid">
-        <div class="stat-card">
-          <div class="label">Tổng số bài thi</div>
-          <div class="value" id="stTotalRows">–</div>
-          <div class="sub">Dữ liệu từ sheet DiemThi</div>
-        </div>
-        <div class="stat-card">
-          <div class="label">Khối có nhiều bài nhất</div>
-          <div class="value" id="stTopGrade">–</div>
-          <div class="sub" id="stTopGradeSub">Chưa có dữ liệu</div>
-        </div>
-        <div class="stat-card">
-          <div class="label">Lớp có nhiều bài nhất</div>
-          <div class="value" id="stTopClass">–</div>
-          <div class="sub" id="stTopClassSub">Chưa có dữ liệu</div>
-        </div>
-      </div>
-
-      <div class="table-wrapper">
-        <header>
-          <span>Bảng điểm gần nhất</span>
-          <button type="button" class="btn-small" onclick="loadDashboard()">
-            <span class="icon">🔄</span><span>Tải lại</span>
-          </button>
-        </header>
-        <div class="table-scroll" id="resultsTableBox">
-          <!-- Bảng điểm sẽ được render bằng JS -->
-        </div>
-      </div>
-    </div>
-  </main>
-</div>
-
-<script>
-  // 👉 URL Web App Apps Script (mode=stats/results/search/examConfig + doPost)
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec";
-
-  // 👉 ACCESS_CODE – phải trùng với Code.gs
-  const ACCESS_CODE = "SK2025";
-
-  let isLoggedIn = false;
-
-  // Biến cấu hình kỳ thi
-  let examConfig = null;
-  let examTimeOffset = 0;
-  let examCountdownTimer = null;
-
-  /***************** NAV & PAGING *****************/
-  const navButtons = document.querySelectorAll(".nav-btn");
-  const pages = document.querySelectorAll(".page");
-
-  navButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const target = btn.getAttribute("data-target");
-      switchPage(target);
-    });
-  });
-
-  function switchPage(target) {
-    navButtons.forEach(b => b.classList.toggle("active", b.getAttribute("data-target") === target));
-    pages.forEach(p => p.classList.toggle("active", p.id === target));
-  }
-
-  /***************** NGÀY SINH: DAY/MONTH/YEAR *****************/
-
-  function initDobSelects() {
-    const daySel = document.getElementById("dobDay");
-    const monthSel = document.getElementById("dobMonth");
-    const yearSel = document.getElementById("dobYear");
-    if (!daySel || !monthSel || !yearSel) return;
-
-    daySel.innerHTML = '<option value="">Ngày</option>';
-    for (let d = 1; d <= 31; d++) {
-      const op = document.createElement("option");
-      op.value = String(d).padStart(2, "0");
-      op.textContent = String(d).padStart(2, "0");
-      daySel.appendChild(op);
-    }
-
-    monthSel.innerHTML = '<option value="">Tháng</option>';
-    for (let m = 1; m <= 12; m++) {
-      const op = document.createElement("option");
-      op.value = String(m).padStart(2, "0");
-      op.textContent = String(m).padStart(2, "0");
-      monthSel.appendChild(op);
-    }
-
-    const currentYear = new Date().getFullYear();
-    yearSel.innerHTML = '<option value="">Năm</option>';
-    for (let y = currentYear - 25; y >= currentYear - 80; y--) {
-      const op = document.createElement("option");
-      op.value = String(y);
-      op.textContent = String(y);
-      yearSel.appendChild(op);
-    }
-
-    function updateDobHidden() {
-      const d = daySel.value;
-      const m = monthSel.value;
-      const y = yearSel.value;
-      const hidden = document.getElementById("ngaysinh");
-      if (!hidden) return;
-      if (d && m && y) {
-        hidden.value = d + "/" + m + "/" + y;
-      } else {
-        hidden.value = "";
-      }
-    }
-
-    daySel.addEventListener("change", updateDobHidden);
-    monthSel.addEventListener("change", updateDobHidden);
-    yearSel.addEventListener("change", updateDobHidden);
-  }
-
-  /***************** ĐĂNG KÝ: SUBMIT *****************/
-
-  function handleRegisterSubmit(e) {
-    const day = document.getElementById("dobDay")?.value || "";
-    const month = document.getElementById("dobMonth")?.value || "";
-    const year = document.getElementById("dobYear")?.value || "";
-    const hidden = document.getElementById("ngaysinh");
-
-    if (hidden) {
-      if (day && month && year) {
-        hidden.value = day + "/" + month + "/" + year;
-      } else {
-        alert("Vui lòng chọn đầy đủ Ngày sinh (Ngày/Tháng/Năm).");
-        e.preventDefault();
-        return false;
-      }
-    }
-
-    // Cho phép form submit bình thường sang Apps Script (HTML success/duplicate)
-    return true;
-  }
-
-  /***************** AUTH – ACCESS_CODE *****************/
-
-  function loadAuthFromStorage() {
-    try {
-      const v = localStorage.getItem("DTAI_LOGGED_IN");
-      isLoggedIn = v === "1";
-    } catch (err) {
-      isLoggedIn = false;
-    }
-  }
-
-  function saveAuthToStorage() {
-    try {
-      localStorage.setItem("DTAI_LOGGED_IN", isLoggedIn ? "1" : "0");
-    } catch (err) {}
-  }
-
-  function updateAuthUI() {
-    const dot = document.getElementById("authStatusDot");
-    const text = document.getElementById("authStatusText");
-    if (!dot || !text) return;
-
-    if (isLoggedIn) {
-      dot.classList.remove("off");
-      text.textContent = "Đã đăng nhập ACCESS_CODE";
-    } else {
-      dot.classList.add("off");
-      text.textContent = "Chưa đăng nhập";
-    }
-
-    // Nút Vào thi phụ thuộc vào login + thời gian
-    updateExamCountdown();
-  }
-
-  function handleLogin(e) {
-    e.preventDefault();
-    const inp = document.getElementById("accessCodeInput");
-    if (!inp) return false;
-    const val = (inp.value || "").trim();
-
-    if (!val) {
-      alert("Vui lòng nhập ACCESS_CODE.");
-      return false;
-    }
-    if (val !== ACCESS_CODE) {
-      alert("ACCESS_CODE chưa đúng. Kiểm tra lại email hoặc liên hệ giáo viên phụ trách.");
-      return false;
-    }
-
-    isLoggedIn = true;
-    saveAuthToStorage();
-    updateAuthUI();
-    alert("Đăng nhập thành công. Thầy/cô/học sinh có thể vào thi, xem Dashboard và tra cứu kết quả.");
-    return false;
-  }
-
-  function handleLogout() {
-    isLoggedIn = false;
-    saveAuthToStorage();
-    updateAuthUI();
-    alert("Đã đăng xuất khỏi hệ thống.");
-  }
-
-  function requireLogin() {
-    if (!isLoggedIn) {
-      alert("Cần đăng nhập ACCESS_CODE trước khi sử dụng chức năng này.");
-      switchPage("login");
-      return false;
-    }
-    return true;
-  }
-
-  /***************** CẤU HÌNH KỲ THI + ĐỒNG HỒ ĐẾM NGƯỢC *****************/
-
-  function examTypeLabel(code) {
-    switch ((code || "").toUpperCase()) {
-      case "TKTX": return "Kiểm tra thường xuyên (TKTx)";
-      case "TKDK": return "Kiểm tra định kỳ (TKDk)";
-      case "KTCK": return "Kiểm tra cuối kỳ (KTCk)";
-      default:     return code || "Không xác định";
-    }
-  }
-
-  async function loadExamConfig() {
-    try {
-      const data = await callJsonp(WEB_APP_URL + "?mode=examConfig", "examCfgCallback");
-      renderExamConfig(data);
-    } catch (err) {
-      console.error(err);
-      const statusEl = document.getElementById("examStatusText");
-      if (statusEl) {
-        statusEl.textContent = "Lỗi tải cấu hình kỳ thi. Thầy/cô kiểm tra lại Code.gs hoặc sheet CauHinhThi.";
-      }
-    }
-  }
-
-  function renderExamConfig(data) {
-    const titleEl     = document.getElementById("examTitle");
-    const codeTextEl  = document.getElementById("examCodeText");
-    const typeTextEl  = document.getElementById("examTypeText");
-    const timeTextEl  = document.getElementById("examTimeText");
-    const warnTextEl  = document.getElementById("examWarningText");
-    const statusEl    = document.getElementById("examStatusText");
-    const countdownEl = document.getElementById("examCountdown");
-    const btn         = document.getElementById("btnStartExam");
-
-    if (examCountdownTimer) {
-      clearInterval(examCountdownTimer);
-      examCountdownTimer = null;
-    }
-
-    if (!data || !data.ok) {
-      examConfig = null;
-      if (titleEl) titleEl.textContent = "Chưa cấu hình kỳ thi.";
-      if (codeTextEl) codeTextEl.textContent = "–";
-      if (typeTextEl) typeTextEl.innerHTML = "Hãy mở sheet <b>CauHinhThi</b> và điền cấu hình ở hàng 2.";
-      if (timeTextEl) timeTextEl.textContent = "";
-      if (warnTextEl) warnTextEl.textContent = "";
-      if (statusEl) statusEl.textContent = data && data.error ? ("Lỗi: " + data.error) : "";
-      if (countdownEl) countdownEl.textContent = "--:--:--";
-      if (btn) btn.disabled = true;
-      return;
-    }
-
-    examConfig = data;
-    examTimeOffset = Date.now() - (data.serverNowMs || Date.now());
-
-    const code      = data.examCode || "–";
-    const typeLabel = examTypeLabel(data.examType);
-
-    if (titleEl) titleEl.textContent = data.title || "Kỳ thi hiện tại";
-    if (codeTextEl) codeTextEl.textContent = code;
-    if (typeTextEl) typeTextEl.innerHTML = "Hình thức: <b>" + typeLabel + "</b>";
-
-    if (data.startMs && data.endMs) {
-      const start = new Date(data.startMs);
-      const end   = new Date(data.endMs);
-      const fmtFull = d => d.toLocaleString("vi-VN");
-      const fmtTime = d => d.toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"});
-
-      if (timeTextEl) {
-        timeTextEl.textContent =
-          "Thời gian làm bài: từ " + fmtFull(start) + " đến " + fmtFull(end) + ".";
-      }
-
-      if (warnTextEl) {
-        const endTimeStr = fmtTime(end);
-        warnTextEl.innerHTML =
-          "Đến <b>" + endTimeStr +
-          "</b> hệ thống sẽ <b>không nhận bài nữa</b>. " +
-          "Hãy bấm <b>GỬI</b> bài trên Google Form trước thời điểm này.";
-      }
-    } else {
-      if (timeTextEl) {
-        timeTextEl.textContent =
-          "Thời gian làm bài: chưa cấu hình đầy đủ (thi không giới hạn hoặc thiếu thời gian).";
-      }
-      if (warnTextEl) warnTextEl.textContent = "";
-    }
-
-    if (statusEl) statusEl.textContent = "";
-    if (btn) btn.disabled = true;
-
-    updateExamCountdown();
-    examCountdownTimer = setInterval(updateExamCountdown, 1000);
-  }
-
-  function formatRemain(ms) {
-    if (ms <= 0) return "00:00:00";
-    const totalSec = Math.floor(ms / 1000);
-    const h = Math.floor(totalSec / 3600);
-    const m = Math.floor((totalSec % 3600) / 60);
-    const s = totalSec % 60;
-    const pad = n => String(n).padStart(2, "0");
-    return pad(h) + ":" + pad(m) + ":" + pad(s);
-  }
-
-  function updateExamCountdown() {
-    const countdownEl = document.getElementById("examCountdown");
-    const statusEl    = document.getElementById("examStatusText");
-    const btn         = document.getElementById("btnStartExam");
-
-    if (!examConfig) {
-      if (countdownEl) countdownEl.textContent = "--:--:--";
-      if (statusEl) statusEl.textContent = "";
-      if (btn) btn.disabled = true;
-      return;
-    }
-
-    const startMs = examConfig.startMs;
-    const endMs   = examConfig.endMs;
-    const nowMs   = Date.now() - examTimeOffset;
-
-    if (!startMs || !endMs) {
-      if (countdownEl) countdownEl.textContent = "Không giới hạn";
-      if (statusEl) statusEl.textContent = "Kỳ thi không giới hạn hoặc chưa cấu hình thời gian đầy đủ.";
-      if (btn) btn.disabled = !isLoggedIn;
-      return;
-    }
-
-    if (nowMs < startMs) {
-      const remain = startMs - nowMs;
-      if (countdownEl) countdownEl.textContent = "Còn " + formatRemain(remain) + " đến giờ bắt đầu";
-      if (statusEl) statusEl.textContent = "Chưa đến giờ làm bài. Học sinh chờ đến thời gian quy định.";
-      if (btn) btn.disabled = true;
-      return;
-    }
-
-    if (nowMs >= startMs && nowMs <= endMs) {
-      const remain = endMs - nowMs;
-      if (countdownEl) countdownEl.textContent = formatRemain(remain);
-      if (statusEl) statusEl.textContent = "Kỳ thi đang diễn ra. Học sinh chỉ nên mở đề khi đã sẵn sàng.";
-      if (btn) btn.disabled = !isLoggedIn;
-      return;
-    }
-
-    if (countdownEl) countdownEl.textContent = "00:00:00";
-    if (statusEl) statusEl.textContent = "Đã hết giờ làm bài. Nút Vào thi đã bị khóa.";
-    if (btn) btn.disabled = true;
-  }
-
-  function openExam() {
-    if (!requireLogin()) return;
-    if (!examConfig || !examConfig.link) {
-      alert("Kỳ thi chưa được cấu hình (link Google Form). Thầy/cô kiểm tra lại sheet CauHinhThi.");
-      return;
-    }
-
-    const startMs = examConfig.startMs;
-    const endMs   = examConfig.endMs;
-    if (startMs && endMs) {
-      const nowMs = Date.now() - examTimeOffset;
-      if (nowMs < startMs) {
-        alert("Chưa đến giờ bắt đầu làm bài.");
-        return;
-      }
-      if (nowMs > endMs) {
-        alert("Đã hết giờ làm bài. Bài thi đã bị khóa.");
-        return;
-      }
-    }
-
-    window.open(examConfig.link, "_blank");
-  }
-
-  /***************** JSONP HELPER *****************/
-
-  function callJsonp(url, cbName) {
-    return new Promise((resolve, reject) => {
-      const callbackName = cbName + "_" + Math.floor(Math.random() * 1e6);
-      const script = document.createElement("script");
-      const sep = url.includes("?") ? "&" : "?";
-      script.src = url + sep + "callback=" + callbackName;
-
-      const timeout = setTimeout(() => {
-        cleanup();
-        reject(new Error("JSONP timeout"));
-      }, 12000);
-
-      function cleanup() {
-        clearTimeout(timeout);
-        script.remove();
-        try { delete window[callbackName]; } catch(e) { window[callbackName] = undefined; }
-      }
-
-      window[callbackName] = function(data) {
-        cleanup();
-        resolve(data);
-      };
-
-      script.onerror = function() {
-        cleanup();
-        reject(new Error("JSONP error"));
-      };
-
-      document.body.appendChild(script);
-    });
-  }
-
-  /***************** DASHBOARD: stats + results *****************/
-
-  async function loadDashboard() {
-    try {
-      const stats = await callJsonp(WEB_APP_URL + "?mode=stats", "statsCb");
-      renderStats(stats);
-    } catch (err) {
-      console.error("Lỗi stats:", err);
-    }
-
-    try {
-      const results = await callJsonp(WEB_APP_URL + "?mode=results", "resultsCb");
-      renderResultsTable(results);
-    } catch (err) {
-      console.error("Lỗi results:", err);
-    }
-  }
-
-  function renderStats(stats) {
-    const totalEl = document.getElementById("stTotalRows");
-    const topGradeEl = document.getElementById("stTopGrade");
-    const topGradeSubEl = document.getElementById("stTopGradeSub");
-    const topClassEl = document.getElementById("stTopClass");
-    const topClassSubEl = document.getElementById("stTopClassSub");
-
-    if (!stats || !stats.rows) {
-      if (totalEl) totalEl.textContent = "0";
-      if (topGradeEl) topGradeEl.textContent = "–";
-      if (topGradeSubEl) topGradeSubEl.textContent = "Chưa có dữ liệu";
-      if (topClassEl) topClassEl.textContent = "–";
-      if (topClassSubEl) topClassSubEl.textContent = "Chưa có dữ liệu";
-      return;
-    }
-
-    if (totalEl) totalEl.textContent = stats.rows.toString();
-
-    let bestGrade = "–";
-    let bestGradeCount = 0;
-    if (stats.byGrade) {
-      Object.keys(stats.byGrade).forEach(k => {
-        const c = stats.byGrade[k]?.count || 0;
-        if (c > bestGradeCount) {
-          bestGradeCount = c;
-          bestGrade = k;
-        }
+  </div>
+
+  <script>
+    // 👉 CHỈNH LẠI WEB_APP_URL THÀNH LINK DEPLOY APPS SCRIPT CỦA THẦY
+    const WEB_APP_URL = "PASTE_WEB_APP_URL_HERE";
+
+    function show(pageId, btn) {
+      document.querySelectorAll("section.page").forEach(sec => {
+        sec.classList.toggle("active", sec.id === pageId);
+      });
+      document.querySelectorAll("nav.app-nav button").forEach(b => {
+        b.classList.toggle("active", b === btn);
       });
     }
-    if (topGradeEl) topGradeEl.textContent = bestGrade;
-    if (topGradeSubEl) {
-      topGradeSubEl.textContent = bestGrade === "–"
-        ? "Chưa có dữ liệu"
-        : (bestGradeCount + " bài thi");
-    }
 
-    let bestClass = "–";
-    let bestClassCount = 0;
-    if (stats.byClass) {
-      Object.keys(stats.byClass).forEach(k => {
-        const c = stats.byClass[k]?.count || 0;
-        if (c > bestClassCount) {
-          bestClassCount = c;
-          bestClass = k;
+    // JSONP helper
+    function callJsonp(url, cbName) {
+      return new Promise((resolve, reject) => {
+        const callbackName = cbName || ("cb_" + Math.random().toString(36).slice(2));
+        const script = document.createElement("script");
+        const sep = url.includes("?") ? "&" : "?";
+        const finalUrl = url + sep + "callback=" + encodeURIComponent(callbackName);
+
+        window[callbackName] = (data) => {
+          resolve(data);
+          cleanup();
+        };
+
+        function cleanup() {
+          delete window[callbackName];
+          if (script.parentNode) script.parentNode.removeChild(script);
         }
+
+        script.src = finalUrl;
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("JSONP error"));
+        };
+        document.body.appendChild(script);
       });
     }
-    if (topClassEl) topClassEl.textContent = bestClass;
-    if (topClassSubEl) {
-      topClassSubEl.textContent = bestClass === "–"
-        ? "Chưa có dữ liệu"
-        : (bestClassCount + " bài thi");
-    }
-  }
 
-  function renderResultsTable(data) {
-    const box = document.getElementById("resultsTableBox");
-    if (!box) return;
+    // -------- GLOBAL STATE --------
+    let currentStudent = null;
+    let examList = [];
+    let currentExam = null;
+    let countdownTimer = null;
 
-    if (!data || !data.rows || !data.rows.length) {
-      box.innerHTML = '<div style="padding:8px;font-size:0.8rem;color:var(--text-soft);">Chưa có dữ liệu điểm.</div>';
-      return;
-    }
+    function setLoggedInStudent(st) {
+      currentStudent = st || null;
+      const panel = document.getElementById("examPanel");
+      const msg   = document.getElementById("examNeedsLogin");
 
-    let html = '<table><thead><tr>' +
-      '<th>Thời gian</th>' +
-      '<th>Họ tên</th>' +
-      '<th>Lớp</th>' +
-      '<th>Điểm</th>' +
-      '</tr></thead><tbody>';
+      if (currentStudent) {
+        if (panel) panel.style.display = "block";
+        if (msg)   msg.style.display = "none";
 
-    data.rows.forEach(r => {
-      html += '<tr>' +
-        '<td>' + escapeHtml(r.time || "") + '</td>' +
-        '<td>' + escapeHtml(r.name || "") + '</td>' +
-        '<td>' + escapeHtml(r.class || "") + '</td>' +
-        '<td>' + escapeHtml(r.score != null ? String(r.score) : "") + '</td>' +
-        '</tr>';
-    });
+        document.getElementById("examStudentName").textContent  = currentStudent.name || "";
+        document.getElementById("examStudentCccd").textContent  = currentStudent.cccd || "";
+        document.getElementById("examStudentEmail").textContent = currentStudent.email || "";
+        document.getElementById("examStudentClass").textContent = currentStudent.className || "";
 
-    html += '</tbody></table>';
-    box.innerHTML = html;
-  }
+        // Tải danh sách ca thi
+        loadExamList();
 
-  /***************** TRA CỨU KẾT QUẢ *****************/
-
-  async function handleSearchResult() {
-    if (!requireLogin()) return;
-
-    const cccd  = (document.getElementById("srCccd")?.value || "").trim();
-    const name  = (document.getElementById("srName")?.value || "").trim();
-    const clazz = (document.getElementById("srClass")?.value || "").trim();
-
-    if (!cccd && !name) {
-      alert("Vui lòng nhập CCCD hoặc HỌ TÊN (IN HOA) để tra cứu.");
-      return;
-    }
-
-    const params = new URLSearchParams();
-    params.set("mode", "search");
-    if (cccd) params.set("cccd", cccd);
-    if (name) params.set("name", name);
-    if (clazz) params.set("className", clazz);
-
-    const url = WEB_APP_URL + "?" + params.toString();
-
-    try {
-      const data = await callJsonp(url, "searchCb");
-      renderSearchResult(data);
-    } catch (err) {
-      console.error(err);
-      const box = document.getElementById("lookupResult");
-      if (box) {
-        box.innerHTML = '<div style="font-size:0.8rem;color:var(--text-soft);">Lỗi tra cứu. Thầy/cô kiểm tra lại cấu hình.</div>';
+      } else {
+        if (panel) panel.style.display = "none";
+        if (msg)   msg.style.display = "block";
       }
     }
-  }
 
-  function renderSearchResult(data) {
-    const box = document.getElementById("lookupResult");
-    if (!box) return;
-
-    if (!data) {
-      box.innerHTML = "";
-      return;
+    // -------- LOGIN --------
+    function buildAuthUrl() {
+      let cccd = document.getElementById("login_cccd").value.trim();
+      let pass = document.getElementById("login_pass").value.trim();
+      cccd = cccd.replace(/\D/g, "");
+      const p = new URLSearchParams();
+      if (cccd) p.append("cccd", cccd);
+      if (pass) p.append("pass", pass);
+      p.append("mode", "auth");
+      return WEB_APP_URL + "?" + p.toString();
     }
 
-    if (!data.found || !data.results || !data.results.length) {
-      box.innerHTML = '<div class="result-card">' +
-        '<h4>Kết quả tra cứu</h4>' +
-        '<div class="meta">' + escapeHtml(data.message || "Không tìm thấy kết quả.") + '</div>' +
-        '</div>';
-      return;
-    }
-
-    let html = "";
-    html += '<div class="result-card">';
-    html += '<h4>Kết quả tra cứu</h4>';
-    html += '<div class="meta">' + escapeHtml(data.message || "") + '</div>';
-    data.results.forEach((r, index) => {
-      html += '<div style="margin-top:6px;border-top:1px dashed rgba(75,85,99,0.8);padding-top:4px;">';
-      html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">';
-      html += '<span><b>' + escapeHtml(r.name || "") + '</b> – ' + escapeHtml(r.className || "") + '</span>';
-      html += '<span class="pill-soft">Điểm: <b>' + escapeHtml(r.score != null ? String(r.score) : "") + '</b></span>';
-      html += '</div>';
-      html += '<div class="meta">Giới tính: ' + escapeHtml(r.gender || "–") +
-              ' | Dân tộc: ' + escapeHtml(r.ethnic || "–") +
-              ' | Trường: ' + escapeHtml(r.school || "–") + '</div>';
-      if (r.cccd) {
-        html += '<div class="meta">CCCD: ' + escapeHtml(r.cccd) + '</div>';
+    function renderLoginResult(data) {
+      const statusEl = document.getElementById("loginStatus");
+      if (!data) {
+        statusEl.textContent = "Không nhận được phản hồi từ máy chủ. / No response from server.";
+        statusEl.className = "status-msg status-error";
+        return;
       }
-      html += '</div>';
+
+      if (data.ok) {
+        const st = data.student || {};
+        setLoggedInStudent(st);
+        statusEl.textContent =
+          "Đăng nhập thành công / Login success: " +
+          (st.name || "") +
+          (st.className ? " – Lớp / Class " + st.className : "") +
+          ". Chuyển sang tab 'Vào thi' để tiếp tục. / Go to 'Take exam'.";
+        statusEl.className = "status-msg status-ok";
+
+        // Chuyển luôn sang tab Vào thi
+        const btnExam = Array.from(document.querySelectorAll("nav.app-nav button"))
+          .find(b => b.textContent.includes("Vào thi"));
+        if (btnExam) show("exam", btnExam);
+
+      } else {
+        statusEl.textContent = data.message || "Sai CCCD hoặc mật khẩu. / Invalid CCCD or password.";
+        statusEl.className = "status-msg status-error";
+        setLoggedInStudent(null);
+      }
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const statusEl = document.getElementById("loginStatus");
+      statusEl.textContent = "Đang kiểm tra thông tin… / Checking credentials…";
+      statusEl.className = "status-msg status-empty";
+
+      try {
+        const url = buildAuthUrl();
+        const data = await callJsonp(url, "authCallback");
+        renderLoginResult(data);
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Có lỗi khi đăng nhập. Kiểm tra Code.gs hoặc mạng. / Login error.";
+        statusEl.className = "status-msg status-error";
+      }
     });
-    html += '</div>';
 
-    box.innerHTML = html;
-  }
+    // -------- EXAM LIST & COUNTDOWN --------
+    function loadExamList() {
+      callJsonp(WEB_APP_URL + "?mode=examList", "examListCallback")
+        .then(data => {
+          examList = (data && data.exams) ? data.exams : [];
+          const sel = document.getElementById("examSelect");
+          if (!sel) return;
+          sel.innerHTML = '<option value="">-- Chọn ca thi / Select exam --</option>';
 
-  function clearSearchResult() {
-    const box = document.getElementById("lookupResult");
-    if (box) box.innerHTML = "";
-  }
+          examList.forEach(ex => {
+            const opt = document.createElement("option");
+            const typeLabel = ex.type ? ("[" + ex.type + "] ") : "";
+            opt.value = ex.id;
+            opt.textContent = ex.id + " – " + typeLabel + (ex.title || "");
+            if (ex.active && !sel.value) opt.selected = true;
+            sel.appendChild(opt);
+          });
 
-  /***************** UTILS *****************/
+          if (sel.value) {
+            onExamSelected();
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          const sel = document.getElementById("examSelect");
+          if (sel) {
+            sel.innerHTML = '<option value="">Không tải được danh sách ca thi / Cannot load exam list</option>';
+          }
+        });
+    }
 
-  function escapeHtml(str) {
-    if (!str) return "";
-    return String(str)
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
-  }
+    function onExamSelected() {
+      const sel = document.getElementById("examSelect");
+      const timeRangeEl = document.getElementById("examTimeRange");
+      const countdownEl = document.getElementById("examCountdown");
+      const typeEl = document.getElementById("examType");
+      const warnEl = document.getElementById("examWarning");
 
-  /***************** INIT *****************/
+      if (countdownTimer) {
+        clearInterval(countdownTimer);
+        countdownTimer = null;
+      }
 
-  document.addEventListener("DOMContentLoaded", function() {
-    initDobSelects();
-    loadAuthFromStorage();
-    updateAuthUI();
-    loadDashboard();
-    loadExamConfig();
-  });
-</script>
+      const id = sel.value;
+      currentExam = examList.find(ex => ex.id === id) || null;
+      if (!currentExam) {
+        timeRangeEl.textContent = "–";
+        countdownEl.textContent = "–";
+        typeEl.textContent = "–";
+        warnEl.textContent = "";
+        return;
+      }
+
+      typeEl.textContent = currentExam.type || "Không rõ / Unknown";
+      const start = currentExam.startMs ? new Date(currentExam.startMs) : null;
+      const end   = currentExam.endMs   ? new Date(currentExam.endMs)   : null;
+
+      let rangeText = "";
+      if (start && end) {
+        rangeText = start.toLocaleString("vi-VN") + " → " + end.toLocaleString("vi-VN");
+      } else if (end) {
+        rangeText = "Trước / Before " + end.toLocaleString("vi-VN");
+      } else if (start) {
+        rangeText = "Sau / After " + start.toLocaleString("vi-VN");
+      } else {
+        rangeText = "Chưa cấu hình thời gian / No time configured";
+      }
+      timeRangeEl.textContent = rangeText;
+
+      function updateCountdown() {
+        if (!end) {
+          countdownEl.textContent = "Không cấu hình giờ kết thúc / No end time.";
+          warnEl.textContent = "";
+          return;
+        }
+        const now = new Date();
+        const diff = end.getTime() - now.getTime();
+        if (diff <= 0) {
+          countdownEl.textContent = "ĐÃ HẾT GIỜ / TIME IS OVER";
+          warnEl.textContent = "Hệ thống không cho vào làm bài nữa. / You cannot start this exam anymore.";
+          clearInterval(countdownTimer);
+          countdownTimer = null;
+          return;
+        }
+        const minutes = Math.floor(diff / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
+        countdownEl.textContent = minutes + " phút / minutes " +
+          (seconds < 10 ? "0" : "") + seconds + " giây / seconds";
+        warnEl.textContent =
+          "Đến khi hết giờ, học sinh phải bấm GỬI trên Google Form. / " +
+          "Before time is over, students must SUBMIT in Google Form.";
+      }
+
+      if (end) {
+        updateCountdown();
+        countdownTimer = setInterval(updateCountdown, 1000);
+      } else {
+        countdownEl.textContent = "Không cấu hình giờ kết thúc / No end time.";
+        warnEl.textContent = "";
+      }
+    }
+
+    document.getElementById("examSelect").addEventListener("change", onExamSelected);
+
+    function startExam() {
+      if (!currentStudent) {
+        alert("Bạn cần đăng nhập trước. / Please login first.");
+        return;
+      }
+      if (!currentExam) {
+        alert("Vui lòng chọn Mã ca thi. / Please select an exam session.");
+        return;
+      }
+
+      const end   = currentExam.endMs ? new Date(currentExam.endMs) : null;
+      const start = currentExam.startMs ? new Date(currentExam.startMs) : null;
+      const now   = new Date();
+
+      if (start && now < start) {
+        alert("Chưa đến giờ bắt đầu ca thi này. / Exam has not started yet.\n" +
+              "Bắt đầu / Start: " + start.toLocaleString("vi-VN"));
+        return;
+      }
+      if (end && now > end) {
+        alert("Ca thi đã kết thúc, không thể vào nữa. / Exam is already over.");
+        return;
+      }
+
+      // Ở đây có thể gắn thêm tham số query cho Google Form nếu muốn (tên, lớp...).
+      window.open(currentExam.link, "_blank");
+      alert("Hệ thống đã mở bài thi trong tab mới.\nNhớ bấm GỬI trong Google Form trước khi hết giờ. / " +
+            "Exam opened in new tab. Remember to SUBMIT the form in time.");
+    }
+
+    // -------- QUESTION BANK PREVIEW --------
+    function renderQuestion(q) {
+      const div = document.createElement("div");
+      div.className = "question-card";
+
+      const typeLabel = q.type || "";
+      div.innerHTML = `
+        <div class="q-code">
+          <span class="pill">${typeLabel}</span>
+          <span style="margin-left:6px;">Mã / Code: ${q.code || ""}</span>
+        </div>
+        <div class="q-text">
+          <b>VI:</b> ${q.qVI || ""}<br>
+          <b>EN:</b> ${q.qEN || ""}</div>
+      `;
+
+      const ul = document.createElement("ul");
+      ["A","B","C","D"].forEach(letter => {
+        const opt = q[letter];
+        if (!opt) return;
+        const li = document.createElement("li");
+        const isKey = String(opt.key || "").trim() === "1";
+        li.textContent = letter + ") " + (opt.vi || "");
+        if (opt.en) {
+          li.innerHTML += `<br><span style="opacity:.8;font-size:.72rem;">EN: ${opt.en}</span>`;
+        }
+        if (isKey) {
+          const span = document.createElement("span");
+          span.className = "key";
+          span.textContent = "✔";
+          li.appendChild(span);
+        }
+        ul.appendChild(li);
+      });
+
+      div.appendChild(ul);
+
+      if (q.expVI || q.expEN) {
+        const exp = document.createElement("div");
+        exp.style.marginTop = "4px";
+        exp.innerHTML = `
+          <b>Giải thích / Explanation:</b><br>
+          <span>VI: ${q.expVI || ""}</span><br>
+          <span>EN: ${q.expEN || ""}</span>
+        `;
+        div.appendChild(exp);
+      }
+
+      return div;
+    }
+
+    async function loadBankPreview() {
+      const statusEl = document.getElementById("bankStatus");
+      const listEl   = document.getElementById("bankList");
+      listEl.innerHTML = "";
+      statusEl.textContent = "Đang tải dữ liệu… / Loading questions…";
+      statusEl.className = "status-msg status-empty";
+
+      const type = document.getElementById("bankType").value;
+      const limit = document.getElementById("bankLimit").value || "10";
+
+      const params = new URLSearchParams();
+      params.append("mode", "bank");
+      if (type)  params.append("filterType", type);
+      if (limit) params.append("limit", limit);
+
+      try {
+        const url = WEB_APP_URL + "?" + params.toString();
+        const data = await callJsonp(url, "bankCallback");
+
+        if (!data || !data.ok) {
+          statusEl.textContent = (data && data.message) || "Không tải được dữ liệu. / Cannot load data.";
+          statusEl.className = "status-msg status-error";
+          return;
+        }
+
+        const questions = data.questions || [];
+        if (!questions.length) {
+          statusEl.textContent = "Không có câu hỏi nào phù hợp. / No questions found.";
+          statusEl.className = "status-msg status-empty";
+          return;
+        }
+
+        statusEl.textContent = "Đã tải " + questions.length +
+          " câu hỏi. / Loaded " + questions.length + " questions.";
+        statusEl.className = "status-msg status-ok";
+
+        questions.forEach(q => {
+          listEl.appendChild(renderQuestion(q));
+        });
+
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Lỗi khi tải ngân hàng câu hỏi. / Error loading question bank.";
+        statusEl.className = "status-msg status-error";
+      }
+    }
+
+    // -------- GẮN ACTION FORM ĐĂNG KÝ --------
+    (function init() {
+      const regForm = document.getElementById("regForm");
+      if (regForm) {
+        regForm.action = WEB_APP_URL;
+      }
+    })();
+  </script>
 </body>
 </html>
