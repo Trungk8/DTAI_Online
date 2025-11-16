@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <title>SK – Hệ thống Kiểm tra Online</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- PWA meta -->
+  <meta name="theme-color" content="#020617" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
   <style>
     :root {
@@ -1208,6 +1214,17 @@
         "<div class='alert danger small'>Lỗi tải danh sách: " + err.toString() + "</div>";
     }
   });
+
+  // Đăng ký Service Worker cho PWA
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js')
+        .catch(function (err) {
+          console.log('SW registration failed:', err);
+        });
+    });
+  }
+  
 </script>
 </body>
 </html>
