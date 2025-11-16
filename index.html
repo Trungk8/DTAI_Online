@@ -768,6 +768,60 @@ input:focus,select:focus,textarea:focus{
       <div id="status" class="status-msg status-empty"></div>
       <div id="results" class="results"></div>
     </section>
+
+    <!-- 7. IMPORT ĐỀ TỪ WORD -->
+    <section id="import" class="page">
+      <h2 class="section-title">
+        Import đề trắc nghiệm từ Word
+        <span class="badge-inline">Word → Google Sheets</span>
+      </h2>
+      <p class="section-desc">
+        Dùng cho giáo viên / BGH. Hệ thống sẽ đọc file Google Docs (được chuyển từ Word)
+        theo đúng mẫu và tự động đổ câu hỏi vào sheet <b>NganHangDe</b>.
+      </p>
+
+      <div class="card-light">
+        <h3>Hướng dẫn 3 bước</h3>
+        <ol>
+          <li>
+            Soạn đề trong Word theo mẫu chuẩn (mỗi câu: Câu 1. → nội dung → a./b./c./d. → Đáp án đúng: … → Đáp án sai: …).
+          </li>
+          <li>
+            Upload file Word lên Google Drive, sau đó <b>Mở bằng &gt; Google Tài liệu</b> (Google Docs).
+          </li>
+          <li>
+            Lấy <b>ID</b> của tài liệu (phần nằm giữa <code>/d/</code> và <code>/edit</code> trên thanh địa chỉ) và dán vào ô bên dưới rồi bấm “Import đề”.
+          </li>
+        </ol>
+
+        <form id="importForm">
+          <div class="field">
+            <label for="docId">ID file Google Docs / Word đã convert</label>
+            <input id="docId" name="docId"
+                   placeholder="Ví dụ: 1AbCdEfGhijkLmNoPqRstUvWxYz1234567890" />
+            <div class="import-note">
+              Ví dụ link: https://docs.google.com/document/d/<b>1AbCdEfGhijkLmNoPqRstUvWxYz1234567890</b>/edit<br/>
+              👉 ID cần dán chính là phần in đậm.
+            </div>
+          </div>
+
+          <div class="btn-row" style="margin-top:10px;">
+            <button type="submit" class="btn-primary">
+              <span class="icon">📥</span>
+              <span>Import đề từ Word</span>
+            </button>
+            <button type="button" class="btn-ghost"
+                    onclick="alert('Thầy/cô có thể dùng file mẫu Mau_Import_De_Word_DTAI_Online.docx để soạn đề đúng cấu trúc.')">
+              Xem mẫu Word chuẩn
+            </button>
+          </div>
+        </form>
+
+        <div id="importStatus" class="import-note" style="margin-top:8px;"></div>
+      </div>
+    </section>
+
+    
   </main>
 </div>
 
@@ -962,6 +1016,43 @@ input:focus,select:focus,textarea:focus{
       opt.textContent = y;
       yearSel.appendChild(opt);
     }
+    
+    // ===== XỬ LÝ IMPORT ĐỀ TỪ WORD =====
+    document.getElementById("importForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+      const docIdInput = document.getElementById("docId");
+      const statusEl = document.getElementById("importStatus");
+      const docId = (docIdInput.value || "").trim();
+  
+      if (!docId) {
+        statusEl.textContent = "Vui lòng nhập ID file Google Docs.";
+        statusEl.style.color = "#dc2626";
+        return;
+      }
+  
+      statusEl.textContent = "Đang gửi yêu cầu import… Vui lòng chờ 5–10 giây.";
+      statusEl.style.color = "#6b7280";
+  
+      try {
+        const url = WEB_APP_URL + "?mode=importDoc&docId=" + encodeURIComponent(docId);
+        const data = await callJsonp(url, "importCallback_" + Date.now());
+  
+        if (!data || data.ok === false) {
+          statusEl.textContent = (data && data.message)
+            ? data.message
+            : "Import không thành công. Thầy/cô kiểm tra lại docId, mẫu đề hoặc Code.gs.";
+          statusEl.style.color = "#dc2626";
+          return;
+        }
+  
+        statusEl.textContent = data.message || ("Đã import " + (data.imported || 0) + " câu hỏi vào sheet NganHangDe.");
+        statusEl.style.color = "#16a34a";
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Có lỗi khi gọi importDoc. Thầy/cô kiểm tra lại kết nối mạng hoặc cập nhật Deploy Apps Script.";
+        statusEl.style.color = "#dc2626";
+      }
+    });
 
     function syncDob(){
       const d = daySel.value;
