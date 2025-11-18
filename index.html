@@ -76,7 +76,7 @@
     }
     header .avatar-chip{
       min-width:80px;
-      max-width:150px;
+      max-width:180px;
       background:#020617;
       color:#e5e7eb;
       border-radius:999px;
@@ -396,6 +396,30 @@
       color:#6b7280;
       margin-top:6px;
     }
+
+    /* Overlay khoá khi hết giờ */
+    .exam-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.92);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+    }
+    .exam-overlay-content{
+      max-width:420px;
+      background:#0b1120;
+      border-radius:18px;
+      padding:20px 18px;
+      border:1px solid #facc15;
+      color:#fefce8;
+      text-align:center;
+      box-shadow:0 18px 55px rgba(0,0,0,.9);
+      font-size:.95rem;
+    }
+    .exam-overlay-content h3{margin:0 0 6px;font-size:1.05rem;}
+    .exam-overlay-content p{margin:4px 0;font-size:.9rem;}
   </style>
 </head>
 <body>
@@ -408,7 +432,9 @@
     </div>
     <div class="avatar-chip">
       <div class="avatar-circle">AI</div>
-      <span class="label">DTAI Online<br/>NĐC – Lâm Đồng</span>
+      <span class="label" id="avatarLabel">
+        DTAI Online<br/>NĐC – Lâm Đồng
+      </span>
     </div>
   </header>
 
@@ -572,6 +598,8 @@
             ⏱ Gợi ý: Đăng nhập trước giờ thi ít nhất 5 phút để kiểm tra kết nối & thông tin cá nhân.
           </div>
 
+          <div id="loginStatus" class="status-msg status-empty"></div>
+
           <div class="btn-row">
             <button type="submit" class="btn-primary">
               Đăng nhập / Login
@@ -591,14 +619,15 @@
         <span class="badge-inline">Online Exam</span>
       </h2>
       <p class="section-desc">
-        Sau khi đăng nhập, hệ thống sẽ tự gợi ý mã ca thi, thời gian đếm ngược & link đề dựa vào cấu hình trong sheet <b>CauHinhThi</b>.
+        Sau khi đăng nhập, hệ thống sẽ luôn hiển thị <b>Họ và tên, CCCD, Lớp</b> và đồng hồ <b>đếm ngược</b> đến thời điểm kết thúc ca thi
+        (theo cấu hình trong sheet <b>CauHinhThi</b>).
       </p>
 
       <div class="card">
         <div class="card-header">
           <div>
             <h3 class="card-title">Thông tin ca thi / Exam slot</h3>
-            <p class="card-sub">Dùng mã ca thi mà thầy/cô đã cấu hình sẵn trong Google Sheet.</p>
+            <p class="card-sub">Chọn môn thi / ca thi tương ứng với cấu hình trên Google Sheets.</p>
           </div>
           <div>
             <div class="timer" id="examTimer">--:--</div>
@@ -606,24 +635,41 @@
           </div>
         </div>
 
-        <div class="grid-2">
+        <div id="studentExamInfo" class="alert info" style="margin-top:4px;">
+          👤 Chưa đăng nhập. Vui lòng vào tab <b>Đăng nhập</b> để đăng nhập bằng CCCD trước khi thi.
+        </div>
+
+        <div class="grid-2" style="margin-top:8px;">
           <div class="field">
-            <label for="exam-code">Mã ca thi</label>
-            <input id="exam-code" placeholder="VD: 11A3-TKTx-TOAN-CA1" />
+            <label for="exam-select">Chọn môn thi / ca thi</label>
+            <select id="exam-select">
+              <option value="">-- Chọn môn thi/ca thi --</option>
+            </select>
+            <div class="hint">
+              Danh sách lấy từ sheet <code>CauHinhThi</code> (cột MaCaThi, MonThi, TieuDe, ThoiLuong, StartTime, EndTime).
+            </div>
+          </div>
+          <div class="field">
+            <label for="exam-code">Mã ca thi (tự điền)</label>
+            <input id="exam-code" placeholder="VD: 11A3-TKTx-TOAN-CA1" readonly />
           </div>
           <div class="field">
             <label for="examLink">Link đề (Google Form/Quiz)</label>
-            <input id="examLink" placeholder="Dán link đề nếu muốn mở thủ công" />
+            <input id="examLink" placeholder="Hệ thống tự điền link đề. Có thể dán thủ công nếu cần." />
+          </div>
+          <div class="field">
+            <label>Thời gian ca thi</label>
+            <div id="examTimeInfo" class="hint">Chưa chọn ca thi.</div>
           </div>
         </div>
 
         <div class="alert info">
-          ⏰ Ví dụ cảnh báo: <b>“Đến 08:45 hệ thống sẽ không nhận bài nữa. Hãy bấm GỬI trước thời điểm này.”</b><br/>
-          Thông điệp này có thể tự sinh dựa vào thời gian kết thúc trong sheet <code>CauHinhThi</code>.
+          ⏰ Hệ thống sẽ đếm ngược đến <b>thời điểm kết thúc ca thi</b>. Khi hết giờ, hệ thống sẽ
+          <b>khóa ca thi</b> tại đây và hiện thông báo nhắc học sinh bấm <b>GỬI</b> trên màn hình đề.
         </div>
 
         <div class="btn-row">
-          <button type="button" class="btn-primary" onclick="openExam()">
+          <button type="button" id="btnStartExam" class="btn-primary" onclick="startExam()">
             Vào thi / Start exam
           </button>
           <button type="button" class="btn-ghost" onclick="openSheet()">
@@ -758,9 +804,26 @@
   </main>
 </div>
 
+<!-- Overlay khoá màn hình khi hết giờ -->
+<div id="examOverlay" class="exam-overlay">
+  <div class="exam-overlay-content">
+    <h3>ĐÃ HẾT GIỜ LÀM BÀI</h3>
+    <p>Hệ thống đã <b>khóa ca thi</b> trên trang DTAI Online.</p>
+    <p>Vui lòng chuyển sang cửa sổ đề để bấm <b>GỬI</b> nếu chưa gửi bài.</p>
+    <p>Điểm sẽ được hệ thống lưu vào sheet <b>DiemThi</b> và (nếu cấu hình) gửi về email học sinh để làm minh chứng.</p>
+    <button class="btn-ghost" onclick="closeExamOverlay()">Đã hiểu</button>
+  </div>
+</div>
+
 <script>
   // 👉 Nhớ khớp với URL Web App đã Deploy
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec";
+
+  let currentStudent = null;
+  let examListCache = [];
+  let selectedExam = null;
+  let examCountdownInterval = null;
+  let examLocked = false;
 
   function show(id, btn){
     document.querySelectorAll("section.page").forEach(sec=>{
@@ -772,14 +835,6 @@
     }
   }
 
-  function openExam(){
-    const link = document.getElementById("examLink").value.trim();
-    if(!link){
-      alert("Thầy/cô nhập link Google Form/Quiz trước khi vào thi.");
-      return;
-    }
-    window.open(link,"_blank");
-  }
   function openSheet(){
     alert("Mở sheet CauHinhThi trên Google Sheets để xem và chỉnh cấu hình ca thi.");
   }
@@ -799,6 +854,68 @@
       document.body.appendChild(script);
     });
   }
+
+  /********** ĐỒNG HỒ & KHOÁ CA THI **********/
+
+  function stopExamCountdown(){
+    if(examCountdownInterval){
+      clearInterval(examCountdownInterval);
+      examCountdownInterval = null;
+    }
+  }
+
+  function handleExamTimeOver(){
+    stopExamCountdown();
+    examLocked = true;
+
+    const btn = document.getElementById("btnStartExam");
+    const sel = document.getElementById("exam-select");
+    const linkInput = document.getElementById("examLink");
+    const codeInput = document.getElementById("exam-code");
+
+    if(btn){ btn.disabled = true; btn.textContent = "ĐÃ HẾT GIỜ"; }
+    if(sel){ sel.disabled = true; }
+    if(linkInput){ linkInput.disabled = true; }
+    if(codeInput){ codeInput.disabled = true; }
+
+    const overlay = document.getElementById("examOverlay");
+    if(overlay){
+      overlay.style.display = "flex";
+    }
+  }
+
+  function closeExamOverlay(){
+    const overlay = document.getElementById("examOverlay");
+    if(overlay) overlay.style.display = "none";
+  }
+
+  function startExamCountdown(exam){
+    stopExamCountdown();
+    const timerEl = document.getElementById("examTimer");
+    if(!exam || !exam.endMs || !timerEl){
+      if(timerEl) timerEl.textContent = "--:--";
+      return;
+    }
+
+    function tick(){
+      const now = Date.now();
+      let diff = exam.endMs - now;
+      if(diff <= 0){
+        timerEl.textContent = "00:00";
+        handleExamTimeOver();
+        return;
+      }
+      const totalSec = Math.floor(diff / 1000);
+      const m = String(Math.floor(totalSec / 60)).padStart(2,"0");
+      const s = String(totalSec % 60).padStart(2,"0");
+      timerEl.textContent = m + ":" + s;
+    }
+
+    tick();
+    examCountdownInterval = setInterval(tick, 1000);
+  }
+
+  /********** LOAD DASHBOARD **********/
 
   async function loadDashboard(){
     try{
@@ -850,6 +967,109 @@
     }
   }
 
+  /********** EXAM LIST / CHỌN MÔN THI **********/
+
+  async function loadExamList(){
+    try{
+      const url = WEB_APP_URL + "?mode=examList";
+      const data = await callJsonp(url);
+      if(!data || !Array.isArray(data.exams)) return;
+      examListCache = data.exams;
+
+      const sel = document.getElementById("exam-select");
+      if(!sel) return;
+      sel.innerHTML = '<option value="">-- Chọn môn thi/ca thi --</option>';
+      data.exams.forEach(ex=>{
+        const label = (ex.subject || "Môn?") + " – " + (ex.title || ex.id);
+        const opt = document.createElement("option");
+        opt.value = ex.id;
+        opt.textContent = label;
+        sel.appendChild(opt);
+      });
+    }catch(err){
+      console.error("Lỗi load examList:", err);
+    }
+  }
+
+  function onExamSelectChange(){
+    if(examLocked) return;
+    const sel = document.getElementById("exam-select");
+    const codeInput = document.getElementById("exam-code");
+    const linkInput = document.getElementById("examLink");
+    const infoEl = document.getElementById("examTimeInfo");
+    const timerEl = document.getElementById("examTimer");
+
+    const id = sel ? sel.value : "";
+    if(!id){
+      selectedExam = null;
+      stopExamCountdown();
+      if(codeInput) codeInput.value = "";
+      if(linkInput) linkInput.value = "";
+      if(infoEl) infoEl.textContent = "Chưa chọn ca thi.";
+      if(timerEl) timerEl.textContent = "--:--";
+      return;
+    }
+
+    selectedExam = examListCache.find(ex=>ex.id === id) || null;
+    if(!selectedExam){
+      if(infoEl) infoEl.textContent = "Không tìm thấy ca thi tương ứng trong cấu hình.";
+      return;
+    }
+
+    if(codeInput) codeInput.value = selectedExam.id || "";
+    if(linkInput) linkInput.value = selectedExam.link || "";
+
+    let desc = "";
+    if(selectedExam.startMs){
+      const start = new Date(selectedExam.startMs);
+      desc += "Bắt đầu: " + start.toLocaleString("vi-VN");
+    }
+    if(selectedExam.endMs){
+      const end = new Date(selectedExam.endMs);
+      if(desc) desc += " | ";
+      desc += "Kết thúc: " + end.toLocaleString("vi-VN");
+    }
+    if(selectedExam.durationMin){
+      if(desc) desc += " | ";
+      desc += "Thời lượng đề: " + selectedExam.durationMin + " phút";
+    }
+    if(!desc) desc = "Ca thi chưa cấu hình đầy đủ thời gian.";
+    if(infoEl) infoEl.textContent = desc;
+
+    if(selectedExam.timeStatus === "finished"){
+      if(timerEl) timerEl.textContent = "00:00";
+      handleExamTimeOver();
+    }else{
+      startExamCountdown(selectedExam);
+    }
+  }
+
+  function startExam(){
+    if(examLocked){
+      alert("Ca thi đã hết giờ hoặc đã bị khóa.");
+      return;
+    }
+    const linkInput = document.getElementById("examLink");
+    const sel = document.getElementById("exam-select");
+    if(!currentStudent){
+      alert("Vui lòng đăng nhập bằng CCCD trước khi vào thi.");
+      return;
+    }
+    if(!sel || !sel.value){
+      alert("Vui lòng chọn môn thi / ca thi trước.");
+      return;
+    }
+    const link = linkInput ? linkInput.value.trim() : "";
+    if(!link){
+      alert("Chưa có link đề cho ca thi này. Kiểm tra lại cột LinkForm trong sheet CauHinhThi.");
+      return;
+    }
+    // Mở đề trong tab mới để học sinh làm bài
+    window.open(link, "_blank");
+  }
+
+  /********** TRA CỨU KẾT QUẢ **********/
+
   function buildSearchUrl(){
     const cccd = document.getElementById("search-cccd").value.trim();
     const name = document.getElementById("search-name").value.trim().toUpperCase();
@@ -895,7 +1115,8 @@
     });
   }
 
-  // Khởi tạo Ngày sinh cho mobile
+  /********** NGÀY SINH MOBILE **********/
+
   function setupNgaySinh(){
     const daySel = document.getElementById("dob-day");
     const monthSel = document.getElementById("dob-month");
@@ -943,11 +1164,42 @@
     }
   }
 
-  // Sự kiện cho Tra cứu
+  /********** CẬP NHẬT UI SAU KHI LOGIN **********/
+
+  function updateStudentUI(){
+    const infoDiv = document.getElementById("studentExamInfo");
+    const avatarLabel = document.getElementById("avatarLabel");
+    if(!currentStudent){
+      if(infoDiv){
+        infoDiv.className = "alert info";
+        infoDiv.innerHTML = '👤 Chưa đăng nhập. Vui lòng vào tab <b>Đăng nhập</b> để đăng nhập bằng CCCD trước khi thi.';
+      }
+      if(avatarLabel){
+        avatarLabel.innerHTML = "DTAI Online<br/>NĐC – Lâm Đồng";
+      }
+      return;
+    }
+    if(infoDiv){
+      infoDiv.className = "alert info";
+      infoDiv.innerHTML =
+        '👤 Thí sinh: <b>' + (currentStudent.name || "") + '</b> · CCCD: <b>' + (currentStudent.cccd || "") +
+        '</b> · Lớp: <b>' + (currentStudent.className || "") + "</b>";
+    }
+    if(avatarLabel){
+      avatarLabel.innerHTML =
+        (currentStudent.name || "Thí sinh") + "<br/>" +
+        (currentStudent.className || "DTAI Online");
+    }
+  }
+
+  /********** DOMContentLoaded **********/
+
   document.addEventListener("DOMContentLoaded", function(){
     setupNgaySinh();
     loadDashboard();
+    loadExamList();
 
+    // Tra cứu
     const searchForm = document.getElementById("searchForm");
     if(searchForm){
       searchForm.addEventListener("submit", async function(e){
@@ -1004,6 +1256,59 @@
           statusEl.style.color = "#dc2626";
         }
       });
+    }
+
+    // Đăng nhập CCCD + mật khẩu
+    const loginForm = document.getElementById("loginForm");
+    if(loginForm){
+      loginForm.addEventListener("submit", async function(e){
+        e.preventDefault();
+        const cccd = document.getElementById("login-cccd").value.trim();
+        const pass = document.getElementById("login-pass").value.trim();
+        const statusEl = document.getElementById("loginStatus");
+
+        if(!cccd || !pass){
+          statusEl.textContent = "Vui lòng nhập đầy đủ CCCD và mật khẩu.";
+          statusEl.className = "status-msg status-error";
+          return;
+        }
+        statusEl.textContent = "Đang kiểm tra, vui lòng chờ…";
+        statusEl.className = "status-msg status-empty";
+
+        try{
+          const url = WEB_APP_URL + "?mode=auth&cccd=" + encodeURIComponent(cccd) + "&pass=" + encodeURIComponent(pass);
+          const data = await callJsonp(url);
+          if(!data || !data.ok){
+            statusEl.textContent = (data && data.message) || "Sai CCCD hoặc mật khẩu.";
+            statusEl.className = "status-msg status-error";
+            currentStudent = null;
+            updateStudentUI();
+            return;
+          }
+          currentStudent = data.student || null;
+          statusEl.textContent = "Đăng nhập thành công. Hệ thống đã nạp thông tin thí sinh.";
+          statusEl.className = "status-msg";
+          updateStudentUI();
+          // Tự chuyển sang tab Vào thi
+          const examBtn = Array.from(document.querySelectorAll("nav button"))
+            .find(b => (b.textContent || "").includes("Vào thi"));
+          if(examBtn){
+            show("exam", examBtn);
+          }
+        }catch(err){
+          console.error(err);
+          statusEl.textContent = "Có lỗi khi đăng nhập. Kiểm tra lại Code.gs hoặc kết nối mạng.";
+          statusEl.className = "status-msg status-error";
+          currentStudent = null;
+          updateStudentUI();
+        }
+      });
+    }
+
+    // Sự kiện chọn ca thi
+    const examSelect = document.getElementById("exam-select");
+    if(examSelect){
+      examSelect.addEventListener("change", onExamSelectChange);
     }
   });
 </script>
