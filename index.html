@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Chart.js cho Dashboard -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
@@ -18,9 +17,9 @@
       --danger:#dc2626;
       --danger-soft:#fee2e2;
       --muted:#6b7280;
-      --bg-card:#0b1220;
-      --bg-elevated:#020617;
-      --border-soft:#1e293b;
+      --bg-page:#eef2ff;
+      --bg-card:#ffffff;
+      --border-soft:#e5e7eb;
       --radius-lg:18px;
     }
     *{
@@ -44,11 +43,11 @@
       justify-content:space-between;
       align-items:flex-start;
       gap:12px;
-      margin-bottom:12px;
+      margin-bottom:16px;
     }
     header h1{
       margin:0;
-      font-size:1.15rem;
+      font-size:1.25rem;
       font-weight:700;
       letter-spacing:.02em;
       text-transform:uppercase;
@@ -56,7 +55,7 @@
     }
     header p{
       margin:4px 0 0;
-      font-size:.9rem;
+      font-size:.95rem;
       color:var(--muted);
     }
     .badge-top{
@@ -64,11 +63,11 @@
       display:inline-flex;
       align-items:center;
       gap:6px;
-      padding:3px 9px;
+      padding:4px 10px;
       border-radius:999px;
       background:#0f172a;
       color:#e5e7eb;
-      font-size:.75rem;
+      font-size:.78rem;
     }
     .badge-top span.dot{
       width:7px;height:7px;border-radius:999px;
@@ -76,29 +75,30 @@
       box-shadow:0 0 10px #38bdf8;
     }
     header .avatar-chip{
-      min-width:72px;
-      max-width:120px;
+      min-width:80px;
+      max-width:150px;
       background:#020617;
       color:#e5e7eb;
       border-radius:999px;
-      padding:6px 10px;
+      padding:7px 11px;
       display:flex;
       align-items:center;
-      gap:7px;
+      gap:8px;
       box-shadow:0 14px 40px rgba(15,23,42,.55);
     }
     .avatar-circle{
-      width:26px;height:26px;border-radius:999px;
+      width:30px;height:30px;border-radius:999px;
       background:radial-gradient(circle at 30% 30%,#38bdf8,#4f46e5);
       display:flex;align-items:center;justify-content:center;
-      font-size:1rem;
+      font-size:1.1rem;
     }
     .avatar-chip span.label{
-      font-size:.76rem;
+      font-size:.78rem;
       line-height:1.2;
     }
+
     nav{
-      margin-bottom:14px;
+      margin-bottom:16px;
       display:flex;
       flex-wrap:wrap;
       gap:8px;
@@ -106,8 +106,8 @@
     nav button{
       border:none;
       border-radius:999px;
-      padding:7px 14px;
-      font-size:.86rem;
+      padding:8px 16px;
+      font-size:.9rem;
       font-weight:500;
       cursor:pointer;
       background:#ffffffb8;
@@ -124,123 +124,111 @@
     }
     nav button span.icon{font-size:1rem;}
 
-    main{
-      display:block;
-    }
+    main{display:block;}
     section.page{
       display:none;
-      background:radial-gradient(circle at top,#020617,#020617 55%,#030712);
+      background:var(--bg-card);
       border-radius:var(--radius-lg);
-      padding:14px 14px 16px;
-      box-shadow:0 22px 60px rgba(15,23,42,.85);
-      color:#e5e7eb;
-      border:1px solid #1f2937;
+      padding:16px 16px 18px;
+      box-shadow:0 16px 40px rgba(15,23,42,.18);
+      border:1px solid var(--border-soft);
     }
-    section.page.active{
-      display:block;
-    }
+    section.page.active{display:block;}
+
     .section-title{
-      font-size:1.02rem;
+      font-size:1.05rem;
       margin:0 0 4px;
       display:flex;
       align-items:center;
       gap:6px;
     }
     .section-title span.badge-inline{
-      font-size:.7rem;
+      font-size:.72rem;
       text-transform:uppercase;
-      padding:2px 6px;
+      padding:2px 7px;
       border-radius:999px;
-      background:rgba(37,99,235,.14);
+      background:var(--primary-soft);
       border:1px solid rgba(37,99,235,.5);
-      color:#bfdbfe;
+      color:var(--primary-strong);
     }
     .section-desc{
-      margin:0 0 10px;
-      font-size:.84rem;
-      color:#9ca3af;
+      margin:0 0 12px;
+      font-size:.88rem;
+      color:var(--muted);
     }
-    .section-desc b{color:#e5e7eb;}
+    .section-desc b{color:#111827;}
 
     .grid-2{
       display:grid;
-      grid-template-columns:1.1fr 1.1fr;
-      gap:10px 14px;
+      grid-template-columns:1fr 1fr;
+      gap:10px 16px;
     }
     @media(max-width:768px){
-      .grid-2{
-        grid-template-columns:1fr;
-      }
-      header{
-        flex-direction:column;
-      }
+      .grid-2{grid-template-columns:1fr;}
+      header{flex-direction:column;}
     }
+
     .field{
       display:flex;
       flex-direction:column;
       gap:4px;
     }
     label{
-      font-size:.9rem;
+      font-size:.95rem;
       font-weight:600;
       color:#111827;
     }
     input,select,textarea{
-      border-radius:10px;
+      border-radius:11px;
       border:1px solid #d1d5db;
-      padding:10px 11px;
-      font-size:1rem;
+      padding:11px 12px;
+      font-size:1.02rem;
       outline:none;
       width:100%;
+      background:#ffffff;
     }
-        .dob-group{
-      display:flex;
-      gap:6px;
-    }
-    .dob-group select{
-      flex:1;
-    }
-input:focus,select:focus,textarea:focus{
+    input:focus,select:focus,textarea:focus{
       border-color:var(--primary);
       box-shadow:0 0 0 1px rgba(37,99,235,.35);
     }
-    textarea{min-height:60px;resize:vertical;}
+    textarea{min-height:70px;resize:vertical;}
+
+    .dob-group{
+      display:flex;
+      gap:6px;
+    }
+    .dob-group select{flex:1;}
 
     .hint{
-      font-size:.75rem;
+      font-size:.78rem;
       color:#9ca3af;
     }
-    .row{
-      display:flex;
-      gap:8px;
-    }
-    .row > .field{flex:1;}
 
     .alert{
-      margin-top:10px;
-      padding:8px 10px;
-      border-radius:10px;
-      font-size:.78rem;
+      margin-top:12px;
+      padding:9px 11px;
+      border-radius:11px;
+      font-size:.8rem;
       line-height:1.4;
     }
     .alert.info{
-      background:rgba(37,99,235,.1);
-      border:1px solid rgba(37,99,235,.6);
-      color:#bfdbfe;
+      background:rgba(37,99,235,.06);
+      border:1px solid rgba(37,99,235,.4);
+      color:#1d4ed8;
     }
     .alert.warn{
-      background:rgba(202,138,4,.1);
+      background:rgba(234,179,8,.08);
       border:1px solid rgba(234,179,8,.7);
-      color:#facc15;
+      color:#92400e;
     }
     .alert.error{
       background:rgba(248,113,113,.1);
       border:1px solid rgba(220,38,38,.7);
-      color:#fecaca;
+      color:#b91c1c;
     }
 
     .btn-row{
-      margin-top:12px;
+      margin-top:14px;
       display:flex;
       flex-wrap:wrap;
       gap:8px;
@@ -248,8 +236,8 @@ input:focus,select:focus,textarea:focus{
     .btn-primary,.btn-ghost{
       border-radius:999px;
       border:none;
-      padding:8px 14px;
-      font-size:.88rem;
+      padding:9px 16px;
+      font-size:.9rem;
       font-weight:600;
       cursor:pointer;
       display:inline-flex;
@@ -263,31 +251,31 @@ input:focus,select:focus,textarea:focus{
       box-shadow:0 14px 40px rgba(37,99,235,.7);
     }
     .btn-ghost{
-      background:rgba(15,23,42,.9);
-      color:#e5e7eb;
-      border:1px solid #374151;
+      background:#f9fafb;
+      color:#111827;
+      border:1px solid #d1d5db;
     }
 
     .pill-warning{
-      font-size:.77rem;
-      padding:4px 10px;
+      font-size:.8rem;
+      padding:5px 10px;
       border-radius:999px;
       background:rgba(234,179,8,.08);
       border:1px dashed rgba(234,179,8,.9);
-      color:#fde68a;
+      color:#92400e;
       display:inline-flex;
       align-items:center;
       gap:6px;
       margin-top:6px;
     }
 
-    /* LOGIN & EXAM */
     .card{
-      background:radial-gradient(circle at top,#020617,#020617 55%,#030712);
+      background:#0b1120;
       border-radius:16px;
-      border:1px solid #111827;
-      padding:12px 12px 14px;
+      border:1px solid #1f2937;
+      padding:14px 14px 16px;
       box-shadow:0 20px 50px rgba(15,23,42,.85);
+      color:#e5e7eb;
       margin-top:4px;
     }
     .card-header{
@@ -295,56 +283,21 @@ input:focus,select:focus,textarea:focus{
       justify-content:space-between;
       align-items:flex-start;
       gap:8px;
-      margin-bottom:8px;
+      margin-bottom:10px;
     }
     .card-title{
       margin:0;
-      font-size:.96rem;
+      font-size:.98rem;
     }
     .card-sub{
       margin:2px 0 0;
       font-size:.8rem;
       color:#9ca3af;
     }
-    /* Card trắng cho khu vực Import đề */
-    .card-light{
-      background:#ffffff;
-      border-radius:16px;
-      padding:14px 14px 16px;
-      border:1px solid #e5e7eb;
-      box-shadow:0 14px 35px rgba(15,23,42,.12);
-      color:#0f172a;
-    }
-    .card-light h3{
-      margin:0 0 6px;
-      font-size:.98rem;
-    }
-    .card-light p{
-      margin:3px 0 8px;
-      font-size:.85rem;
-      color:#4b5563;
-    }
-    .card-light ol{
-      margin:4px 0 8px 18px;
-      font-size:.82rem;
-      color:#4b5563;
-    }
-    .card-light code{
-      background:#f3f4f6;
-      padding:2px 4px;
-      border-radius:4px;
-      font-size:.8rem;
-    }
-    .import-note{
-      font-size:.78rem;
-      color:#6b7280;
-      margin-top:6px;
-    }
-    
     .tag{
       font-size:.7rem;
       border-radius:999px;
-      padding:2px 7px;
+      padding:3px 8px;
       border:1px solid rgba(148,163,184,.7);
       color:#e5e7eb;
       background:rgba(15,23,42,.9);
@@ -354,26 +307,25 @@ input:focus,select:focus,textarea:focus{
       font-size:1.1rem;
       font-weight:700;
       color:#fbbf24;
+      text-align:right;
     }
 
-    /* DASHBOARD */
     .dashboard-grid{
       display:grid;
       grid-template-columns:1.1fr 1.2fr;
       gap:10px;
-      margin-top:6px;
+      margin-top:8px;
     }
     @media(max-width:900px){
-      .dashboard-grid{
-        grid-template-columns:1fr;
-      }
+      .dashboard-grid{grid-template-columns:1fr;}
     }
     .stat-box{
       background:#020617;
       border-radius:16px;
-      padding:10px 10px 11px;
+      padding:10px 11px 12px;
       border:1px solid #1f2937;
       box-shadow:0 18px 45px rgba(15,23,42,.9);
+      color:#e5e7eb;
     }
     .stat-box h3{
       margin:0 0 6px;
@@ -386,70 +338,64 @@ input:focus,select:focus,textarea:focus{
       margin-bottom:4px;
       font-size:.8rem;
     }
-    .stat-row span.label{
-      color:#9ca3af;
-    }
-    .stat-row span.value{
-      font-weight:600;
-      color:#e5e7eb;
-    }
+    .stat-row span.label{color:#9ca3af;}
+    .stat-row span.value{font-weight:600;color:#e5e7eb;}
+
     .chart-card{
       background:#f9fafb;
       border-radius:16px;
-      padding:10px 10px 12px;
+      padding:10px 11px 12px;
       box-shadow:0 16px 40px rgba(15,23,42,.12) inset;
       display:flex;
       flex-direction:column;
-      min-height:210px;
+      min-height:220px;
     }
-    .chart-card h3{
-      font-size:.9rem;margin-bottom:3px;
-    }
-    .chart-card p{
-      font-size:.78rem;color:var(--muted);margin-bottom:8px;
-    }
-    .chart-wrapper{flex:1;min-height:160px;}
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:5px;
-      padding:3px 7px;
-      border-radius:999px;
-      background:var(--primary-soft);
-      color:var(--primary);
-      font-size:.75rem;
-      margin-top:3px;
-    }
-    .badge span.dot{
-      width:7px;height:7px;border-radius:999px;background:var(--primary);
-    }
+    .chart-card h3{font-size:.9rem;margin:0 0 4px;}
+    .chart-card p{font-size:.78rem;color:var(--muted);margin:0 0 8px;}
+    .chart-wrapper{flex:1;min-height:170px;}
 
-    /* TRA CỨU */
-    #results{
-      margin-top:12px;
-      font-size:.82rem;
-    }
+    /* Tra cứu kết quả */
+    #results{margin-top:12px;font-size:.82rem;}
     .result-card{
       background:#020617;
       border-radius:12px;
       border:1px solid #1f2937;
-      padding:8px 10px;
+      padding:9px 10px;
       margin-bottom:6px;
+      color:#e5e7eb;
     }
-    .result-card h4{
-      margin:0 0 2px;font-size:.9rem;
-    }
+    .result-card h4{margin:0 0 2px;font-size:.9rem;}
     .result-meta{
       display:flex;flex-wrap:wrap;gap:6px;
       font-size:.78rem;color:#9ca3af;
     }
-    .status-msg{
-      margin-top:8px;
-      font-size:.82rem;
-    }
-    .status-error{color:#fecaca;}
+    .status-msg{margin-top:8px;font-size:.82rem;}
+    .status-error{color:#b91c1c;}
     .status-empty{color:#9ca3af;}
 
+    /* Import đề từ Word */
+    .card-light{
+      background:#ffffff;
+      border-radius:16px;
+      padding:14px 14px 16px;
+      border:1px solid #e5e7eb;
+      box-shadow:0 14px 35px rgba(15,23,42,.12);
+      color:#0f172a;
+    }
+    .card-light h3{margin:0 0 6px;font-size:.98rem;}
+    .card-light p{margin:3px 0 8px;font-size:.85rem;color:#4b5563;}
+    .card-light ol{margin:4px 0 8px 20px;font-size:.83rem;color:#4b5563;}
+    .card-light code{
+      background:#f3f4f6;
+      padding:2px 4px;
+      border-radius:4px;
+      font-size:.8rem;
+    }
+    .import-note{
+      font-size:.8rem;
+      color:#6b7280;
+      margin-top:6px;
+    }
   </style>
 </head>
 <body>
@@ -457,12 +403,12 @@ input:focus,select:focus,textarea:focus{
   <header>
     <div>
       <h1>SK – Hệ thống Kiểm tra Online</h1>
-      <p>Đăng ký – Làm bài – Xem Dashboard – Tra cứu kết quả trên cùng một trang.</p>
+      <p>Đăng ký – Vào thi – Dashboard – Tra cứu kết quả trên cùng một trang.</p>
       <div class="badge-top"><span class="dot"></span><span>Phiên bản PREMIUM</span></div>
     </div>
     <div class="avatar-chip">
       <div class="avatar-circle">AI</div>
-      <span class="label">DTAI Online<br/>NDC – Lâm Đồng</span>
+      <span class="label">DTAI Online<br/>NĐC – Lâm Đồng</span>
     </div>
   </header>
 
@@ -470,30 +416,22 @@ input:focus,select:focus,textarea:focus{
     <button class="active" onclick="show('reg', this)"><span class="icon">📝</span>Đăng ký</button>
     <button onclick="show('login', this)"><span class="icon">🔐</span>Đăng nhập</button>
     <button onclick="show('exam', this)"><span class="icon">🧪</span>Vào thi</button>
-    <button onclick="show('review', this)"><span class="icon">📄</span>Xem lại</button>
     <button onclick="show('dash', this)"><span class="icon">📊</span>Dashboard</button>
-    <button onclick="show('search', this)"><span class="icon">🔎</span>Xem kết quả</button>
-
-  <!-- các nút cũ -->
-  <button onclick="show('reg', this)" class="active"><span class="icon">📝</span>Đăng ký</button>
-  <button onclick="show('login', this)"><span class="icon">🔐</span>Đăng nhập</button>
-  <button onclick="show('exam', this)"><span class="icon">🧪</span>Vào thi</button>
-  <button onclick="show('review', this)"><span class="icon">📄</span>Xem lại</button>
-  <button onclick="show('dash', this)"><span class="icon">📊</span>Dashboard</button>
-  <button onclick="show('search', this)"><span class="icon">🔎</span>Xem kết quả</button>
-
-  <!-- 👉 THÊM MỚI: Import đề -->
-  <button onclick="show('import', this)"><span class="icon">📥</span>Import đề Word</button>
-    
+    <button onclick="show('search', this)"><span class="icon">🔎</span>Tra cứu</button>
+    <button onclick="show('import', this)"><span class="icon">📥</span>Import đề Word</button>
   </nav>
 
   <main>
     <!-- 1. ĐĂNG KÝ -->
     <section id="reg" class="page active">
-      <h2 class="section-title">Đăng ký tham gia hệ thống <span class="badge-inline">Student Registration</span></h2>
-      <p class="section-desc">Nhập đầy đủ thông tin bên dưới. Hệ thống tự kiểm tra trùng <b>CCCD</b> hoặc <b>Email</b> trước khi lưu.</p>
+      <h2 class="section-title">
+        Đăng ký tham gia hệ thống
+        <span class="badge-inline">Student Registration</span>
+      </h2>
+      <p class="section-desc">
+        Nhập đầy đủ thông tin bên dưới. Hệ thống tự kiểm tra trùng <b>CCCD</b> hoặc <b>Email</b> và gửi mật khẩu riêng qua email.
+      </p>
 
-      <!-- 👉 THAY URL WEB APP TẠI ĐÂY -->
       <form id="regForm"
             method="post"
             action="https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec">
@@ -501,7 +439,7 @@ input:focus,select:focus,textarea:focus{
           <div class="field">
             <label for="hoten">Họ và tên (IN HOA)</label>
             <input id="hoten" name="hoten" placeholder="VD: NGUYỄN VĂN A" required />
-            <div class="hint">Nhập thường cũng được, hệ thống sẽ tự đổi thành IN HOA khi lưu.</div>
+            <div class="hint">Có thể nhập thường, hệ thống sẽ tự chuyển sang IN HOA khi lưu.</div>
           </div>
           <div class="field">
             <label for="dob-day">Ngày sinh</label>
@@ -540,7 +478,7 @@ input:focus,select:focus,textarea:focus{
               <option>THPT Đức Trọng</option>
               <option>Trường khác (ghi chú)</option>
             </select>
-            <div class="hint">Nếu trường chưa có trong danh sách, chọn “Trường khác (ghi chú)” và ghi rõ ở ô Ghi chú.</div>
+            <div class="hint">Nếu chưa có tên trường, chọn “Trường khác (ghi chú)” và ghi rõ ở ô Ghi chú.</div>
           </div>
           <div class="field">
             <label for="xa">Xã/Phường</label>
@@ -574,12 +512,12 @@ input:focus,select:focus,textarea:focus{
           <div class="field">
             <label for="cccd">CCCD</label>
             <input id="cccd" name="cccd" inputmode="numeric" placeholder="Chỉ nhập số" />
-            <div class="hint">Hệ thống lưu CCCD dạng ký tự số (chuỗi), không tính toán trên trường này.</div>
+            <div class="hint">Hệ thống lưu CCCD dạng chuỗi, dùng để đăng nhập & tra cứu kết quả.</div>
           </div>
           <div class="field">
             <label for="email">Email</label>
             <input id="email" name="email" type="email" placeholder="VD: ten@gmail.com" />
-            <div class="hint">Dùng để hệ thống gửi xác nhận đăng ký & thông tin phòng thi.</div>
+            <div class="hint">Dùng để nhận email xác nhận & mật khẩu đăng nhập.</div>
           </div>
           <div class="field">
             <label for="ghichu">Ghi chú thêm</label>
@@ -588,12 +526,12 @@ input:focus,select:focus,textarea:focus{
         </div>
 
         <div class="alert warn">
-          ⚠ <b>Lưu ý thời gian:</b> Thầy/cô có thể cấu hình ca thi giới hạn giờ trên hệ thống. Học sinh nên hoàn thành đăng ký sớm để tránh nghẽn.
+          ⚠ <b>Lưu ý:</b> Nên đăng ký trước giờ thi ít nhất 15 phút để kịp nhận email & mật khẩu.
         </div>
 
         <div class="btn-row">
           <button type="submit" class="btn-primary">
-            <span>Gửi đăng ký / Submit</span>
+            Gửi đăng ký / Submit
           </button>
           <button type="reset" class="btn-ghost">
             Xóa dữ liệu / Reset
@@ -605,7 +543,9 @@ input:focus,select:focus,textarea:focus{
     <!-- 2. ĐĂNG NHẬP -->
     <section id="login" class="page">
       <h2 class="section-title">Đăng nhập bằng CCCD + mật khẩu</h2>
-      <p class="section-desc">Mỗi học sinh sử dụng <b>01 CCCD</b> và mật khẩu riêng (được gửi qua email sau khi đăng ký thành công).</p>
+      <p class="section-desc">
+        Mỗi học sinh sử dụng <b>01 CCCD</b> và mật khẩu riêng (được gửi qua email sau khi đăng ký).
+      </p>
 
       <div class="card">
         <div class="card-header">
@@ -634,7 +574,7 @@ input:focus,select:focus,textarea:focus{
 
           <div class="btn-row">
             <button type="submit" class="btn-primary">
-              <span>Đăng nhập / Login</span>
+              Đăng nhập / Login
             </button>
             <button type="button" class="btn-ghost" onclick="alert('Liên hệ GVCN hoặc BGH để cấp lại mật khẩu.')">
               Quên mật khẩu?
@@ -646,18 +586,23 @@ input:focus,select:focus,textarea:focus{
 
     <!-- 3. VÀO THI -->
     <section id="exam" class="page">
-      <h2 class="section-title">Vào thi trực tuyến <span class="badge-inline">Online Exam</span></h2>
-      <p class="section-desc">Sau khi đăng nhập, hệ thống sẽ tự gợi ý mã ca thi, đồng hồ đếm ngược & link đề tương ứng.</p>
+      <h2 class="section-title">
+        Vào thi trực tuyến
+        <span class="badge-inline">Online Exam</span>
+      </h2>
+      <p class="section-desc">
+        Sau khi đăng nhập, hệ thống sẽ tự gợi ý mã ca thi, thời gian đếm ngược & link đề dựa vào cấu hình trong sheet <b>CauHinhThi</b>.
+      </p>
 
       <div class="card">
         <div class="card-header">
           <div>
             <h3 class="card-title">Thông tin ca thi / Exam slot</h3>
-            <p class="card-sub">Dựa trên mã ca thi mà thầy/cô đã cấu hình trước trong Google Sheet.</p>
+            <p class="card-sub">Dùng mã ca thi mà thầy/cô đã cấu hình sẵn trong Google Sheet.</p>
           </div>
-          <div style="text-align:right;">
+          <div>
             <div class="timer" id="examTimer">--:--</div>
-            <div style="font-size:.7rem;color:#9ca3af;">Thời gian còn lại / Time left</div>
+            <div style="font-size:.7rem;color:#9ca3af;text-align:right;">Thời gian còn lại / Time left</div>
           </div>
         </div>
 
@@ -674,12 +619,12 @@ input:focus,select:focus,textarea:focus{
 
         <div class="alert info">
           ⏰ Ví dụ cảnh báo: <b>“Đến 08:45 hệ thống sẽ không nhận bài nữa. Hãy bấm GỬI trước thời điểm này.”</b><br/>
-          Thông điệp này có thể sinh tự động dựa vào cấu hình ca thi trong Sheet <code>CauHinhThi</code>.
+          Thông điệp này có thể tự sinh dựa vào thời gian kết thúc trong sheet <code>CauHinhThi</code>.
         </div>
 
         <div class="btn-row">
           <button type="button" class="btn-primary" onclick="openExam()">
-            <span>Vào thi / Start exam</span>
+            Vào thi / Start exam
           </button>
           <button type="button" class="btn-ghost" onclick="openSheet()">
             Xem cấu hình ca thi (Sheet)
@@ -688,20 +633,15 @@ input:focus,select:focus,textarea:focus{
       </div>
     </section>
 
-    <!-- 4. XEM LẠI -->
-    <section id="review" class="page">
-      <h2 class="section-title">Xem lại thông tin cá nhân / Kết quả gần đây</h2>
-      <p class="section-desc">Tính năng này sẽ đọc từ Sheet điểm & đăng ký để hiển thị lại lịch sử làm bài của từng học sinh.</p>
-
-      <div class="alert info">
-        🧩 Phần này dùng chung endpoint <code>mode=search</code> hoặc <code>mode=results</code> (JSONP) trong Code.gs để lấy dữ liệu lịch sử.
-      </div>
-    </section>
-
-    <!-- 5. DASHBOARD -->
+    <!-- 4. DASHBOARD -->
     <section id="dash" class="page">
-      <h2 class="section-title">Dashboard tổng hợp <span class="badge-inline">Overview</span></h2>
-      <p class="section-desc">Dữ liệu lấy từ sheet <b>DangKy</b> và sheet <b>DiemThi</b> để thống kê theo khối, lớp, giới tính, dân tộc, trường.</p>
+      <h2 class="section-title">
+        Dashboard tổng hợp
+        <span class="badge-inline">Overview</span>
+      </h2>
+      <p class="section-desc">
+        Thống kê từ sheet <b>DangKy</b> và <b>DiemThi</b> (nếu cấu hình) để BGH nắm nhanh tình hình.
+      </p>
 
       <div class="dashboard-grid">
         <div class="stat-box">
@@ -738,10 +678,12 @@ input:focus,select:focus,textarea:focus{
       </div>
     </section>
 
-    <!-- 6. TRA CỨU KẾT QUẢ -->
+    <!-- 5. TRA CỨU KẾT QUẢ -->
     <section id="search" class="page">
       <h2 class="section-title">Tra cứu kết quả / Result lookup</h2>
-      <p class="section-desc">Nhập CCCD hoặc Họ tên + Lớp để xem lại điểm từ sheet <b>DiemThi</b>.</p>
+      <p class="section-desc">
+        Nhập CCCD hoặc Họ tên (IN HOA) + Lớp để xem lại điểm từ sheet <b>DiemThi</b>.
+      </p>
 
       <form id="searchForm">
         <div class="grid-2">
@@ -761,54 +703,47 @@ input:focus,select:focus,textarea:focus{
 
         <div class="btn-row">
           <button type="submit" class="btn-primary">
-            <span class="icon">🔎</span><span>Tra cứu kết quả</span>
+            🔎 Tra cứu kết quả
           </button>
         </div>
       </form>
       <div id="status" class="status-msg status-empty"></div>
-      <div id="results" class="results"></div>
+      <div id="results"></div>
     </section>
 
-    <!-- 7. IMPORT ĐỀ TỪ WORD -->
+    <!-- 6. IMPORT ĐỀ TỪ WORD -->
     <section id="import" class="page">
       <h2 class="section-title">
         Import đề trắc nghiệm từ Word
-        <span class="badge-inline">Word → Google Sheets</span>
+        <span class="badge-inline">Word → Sheet NganHangDe</span>
       </h2>
       <p class="section-desc">
-        Dùng cho giáo viên / BGH. Hệ thống sẽ đọc file Google Docs (được chuyển từ Word)
-        theo đúng mẫu và tự động đổ câu hỏi vào sheet <b>NganHangDe</b>.
+        Dùng cho giáo viên / BGH. Hệ thống đọc file Google Docs (chuyển từ Word) theo đúng mẫu
+        và đổ câu hỏi vào sheet <b>NganHangDe</b>.
       </p>
 
       <div class="card-light">
         <h3>Hướng dẫn 3 bước</h3>
         <ol>
-          <li>
-            Soạn đề trong Word theo mẫu chuẩn (mỗi câu: Câu 1. → nội dung → a./b./c./d. → Đáp án đúng: … → Đáp án sai: …).
-          </li>
-          <li>
-            Upload file Word lên Google Drive, sau đó <b>Mở bằng &gt; Google Tài liệu</b> (Google Docs).
-          </li>
-          <li>
-            Lấy <b>ID</b> của tài liệu (phần nằm giữa <code>/d/</code> và <code>/edit</code> trên thanh địa chỉ) và dán vào ô bên dưới rồi bấm “Import đề”.
-          </li>
+          <li>Soạn đề trong Word theo mẫu: “Câu 1.” → nội dung → a./b./c./d. → “Đáp án đúng:” → “Đáp án sai:”.</li>
+          <li>Upload Word lên Google Drive, sau đó <b>Mở bằng → Google Tài liệu</b> (Google Docs).</li>
+          <li>Lấy <b>ID</b> (phần giữa <code>/d/</code> và <code>/edit</code>) và dán vào ô bên dưới, bấm “Import đề”.</li>
         </ol>
 
         <form id="importForm">
           <div class="field">
-            <label for="docId">ID file Google Docs / Word đã convert</label>
+            <label for="docId">ID file Google Docs</label>
             <input id="docId" name="docId"
-                   placeholder="Ví dụ: 1AbCdEfGhijkLmNoPqRstUvWxYz1234567890" />
+                   placeholder="Ví dụ: 1qDG8z15Ep5f3RLB9OxqtpyzFzrmYIiOe" />
             <div class="import-note">
-              Ví dụ link: https://docs.google.com/document/d/<b>1AbCdEfGhijkLmNoPqRstUvWxYz1234567890</b>/edit<br/>
+              Ví dụ link: https://docs.google.com/document/d/<b>1qDG8z15Ep5f3RLB9OxqtpyzFzrmYIiOe</b>/edit<br/>
               👉 ID cần dán chính là phần in đậm.
             </div>
           </div>
 
           <div class="btn-row" style="margin-top:10px;">
             <button type="submit" class="btn-primary">
-              <span class="icon">📥</span>
-              <span>Import đề từ Word</span>
+              📥 Import đề từ Word
             </button>
             <button type="button" class="btn-ghost"
                     onclick="alert('Thầy/cô có thể dùng file mẫu Mau_Import_De_Word_DTAI_Online.docx để soạn đề đúng cấu trúc.')">
@@ -820,13 +755,11 @@ input:focus,select:focus,textarea:focus{
         <div id="importStatus" class="import-note" style="margin-top:8px;"></div>
       </div>
     </section>
-
-    
   </main>
 </div>
 
 <script>
-  // 👉 NHỚ CẬP NHẬT CÙNG MỘT URL VỚI action CỦA FORM
+  // 👉 Nhớ khớp với URL Web App đã Deploy
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxIRwnJhmX8lqY78QYpGiXXCYtWfCBrGVNZUoyJvhgJ0Ej6cYooLL-pVZPGJmOXKtY2/exec";
 
   function show(id, btn){
@@ -841,15 +774,18 @@ input:focus,select:focus,textarea:focus{
 
   function openExam(){
     const link = document.getElementById("examLink").value.trim();
-    if(!link){ alert("Thầy/chị nhập link Google Form/Quiz trước đã nhé."); return; }
+    if(!link){
+      alert("Thầy/cô nhập link Google Form/Quiz trước khi vào thi.");
+      return;
+    }
     window.open(link,"_blank");
   }
   function openSheet(){
-    alert("Mở sheet CauHinhThi trên Google Sheets (thầy cấu hình link riêng).");
+    alert("Mở sheet CauHinhThi trên Google Sheets để xem và chỉnh cấu hình ca thi.");
   }
 
   // JSONP helper
-  function callJsonp(url, cbName){
+  function callJsonp(url){
     return new Promise((resolve, reject)=>{
       const callbackName = "jsonp_cb_" + Date.now();
       window[callbackName] = function(data){
@@ -864,11 +800,10 @@ input:focus,select:focus,textarea:focus{
     });
   }
 
-  // Dashboard
   async function loadDashboard(){
     try{
       const url = WEB_APP_URL + "?mode=stats";
-      const data = await callJsonp(url,"statsCallback");
+      const data = await callJsonp(url);
       if(!data) return;
 
       document.querySelector("#statTotal .value").textContent = data.total || 0;
@@ -898,7 +833,6 @@ input:focus,select:focus,textarea:focus{
           });
         }
       }
-
       if(data.byGender){
         document.querySelector("#statGioiTinh .value").textContent =
           Object.entries(data.byGender).map(([k,v])=>k+": "+v).join(" · ") || "—";
@@ -920,13 +854,11 @@ input:focus,select:focus,textarea:focus{
     const cccd = document.getElementById("search-cccd").value.trim();
     const name = document.getElementById("search-name").value.trim().toUpperCase();
     const className = document.getElementById("search-class").value.trim().toUpperCase();
-
     const params = new URLSearchParams();
     params.set("mode","search");
     if(cccd) params.set("cccd", cccd);
     if(name) params.set("name", name);
     if(className) params.set("className", className);
-
     return WEB_APP_URL + "?" + params.toString();
   }
 
@@ -963,26 +895,7 @@ input:focus,select:focus,textarea:focus{
     });
   }
 
-  document.getElementById("searchForm").addEventListener("submit",async function(e){
-    e.preventDefault();
-    const statusEl = document.getElementById("status");
-    const resultsEl= document.getElementById("results");
-    resultsEl.innerHTML="";
-    statusEl.textContent = "Đang tra cứu, vui lòng chờ…";
-    statusEl.className = "status-msg status-empty";
-
-    try{
-      const url = buildSearchUrl();
-      const data = await callJsonp(url,"searchCallback");
-      renderSearchResults(data);
-    }catch(err){
-      console.error(err);
-      statusEl.textContent = "Có lỗi khi tra cứu. Thầy/cô kiểm tra lại Code.gs hoặc kết nối mạng.";
-      statusEl.className = "status-msg status-error";
-    }
-  });
-
-  // Khởi tạo select Ngày sinh (Ngày-Tháng-Năm) cho mobile
+  // Khởi tạo Ngày sinh cho mobile
   function setupNgaySinh(){
     const daySel = document.getElementById("dob-day");
     const monthSel = document.getElementById("dob-month");
@@ -990,7 +903,6 @@ input:focus,select:focus,textarea:focus{
     const hidden = document.getElementById("ngaysinh");
     if(!daySel || !monthSel || !yearSel || !hidden) return;
 
-    // Tạo option Ngày
     daySel.innerHTML = '<option value="">Ngày</option>';
     for(let d=1; d<=31; d++){
       const opt = document.createElement("option");
@@ -999,7 +911,6 @@ input:focus,select:focus,textarea:focus{
       daySel.appendChild(opt);
     }
 
-    // Tháng
     monthSel.innerHTML = '<option value="">Tháng</option>';
     for(let m=1; m<=12; m++){
       const opt = document.createElement("option");
@@ -1008,7 +919,6 @@ input:focus,select:focus,textarea:focus{
       monthSel.appendChild(opt);
     }
 
-    // Năm (1980–2015)
     yearSel.innerHTML = '<option value="">Năm</option>';
     for(let y=2015; y>=1980; y--){
       const opt = document.createElement("option");
@@ -1016,73 +926,85 @@ input:focus,select:focus,textarea:focus{
       opt.textContent = y;
       yearSel.appendChild(opt);
     }
-    
-    // ===== XỬ LÝ IMPORT ĐỀ TỪ WORD =====
-    document.getElementById("importForm").addEventListener("submit", async function(e){
-      e.preventDefault();
-      const docIdInput = document.getElementById("docId");
-      const statusEl = document.getElementById("importStatus");
-      const docId = (docIdInput.value || "").trim();
-  
-      if (!docId) {
-        statusEl.textContent = "Vui lòng nhập ID file Google Docs.";
-        statusEl.style.color = "#dc2626";
-        return;
-      }
-  
-      statusEl.textContent = "Đang gửi yêu cầu import… Vui lòng chờ 5–10 giây.";
-      statusEl.style.color = "#6b7280";
-  
-      try {
-        const url = WEB_APP_URL + "?mode=importDoc&docId=" + encodeURIComponent(docId);
-        const data = await callJsonp(url, "importCallback_" + Date.now());
-  
-        if (!data || data.ok === false) {
-          statusEl.textContent = (data && data.message)
-            ? data.message
-            : "Import không thành công. Thầy/cô kiểm tra lại docId, mẫu đề hoặc Code.gs.";
-          statusEl.style.color = "#dc2626";
-          return;
-        }
-  
-        statusEl.textContent = data.message || ("Đã import " + (data.imported || 0) + " câu hỏi vào sheet NganHangDe.");
-        statusEl.style.color = "#16a34a";
-      } catch (err) {
-        console.error(err);
-        statusEl.textContent = "Có lỗi khi gọi importDoc. Thầy/cô kiểm tra lại kết nối mạng hoặc cập nhật Deploy Apps Script.";
-        statusEl.style.color = "#dc2626";
-      }
-    });
 
     function syncDob(){
       const d = daySel.value;
       const m = monthSel.value;
       const y = yearSel.value;
-      if(d && m && y){
-        hidden.value = d + "/" + m + "/" + y;
-      }else{
-        hidden.value = "";
-      }
+      hidden.value = (d && m && y) ? (d + "/" + m + "/" + y) : "";
     }
-
     daySel.addEventListener("change", syncDob);
     monthSel.addEventListener("change", syncDob);
     yearSel.addEventListener("change", syncDob);
 
-    // Trước khi submit form đăng ký, đảm bảo đã sync
     const regForm = document.getElementById("regForm");
     if(regForm){
-      regForm.addEventListener("submit", function(){
-        syncDob();
-      }, {capture:true});
+      regForm.addEventListener("submit", function(){ syncDob(); }, {capture:true});
     }
   }
 
-  // Tải Dashboard + khởi tạo Date of Birth khi trang load
-  // Tải Dashboard ngay sau khi trang load (có sẵn dữ liệu cho tab Dashboard)
+  // Sự kiện cho Tra cứu
   document.addEventListener("DOMContentLoaded", function(){
-    loadDashboard();
     setupNgaySinh();
+    loadDashboard();
+
+    const searchForm = document.getElementById("searchForm");
+    if(searchForm){
+      searchForm.addEventListener("submit", async function(e){
+        e.preventDefault();
+        const statusEl = document.getElementById("status");
+        const resultsEl= document.getElementById("results");
+        resultsEl.innerHTML="";
+        statusEl.textContent = "Đang tra cứu, vui lòng chờ…";
+        statusEl.className = "status-msg status-empty";
+        try{
+          const url = buildSearchUrl();
+          const data = await callJsonp(url);
+          renderSearchResults(data);
+        }catch(err){
+          console.error(err);
+          statusEl.textContent = "Có lỗi khi tra cứu. Thầy/cô kiểm tra lại Code.gs hoặc kết nối mạng.";
+          statusEl.className = "status-msg status-error";
+        }
+      });
+    }
+
+    // Import đề từ Word
+    const importForm = document.getElementById("importForm");
+    if(importForm){
+      importForm.addEventListener("submit", async function(e){
+        e.preventDefault();
+        const docIdInput = document.getElementById("docId");
+        const statusEl = document.getElementById("importStatus");
+        const docId = (docIdInput.value || "").trim();
+
+        if (!docId) {
+          statusEl.textContent = "Vui lòng nhập ID file Google Docs.";
+          statusEl.style.color = "#dc2626";
+          return;
+        }
+        statusEl.textContent = "Đang import… Vui lòng chờ 5–10 giây.";
+        statusEl.style.color = "#6b7280";
+
+        try {
+          const url = WEB_APP_URL + "?mode=importDoc&docId=" + encodeURIComponent(docId);
+          const data = await callJsonp(url);
+          if (!data || data.ok === false) {
+            statusEl.textContent = (data && data.message)
+              ? data.message
+              : "Import không thành công. Kiểm tra lại docId, mẫu đề hoặc Code.gs.";
+            statusEl.style.color = "#dc2626";
+            return;
+          }
+          statusEl.textContent = data.message || ("Đã import " + (data.imported || 0) + " câu hỏi vào sheet NganHangDe.");
+          statusEl.style.color = "#16a34a";
+        } catch (err) {
+          console.error(err);
+          statusEl.textContent = "Có lỗi khi gọi importDoc. Kiểm tra lại Deploy Apps Script hoặc mạng.";
+          statusEl.style.color = "#dc2626";
+        }
+      });
+    }
   });
 </script>
 </body>
