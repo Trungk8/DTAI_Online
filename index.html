@@ -621,24 +621,27 @@
         <form id="loginForm">
           <div class="grid-2">
             <div class="field">
-              <label for="login-cccd">CCCD <span class="required">*</span></label>
-              <input id="login-cccd" name="login-cccd" placeholder="Nhập CCCD đã đăng ký" inputmode="numeric" required />
+              <label for="login-id">CCCD hoặc Email *</label>
+              <input id="login-id" name="login-id"
+                     placeholder="Nhập CCCD hoặc Email đã đăng ký" />
             </div>
             <div class="field">
-              <label for="login-pass">Mật khẩu <span class="required">*</span></label>
-              <input id="login-pass" name="login-pass" type="password" placeholder="Mật khẩu đã được gửi qua email" required />
+              <label for="login-pass">Mật khẩu *</label>
+              <input id="login-pass" name="login-pass" type="password"
+                     placeholder="Mật khẩu đã được gửi qua email" />
             </div>
           </div>
-
+        
           <div class="pill-warning">
-            ⏱ Gợi ý: Đăng nhập trước giờ thi ít nhất 5 phút để kiểm tra kết nối & thông tin cá nhân.
+            ⏱ Gợi ý: Đăng nhập trước giờ thi ít nhất 5 phút để kiểm tra kết nối &amp; thông tin cá nhân.
           </div>
-
+        
           <div class="btn-row">
             <button type="submit" class="btn-primary">
               Đăng nhập / Login
             </button>
-            <button type="button" class="btn-ghost" onclick="alert('Liên hệ GVCN hoặc BGH để cấp lại mật khẩu.')">
+            <button type="button" class="btn-ghost"
+                    onclick="alert('Liên hệ GVCN hoặc BGH để cấp lại mật khẩu.')">
               Quên mật khẩu?
             </button>
           </div>
@@ -903,43 +906,56 @@
 
   async function handleLogin(e){
     e.preventDefault();
-    const cccd = document.getElementById("login-cccd").value.trim();
-    const pass = document.getElementById("login-pass").value.trim();
-
-    if(!cccd || !pass){
-      alert("Vui lòng nhập đầy đủ CCCD và mật khẩu.");
+    const idVal = document.getElementById("login-id").value.trim();
+    const pass  = document.getElementById("login-pass").value.trim();
+  
+    if (!idVal || !pass) {
+      alert("Vui lòng nhập đầy đủ CCCD hoặc Email và mật khẩu.");
       return;
     }
-
-    try{
-      const url = WEB_APP_URL + "?mode=auth&cccd=" +
-        encodeURIComponent(cccd) + "&pass=" + encodeURIComponent(pass);
+  
+    try {
+      // Nếu có @ thì coi là Email, ngược lại là CCCD
+      const params = new URLSearchParams();
+      params.set("mode", "auth");
+      if (idVal.includes("@")) {
+        params.set("email", idVal);
+      } else {
+        params.set("cccd", idVal);
+      }
+      params.set("pass", pass);
+  
+      const url = WEB_APP_URL + "?" + params.toString();
       const data = await callJsonp(url);
-
-      if(!data || !data.ok){
-        alert((data && data.message) || "Đăng nhập không thành công. Vui lòng kiểm tra lại CCCD / mật khẩu.");
+  
+      if (!data) {
+        alert("Không nhận được dữ liệu đăng nhập từ Web App.");
         return;
       }
-
+      if (!data.ok) {
+        alert(data.message || "Đăng nhập không thành công. Vui lòng kiểm tra lại CCCD/Email và mật khẩu.");
+        return;
+      }
+  
+      // Lưu thông tin học sinh
       CURRENT_STUDENT = data.student;
       setStudentHeader(CURRENT_STUDENT);
-
+  
       // Chuyển sang tab Vào thi
       const examTabBtn = Array.from(document.querySelectorAll("nav button"))
         .find(b => (b.textContent || "").includes("Vào thi"));
       show("exam", examTabBtn || null);
-
-      // Load danh sách ca thi + gợi ý ca active
+  
+      // Load examList & kết quả cá nhân
       loadExamList();
-
-      // Load kết quả cá nhân (review bài làm)
       loadMyResults(CURRENT_STUDENT.cccd);
-
-    }catch(err){
+  
+    } catch (err) {
       console.error("Lỗi đăng nhập:", err);
       alert("Có lỗi khi đăng nhập. Vui lòng kiểm tra lại kết nối mạng hoặc Web App URL.");
     }
   }
+
 
   async function loadExamList(){
     try{
