@@ -450,6 +450,7 @@
       margin-bottom:6px;
     }
 
+    /* Mobile tweaks */
     @media(max-width:480px){
       body{padding:10px 6px 18px;}
       section.page{padding:12px 10px 14px;}
@@ -492,9 +493,10 @@
         Nhập đầy đủ thông tin bên dưới. Hệ thống tự kiểm tra trùng <b>CCCD</b> hoặc <b>Email</b> và gửi mật khẩu riêng qua email.
       </p>
 
+      <!-- Form đăng ký: dùng Web App riêng để xử lý doPost -->
       <form id="regForm"
             method="post"
-            action="https://script.google.com/macros/s/AKfycbzmuY2oSWKPBYMxYZDIfS4GOR9SnyP3ZVXJDTKe7JAv97fte_6s7lL5vS2GXFefFeic/exec">
+            action="https://script.google.com/macros/s/AKfycbxbG-oxupd6949_d6uUlVmvYaJly8t5voJNWuwsAzwoar9BAgcmn9_AJP-kH1hB_vyGLA/exec">
         <div class="grid-2">
           <div class="field">
             <label for="hoten">Họ và tên (IN HOA) <span class="required">*</span></label>
@@ -793,24 +795,47 @@
       <div id="results"></div>
     </section>
 
-    <!-- 6. IMPORT ĐỀ TỪ WORD -->
+    <!-- 6. IMPORT ĐỀ TỪ WORD (GOOGLE DOCS) -->
     <section id="import" class="page">
       <h2 class="section-title">
         Import đề trắc nghiệm từ Word
         <span class="badge-inline">Word → Sheet QuestionBank</span>
       </h2>
       <p class="section-desc">
-        Dùng cho giáo viên / BGH. Hệ thống đọc file Google Docs (chuyển từ Word) theo đúng mẫu
-        và đổ câu hỏi vào sheet <b>QuestionBank</b>.
+        Dùng cho giáo viên / BGH. Hệ thống đọc <b>bảng</b> trong file Google Docs (chuyển từ Word)
+        theo đúng mẫu và đổ câu hỏi vào sheet <b>QuestionBank</b>.
       </p>
 
       <div class="card-light">
         <h3>Hướng dẫn 3 bước</h3>
         <ol>
-          <li>Soạn đề trong Word theo mẫu bảng chuẩn (các cột STT, Code, QuestionVI, QuestionEN, Type, A/B/C/D, Key,…).</li>
-          <li>Upload Word lên Google Drive, sau đó <b>Mở bằng → Google Tài liệu</b> (Google Docs).</li>
-          <li>Lấy <b>ID</b> (phần giữa <code>/d/</code> và <code>/edit</code>) và dán vào ô bên dưới, bấm “Import đề”.</li>
+          <li>
+            Soạn đề trong Word thành <b>1 bảng</b> với các cột: STT, Code, QuestionVI, QuestionEN, Type,
+            A_VI, A_EN, A_Key, B_VI, B_EN, B_Key, C_VI, C_EN, C_Key, D_VI, D_EN, D_Key,
+            ExplanationVI, ExplanationEN.
+          </li>
+          <li>
+            Upload file Word lên Google Drive, sau đó chọn <b>Mở bằng → Google Tài liệu</b> (Google Docs).
+          </li>
+          <li>
+            Lấy <b>ID</b> (phần giữa <code>/d/</code> và <code>/edit</code>) và dán vào ô bên dưới, bấm “Import đề”.
+          </li>
         </ol>
+
+        <p style="font-size:.83rem;">
+          Ví dụ 1 dòng trong bảng (rất gọn để tránh lỗi import):
+        </p>
+        <ul style="margin:4px 0 8px 18px;font-size:.82rem;color:#4b5563;">
+          <li><b>Code:</b> S1</li>
+          <li><b>QuestionVI:</b> Trong Microsoft Word, phím tắt nào dùng để lưu văn bản?</li>
+          <li><b>QuestionEN:</b> In Microsoft Word, which shortcut is used to save a document?</li>
+          <li><b>Type:</b> SC (single choice – 1 đáp án đúng)</li>
+          <li><b>A_VI:</b> Ctrl + C, <b>A_Key:</b> 0</li>
+          <li><b>B_VI:</b> Ctrl + S, <b>B_Key:</b> 1</li>
+          <li><b>C_VI:</b> Ctrl + V, <b>C_Key:</b> 0</li>
+          <li><b>D_VI:</b> Ctrl + X, <b>D_Key:</b> 0</li>
+          <li><b>ExplanationVI:</b> Trong Word, Ctrl + S là phím tắt để lưu văn bản.</li>
+        </ul>
 
         <form id="importForm">
           <div class="field">
@@ -819,7 +844,7 @@
                    placeholder="Ví dụ: 1qDG8z15Ep5f3RLB9OxqtpyzFzrmYIiOe" required />
             <div class="import-note">
               Ví dụ link: https://docs.google.com/document/d/<b>1qDG8z15Ep5f3RLB9OxqtpyzFzrmYIiOe</b>/edit<br/>
-              👉 ID cần dán chính là phần in đậm. Thầy/cô soạn đề <b>trên máy tính</b> bằng Word, sau đó upload lên Drive và làm theo các bước trên.
+              👉 ID cần dán chính là phần in đậm.
             </div>
           </div>
 
@@ -828,8 +853,8 @@
               📥 Import đề từ Word
             </button>
             <button type="button" class="btn-ghost"
-                    onclick="alert('Thầy/cô có thể dùng file mẫu Word với bảng các cột: STT, Code, QuestionVI/EN, Type (SC/MC/TF1/TFM), A/B/C/D_VI/EN, A/B/C/D_Key, ExplanationVI/EN để tránh lỗi định dạng khi import.')">
-              Xem mô tả mẫu Word
+                    onclick="alert('Thầy/cô có thể tạo file Word theo bảng mẫu trên (STT, Code, QuestionVI, ...). Chỉ cần giữ đúng thứ tự cột là import được.')">
+              Xem hướng dẫn mẫu
             </button>
           </div>
         </form>
@@ -841,8 +866,8 @@
 </div>
 
 <script>
-  // 👉 Web App URL – dùng chung cho đăng ký, login, dashboard, import,...
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyd62ZQWO3QRHWv16Z5017VTtmgOVMUdIpA_p6d99zTq6-ZpWsEe8KOKxK1P6PppAAv/exec";
+  // 👉 URL Web App cho Code.gs DTAI_Online (đã deploy)
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzmuY2oSWKPBYMxYZDIfS4GOR9SnyP3ZVXJDTKe7JAv97fte_6s7lL5vS2GXFefFeic/exec";
 
   let CURRENT_STUDENT = null;
   let EXAM_LIST = [];
@@ -856,6 +881,11 @@
     if(btn){
       document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");
+    }
+
+    // Khi mở Dashboard, auto load lại
+    if (id === "dash") {
+      loadDashboard();
     }
   }
 
@@ -914,6 +944,7 @@
     }
   
     try {
+      // Nếu có @ thì coi là Email, ngược lại là CCCD
       const params = new URLSearchParams();
       params.set("mode", "auth");
       if (idVal.includes("@")) {
@@ -935,13 +966,16 @@
         return;
       }
   
+      // Lưu thông tin học sinh
       CURRENT_STUDENT = data.student;
       setStudentHeader(CURRENT_STUDENT);
   
+      // Chuyển sang tab Vào thi
       const examTabBtn = Array.from(document.querySelectorAll("nav button"))
         .find(b => (b.textContent || "").includes("Vào thi"));
       show("exam", examTabBtn || null);
   
+      // Load examList & kết quả cá nhân
       loadExamList();
       loadMyResults(CURRENT_STUDENT.cccd);
   
@@ -959,6 +993,7 @@
 
       if(!EXAM_LIST.length) return;
 
+      // Tìm ca thi đang chạy (running) hoặc ca đầu tiên
       let active = EXAM_LIST.find(e => e.active) || EXAM_LIST[0];
 
       const examCodeInput = document.getElementById("exam-code");
@@ -971,6 +1006,7 @@
         examLinkInput.value = active.link || "";
       }
 
+      // Khởi động đếm ngược nếu có thời gian kết thúc
       if(active){
         if (typeof active.endMs === "number" && !isNaN(active.endMs)) {
           startExamCountdown(active.endMs);
@@ -1082,7 +1118,7 @@
       return;
     }
 
-    const latest = data.latest || (data.results && data.results[data.results.length - 1]) || {};
+    const latest = data.latest || (data.results && data.results[0]) || {};
     let html = `
       <p><b>CCCD:</b> ${data.cccd || latest.cccd || ""}</p>
       <p><b>Lần làm gần nhất:</b> ${latest.time || ""}</p>
@@ -1090,9 +1126,25 @@
       <p><b>Lớp:</b> ${latest.className || ""} · <b>Trường:</b> ${latest.school || ""}</p>
     `;
 
+    if(latest.details){
+      html += `<h4 style="margin:10px 0 4px;font-size:.85rem;">Chi tiết từng câu:</h4>`;
+      html += `<ul class="review-list">`;
+      Object.keys(latest.details).forEach(code=>{
+        const it = latest.details[code] || {};
+        html += `
+          <li>
+            <b>${code}</b>:
+            Trả lời <span style="color:#2563eb;">${it.answer ?? ""}</span>,
+            Đáp án đúng <span style="color:#16a34a;">${it.correct ?? ""}</span>
+          </li>
+        `;
+      });
+      html += `</ul>`;
+    }
+
     if(data.results && data.results.length > 1){
       html += `<h4 style="margin:10px 0 4px;font-size:.85rem;">Các lần làm khác:</h4><ul class="review-list">`;
-      data.results.slice(0, -1).forEach(r=>{
+      data.results.slice(1).forEach(r=>{
         html += `<li>${r.time || ""} – Điểm: <b>${r.score ?? ""}</b></li>`;
       });
       html += `</ul>`;
@@ -1247,7 +1299,6 @@
 
   document.addEventListener("DOMContentLoaded", function(){
     setupNgaySinh();
-    loadDashboard();
 
     // Tra cứu kết quả
     const searchForm = document.getElementById("searchForm");
@@ -1271,7 +1322,7 @@
       });
     }
 
-    // Import đề từ Word
+    // Import đề từ Word (Google Docs)
     const importForm = document.getElementById("importForm");
     if(importForm){
       importForm.addEventListener("submit", async function(e){
@@ -1294,11 +1345,11 @@
           if (!data || data.ok === false) {
             statusEl.textContent = (data && data.message)
               ? data.message
-              : "Import không thành công. Kiểm tra lại docId, mẫu đề hoặc Code.gs.";
+              : "Import không thành công. Kiểm tra lại docId, bảng mẫu hoặc Code.gs.";
             statusEl.style.color = "#dc2626";
             return;
           }
-          statusEl.textContent = data.message || ("Đã import " + (data.imported || 0) + " câu hỏi vào sheet QuestionBank.");
+          statusEl.textContent = data.message || ("Đã import " + (data.count || 0) + " câu hỏi vào sheet QuestionBank.");
           statusEl.style.color = "#16a34a";
         } catch (err) {
           console.error(err);
@@ -1314,13 +1365,16 @@
       loginForm.addEventListener("submit", handleLogin);
     }
 
-    // Khi đổi Mã ca thi, áp lại cấu hình
+    // Khi đổi Mã ca thi, áp lại cấu hình từ examList (nếu đã load)
     const examCodeInput = document.getElementById("exam-code");
     if(examCodeInput){
       examCodeInput.addEventListener("change", function(){
         applyExamConfigByCode(this.value);
       });
     }
+
+    // Lần đầu mở trang: load Dashboard
+    loadDashboard();
   });
 </script>
 </body>
