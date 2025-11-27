@@ -5,6 +5,7 @@
        DTAI_Online – index.html FULL
        Hệ thống: Đăng ký HS, Đăng nhập, Thi trắc nghiệm nội bộ,
        Lịch sử thi, Dashboard GVCN/Tổ môn, Import đề từ Word/Docs.
+       https://script.google.com/macros/s/AKfycbwYP02sEb6PIUYigcNQhOALAXNtLqH36PXRtPYiUf9TYW3FpScvHHJkF0TRWPVCtYSE/exec
        ===================================================== -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -503,7 +504,11 @@
       </div>
 
       <!-- FORM: POST → doPost -->
-      <form id="regForm" method="post" action="">
+
+      <form id="regForm"
+            method="post"
+            action="https://script.google.com/macros/s/AKfycbwYP02sEb6PIUYigcNQhOALAXNtLqH36PXRtPYiUf9TYW3FpScvHHJkF0TRWPVCtYSE/exec"
+            target="_top">
         <!-- action="" → POST lên chính Web App URL, doPost xử lý -->
         <input type="hidden" name="mode" value="reg" />
 
